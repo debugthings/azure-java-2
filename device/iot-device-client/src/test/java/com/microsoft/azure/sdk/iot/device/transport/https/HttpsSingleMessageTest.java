@@ -5,13 +5,11 @@ package com.microsoft.azure.sdk.iot.device.transport.https;
 
 import com.microsoft.azure.sdk.iot.device.Message;
 import com.microsoft.azure.sdk.iot.device.MessageProperty;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsResponse;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsSingleMessage;
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

@@ -4,13 +4,12 @@
  */
 package com.microsoft.azure.sdk.iot.deps.transport.amqp;
 
-import com.microsoft.azure.sdk.iot.deps.transport.amqp.AmqpsMessage;
 import mockit.Mocked;
 import mockit.Verifications;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.Delivery;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
 *  Unit tests for AmqpsMessage

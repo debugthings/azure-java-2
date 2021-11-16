@@ -5,9 +5,8 @@
 
 package com.microsoft.azure.sdk.iot.device.hsm.parser;
 
-import com.microsoft.azure.sdk.iot.device.hsm.parser.SignResponse;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 

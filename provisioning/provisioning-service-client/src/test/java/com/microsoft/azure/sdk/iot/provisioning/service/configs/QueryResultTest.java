@@ -7,10 +7,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.provisioning.service.Helpers;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service query result deserializer
@@ -125,63 +126,69 @@ public class QueryResultTest
             "]";
 
     /* SRS_QUERY_RESULT_21_001: [The constructor shall throw IllegalArgumentException if the provided type is null, empty, or not parsed to QueryResultType.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullType()
-    {
-        // arrange
-        // act
-        QueryResult queryResult = new QueryResult(null, VALID_INT_JSON, VALID_CONTINUATION_TOKEN);
-        // assert
+    @Test
+    public void constructorThrowsOnNullType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            QueryResult queryResult = new QueryResult(null, VALID_INT_JSON, VALID_CONTINUATION_TOKEN);
+            // assert
+        });
     }
 
     /* SRS_QUERY_RESULT_21_001: [The constructor shall throw IllegalArgumentException if the provided type is null, empty, or not parsed to QueryResultType.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyType()
-    {
-        // arrange
-        // act
-        QueryResult queryResult = new QueryResult("", VALID_INT_JSON, VALID_CONTINUATION_TOKEN);
-        // assert
+    @Test
+    public void constructorThrowsOnEmptyType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            QueryResult queryResult = new QueryResult("", VALID_INT_JSON, VALID_CONTINUATION_TOKEN);
+            // assert
+        });
     }
 
     /* SRS_QUERY_RESULT_21_001: [The constructor shall throw IllegalArgumentException if the provided type is null, empty, or not parsed to QueryResultType.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnInvalidType()
-    {
-        // arrange
-        // act
-        QueryResult queryResult = new QueryResult("InvalidType", VALID_INT_JSON, VALID_CONTINUATION_TOKEN);
-        // assert
+    @Test
+    public void constructorThrowsOnInvalidType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            QueryResult queryResult = new QueryResult("InvalidType", VALID_INT_JSON, VALID_CONTINUATION_TOKEN);
+            // assert
+        });
     }
 
     /* SRS_QUERY_RESULT_21_002: [The constructor shall throw IllegalArgumentException if the provided body is null or empty and the type is not `unknown`.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullBody()
-    {
-        // arrange
-        // act
-        QueryResult queryResult = new QueryResult("enrollment", null, VALID_CONTINUATION_TOKEN);
-        // assert
+    @Test
+    public void constructorThrowsOnNullBody() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            QueryResult queryResult = new QueryResult("enrollment", null, VALID_CONTINUATION_TOKEN);
+            // assert
+        });
     }
 
     /* SRS_QUERY_RESULT_21_002: [The constructor shall throw IllegalArgumentException if the provided body is null or empty and the type is not `unknown`.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyBody()
-    {
-        // arrange
-        // act
-        QueryResult queryResult = new QueryResult("enrollment", "", VALID_CONTINUATION_TOKEN);
-        // assert
+    @Test
+    public void constructorThrowsOnEmptyBody() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            QueryResult queryResult = new QueryResult("enrollment", "", VALID_CONTINUATION_TOKEN);
+            // assert
+        });
     }
 
     /* SRS_QUERY_RESULT_21_003: [The constructor shall throw JsonSyntaxException if the JSON is invalid.] */
-    @Test (expected = JsonSyntaxException.class)
-    public void constructorThrowsOnInvalidJson()
-    {
-        // arrange
-        // act
-        QueryResult queryResult = new QueryResult("enrollment", "[1, 2, ]", VALID_CONTINUATION_TOKEN);
-        // assert
+    @Test
+    public void constructorThrowsOnInvalidJson() {
+        assertThrows(JsonSyntaxException.class, () -> {
+            // arrange
+            // act
+            QueryResult queryResult = new QueryResult("enrollment", "[1, 2, ]", VALID_CONTINUATION_TOKEN);
+            // assert
+        });
     }
 
     /* SRS_QUERY_RESULT_21_004: [If the type is `enrollment`, the constructor shall parse the body as IndividualEnrollment[].] */

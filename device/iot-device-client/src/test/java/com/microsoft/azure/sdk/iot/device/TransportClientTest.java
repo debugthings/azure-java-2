@@ -1,6 +1,5 @@
 package com.microsoft.azure.sdk.iot.device;
 
-import com.microsoft.azure.sdk.iot.device.*;
 import com.microsoft.azure.sdk.iot.device.auth.IotHubSasTokenAuthenticationProvider;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.device.transport.NoRetry;
@@ -9,12 +8,13 @@ import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for TransportClient.
@@ -39,36 +39,39 @@ public class TransportClientTest
     RetryPolicy mockRetryPolicy;
 
     // Tests_SRS_TRANSPORTCLIENT_12_001: [If the `protocol` is not valid, the constructor shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsProtocolMQTT()
-    {
-        // arrange
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.MQTT;
+    @Test
+    public void constructorThrowsProtocolMQTT() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.MQTT;
 
-        // act
-        new TransportClient(iotHubClientProtocol);
+            // act
+            new TransportClient(iotHubClientProtocol);
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_001: [If the `protocol` is not valid, the constructor shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsProtocolMQTT_WS()
-    {
-        // arrange
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.MQTT_WS;
+    @Test
+    public void constructorThrowsProtocolMQTT_WS() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.MQTT_WS;
 
-        // act
-        new TransportClient(iotHubClientProtocol);
+            // act
+            new TransportClient(iotHubClientProtocol);
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_001: [If the `protocol` is not valid, the constructor shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsProtocolHTTPS()
-    {
-        // arrange
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.HTTPS;
+    @Test
+    public void constructorThrowsProtocolHTTPS() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.HTTPS;
 
-        // act
-        new TransportClient(iotHubClientProtocol);
+            // act
+            new TransportClient(iotHubClientProtocol);
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_002: [The constructor shall store the provided protocol.]
@@ -94,24 +97,25 @@ public class TransportClientTest
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_008: [The function shall throw  IllegalStateException if the connection is already open.]
-    @Test (expected = IllegalStateException.class)
-    public void openThrowsIfConnectionIsAlreadyOpen() throws IOException
-    {
-        // arrange
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
-        TransportClient transportClient = new TransportClient(iotHubClientProtocol);
-        Deencapsulation.setField(transportClient, "deviceIO", mockDeviceIO);
+    @Test
+    public void openThrowsIfConnectionIsAlreadyOpen() throws IOException {
+        assertThrows(IllegalStateException.class, () -> {
+            // arrange
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
+            TransportClient transportClient = new TransportClient(iotHubClientProtocol);
+            Deencapsulation.setField(transportClient, "deviceIO", mockDeviceIO);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockDeviceIO.isOpen();
-                result = true;
-            }
-        };
+                {
+                    mockDeviceIO.isOpen();
+                    result = true;
+                }
+            };
 
-        // act
-        transportClient.open();
+            // act
+            transportClient.open();
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_009: [The function shall do nothing if the the registration list is empty.]
@@ -248,45 +252,48 @@ public class TransportClientTest
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_017: [The function shall throw IllegalArgumentException if the newIntervalInMilliseconds parameter is less or equql to zero.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setSendIntervalThrowsNegativeNumber() throws IOException
-    {
-        // arrange
-        final long value = -1;
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
-        TransportClient transportClient = new TransportClient(iotHubClientProtocol);
+    @Test
+    public void setSendIntervalThrowsNegativeNumber() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final long value = -1;
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
+            TransportClient transportClient = new TransportClient(iotHubClientProtocol);
 
-        // act
-        transportClient.setSendInterval(value);
+            // act
+            transportClient.setSendInterval(value);
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_023: [The function shall throw  IllegalStateException if the connection is already open.]
-    @Test (expected = IllegalStateException.class)
-    public void setSendIntervalThrowsAlreadyOpenState() throws IOException
-    {
-        // arrange
-        final long value = 42;
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
-        TransportClient transportClient = new TransportClient(iotHubClientProtocol);
-        Deencapsulation.setField(transportClient, "deviceIO", mockDeviceIO);
-        Deencapsulation.setField(transportClient, "transportClientState", TransportClient.TransportClientState.CLOSED);
+    @Test
+    public void setSendIntervalThrowsAlreadyOpenState() throws IOException {
+        assertThrows(IllegalStateException.class, () -> {
+            // arrange
+            final long value = 42;
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
+            TransportClient transportClient = new TransportClient(iotHubClientProtocol);
+            Deencapsulation.setField(transportClient, "deviceIO", mockDeviceIO);
+            Deencapsulation.setField(transportClient, "transportClientState", TransportClient.TransportClientState.CLOSED);
 
-        // act
-        transportClient.setSendInterval(value);
+            // act
+            transportClient.setSendInterval(value);
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_023: [The function shall throw  IllegalStateException if the connection is already open.]
-    @Test (expected = IllegalStateException.class)
-    public void setSendIntervalThrowsAlreadyOpenIO() throws IOException
-    {
-        // arrange
-        final long value = 42;
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
-        TransportClient transportClient = new TransportClient(iotHubClientProtocol);
-        Deencapsulation.setField(transportClient, "transportClientState", TransportClient.TransportClientState.OPENED);
+    @Test
+    public void setSendIntervalThrowsAlreadyOpenIO() throws IOException {
+        assertThrows(IllegalStateException.class, () -> {
+            // arrange
+            final long value = 42;
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
+            TransportClient transportClient = new TransportClient(iotHubClientProtocol);
+            Deencapsulation.setField(transportClient, "transportClientState", TransportClient.TransportClientState.OPENED);
 
-        // act
-        transportClient.setSendInterval(value);
+            // act
+            transportClient.setSendInterval(value);
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_018: [The function shall set the new interval on the underlying device IO it the transport client is not open.]
@@ -312,36 +319,38 @@ public class TransportClientTest
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_005: [The function shall throw  IllegalArgumentException if the deviceClient parameter is null.]
-    @Test (expected = IllegalArgumentException.class)
-    public void registerDeviceClientThrowsDeviceClientNull()
-    {
-        // arrange
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
-        TransportClient transportClient = new TransportClient(iotHubClientProtocol);
+    @Test
+    public void registerDeviceClientThrowsDeviceClientNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
+            TransportClient transportClient = new TransportClient(iotHubClientProtocol);
 
-        // act
-        Deencapsulation.invoke(transportClient, "registerDeviceClient", (DeviceClient)null);
+            // act
+            Deencapsulation.invoke(transportClient, "registerDeviceClient", (DeviceClient)null);
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_006: [The function shall throw  IllegalStateException if the connection is already open.]
-    @Test (expected = IllegalStateException.class)
-    public void registerDeviceClientThrowsOpen()
-    {
-        // arrange
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
-        TransportClient transportClient = new TransportClient(iotHubClientProtocol);
-        Deencapsulation.setField(transportClient, "deviceIO", mockDeviceIO);
+    @Test
+    public void registerDeviceClientThrowsOpen() {
+        assertThrows(IllegalStateException.class, () -> {
+            // arrange
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
+            TransportClient transportClient = new TransportClient(iotHubClientProtocol);
+            Deencapsulation.setField(transportClient, "deviceIO", mockDeviceIO);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockDeviceIO.isOpen();
-                result = true;
-            }
-        };
+                {
+                    mockDeviceIO.isOpen();
+                    result = true;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(transportClient, "registerDeviceClient", mockDeviceClient);
+            // act
+            Deencapsulation.invoke(transportClient, "registerDeviceClient", mockDeviceClient);
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_12_007: [The function shall add the given device client to the deviceClientList.]
@@ -379,17 +388,18 @@ public class TransportClientTest
     }
 
     // Tests_SRS_TRANSPORTCLIENT_28_001: [The function shall throw UnsupportedOperationException if there is no registered device client]
-    @Test (expected = UnsupportedOperationException.class)
-    public void setRetryPolicyDoNothingIfNoRegisteredDeviceClient()
-    {
-        // arrange
-        IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
-        TransportClient transportClient = new TransportClient(iotHubClientProtocol);
-        ArrayList<DeviceClient> deviceClientList = new ArrayList<>();
-        Deencapsulation.setField(transportClient, "deviceClientList", deviceClientList);
+    @Test
+    public void setRetryPolicyDoNothingIfNoRegisteredDeviceClient() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            // arrange
+            IotHubClientProtocol iotHubClientProtocol = IotHubClientProtocol.AMQPS;
+            TransportClient transportClient = new TransportClient(iotHubClientProtocol);
+            ArrayList<DeviceClient> deviceClientList = new ArrayList<>();
+            Deencapsulation.setField(transportClient, "deviceClientList", deviceClientList);
 
-        // act
-        transportClient.setRetryPolicy(new NoRetry());
+            // act
+            transportClient.setRetryPolicy(new NoRetry());
+        });
     }
 
     // Tests_SRS_TRANSPORTCLIENT_28_002: [The function shall set the retry policies to all registered device clients.]

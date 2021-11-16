@@ -5,10 +5,10 @@
 
 package com.microsoft.azure.sdk.iot.service.devicetwin;
 
-import com.microsoft.azure.sdk.iot.service.devicetwin.Pair;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PairTest
 {
@@ -31,19 +31,21 @@ public class PairTest
     /*
     **Tests_SRS_Pair_25_002: [**If the key is null or empty, the constructor shall throw an IllegalArgumentException.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfKeyNull()
-    {
-        //act
-        Pair testPair = new Pair(null, "TestObject");
+    @Test
+    public void constructorThrowsIfKeyNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Pair testPair = new Pair(null, "TestObject");
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfKeyEmpty()
-    {
-        //act
-        Pair testPair = new Pair("", "TestObject");
+    @Test
+    public void constructorThrowsIfKeyEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Pair testPair = new Pair("", "TestObject");
+        });
     }
 
     /*

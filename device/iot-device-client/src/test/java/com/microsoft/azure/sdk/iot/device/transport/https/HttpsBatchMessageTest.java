@@ -3,14 +3,11 @@
 
 package com.microsoft.azure.sdk.iot.device.transport.https;
 
-import com.microsoft.azure.sdk.iot.device.Message;
 import com.microsoft.azure.sdk.iot.device.MessageProperty;
 import com.microsoft.azure.sdk.iot.device.exceptions.IotHubSizeExceededException;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsBatchMessage;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsSingleMessage;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +19,6 @@ import java.util.Map;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 

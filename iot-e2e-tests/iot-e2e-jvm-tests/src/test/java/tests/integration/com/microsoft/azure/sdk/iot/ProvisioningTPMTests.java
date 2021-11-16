@@ -17,7 +17,7 @@ import com.microsoft.azure.sdk.iot.provisioning.service.configs.IndividualEnroll
 import com.microsoft.azure.sdk.iot.provisioning.service.configs.TpmAttestation;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;

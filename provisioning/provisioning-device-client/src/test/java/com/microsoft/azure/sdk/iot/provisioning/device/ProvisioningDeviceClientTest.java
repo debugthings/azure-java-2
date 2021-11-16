@@ -7,9 +7,6 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.device;
 
-import com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClient;
-import com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClientRegistrationCallback;
-import com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClientTransportProtocol;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.ProvisioningDeviceClientConfig;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.ProvisioningDeviceClientContract;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.ProvisioningDeviceClientException;
@@ -19,11 +16,13 @@ import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
     Unit tests for ProvisioningDeviceClient
@@ -90,49 +89,55 @@ public class ProvisioningDeviceClientTest
     }
 
     //SRS_ProvisioningDeviceClient_25_001: [ The constructor shall throw IllegalArgumentException if globalEndpoint is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullEndPoint() throws ProvisioningDeviceClientException
-    {
-        //act
-        ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(null, SCOPE_ID, TEST_PROTOCOL, mockedSecurityProvider);
+    @Test
+    public void constructorThrowsOnNullEndPoint() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(null, SCOPE_ID, TEST_PROTOCOL, mockedSecurityProvider);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyEndPoint() throws ProvisioningDeviceClientException
-    {
-        //act
-        ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create("", SCOPE_ID, TEST_PROTOCOL, mockedSecurityProvider);
+    @Test
+    public void constructorThrowsOnEmptyEndPoint() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create("", SCOPE_ID, TEST_PROTOCOL, mockedSecurityProvider);
+        });
     }
 
     //SRS_ProvisioningDeviceClient_25_002: [ The constructor shall throw IllegalArgumentException if SCOPE_ID is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullScopeId() throws ProvisioningDeviceClientException
-    {
-        //act
-        ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, null, TEST_PROTOCOL, mockedSecurityProvider);
+    @Test
+    public void constructorThrowsOnNullScopeId() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, null, TEST_PROTOCOL, mockedSecurityProvider);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyScopeId() throws ProvisioningDeviceClientException
-    {
-        //act
-        ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, "", TEST_PROTOCOL, mockedSecurityProvider);
+    @Test
+    public void constructorThrowsOnEmptyScopeId() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, "", TEST_PROTOCOL, mockedSecurityProvider);
+        });
     }
 
     //SRS_ProvisioningDeviceClient_25_003: [ The constructor shall throw IllegalArgumentException if protocol is null. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullProtocol() throws ProvisioningDeviceClientException
-    {
-        //act
-        ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, SCOPE_ID, null, mockedSecurityProvider);
+    @Test
+    public void constructorThrowsOnNullProtocol() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, SCOPE_ID, null, mockedSecurityProvider);
+        });
     }
 
     //SRS_ProvisioningDeviceClient_25_004: [ The constructor shall throw IllegalArgumentException if securityClient is null. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullSecurityClient() throws ProvisioningDeviceClientException
-    {
-        //act
-        ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, SCOPE_ID, TEST_PROTOCOL, null);
+    @Test
+    public void constructorThrowsOnNullSecurityClient() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, SCOPE_ID, TEST_PROTOCOL, null);
+        });
     }
 
     //SRS_ProvisioningDeviceClient_25_009: [ This method shall set the config with the callback. ]
@@ -158,13 +163,14 @@ public class ProvisioningDeviceClientTest
     }
 
     //SRS_ProvisioningDeviceClient_25_008: [ This method shall throw IllegalArgumentException if provisioningDeviceClientRegistrationCallback is null. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void registerThrowsOnNullCB() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, SCOPE_ID, TEST_PROTOCOL, mockedSecurityProvider);
-        //act
-        testProvisioningDeviceClient.registerDevice(null, null);
+    @Test
+    public void registerThrowsOnNullCB() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            ProvisioningDeviceClient testProvisioningDeviceClient = ProvisioningDeviceClient.create(END_POINT, SCOPE_ID, TEST_PROTOCOL, mockedSecurityProvider);
+            //act
+            testProvisioningDeviceClient.registerDevice(null, null);
+        });
     }
 
     //SRS_ProvisioningDeviceClient_25_011: [ This method shall check if executor is terminated and if not shall shutdown the executor. ]

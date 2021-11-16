@@ -7,10 +7,9 @@ import com.microsoft.azure.sdk.iot.deps.serializer.ParserUtility;
 import com.microsoft.azure.sdk.iot.deps.twin.TwinCollection;
 import com.microsoft.azure.sdk.iot.deps.twin.TwinState;
 import com.microsoft.azure.sdk.iot.device.*;
-import com.microsoft.azure.sdk.iot.device.DeviceTwin.*;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /* Unit tests for DeviceMethod
  * 100% methods covered
@@ -78,20 +78,22 @@ public class DeviceTwinTest
     /*
      **Tests_SRS_DEVICETWIN_25_001: [**The constructor shall throw InvalidParameter Exception if any of the parameters i.e client, config, deviceTwinCallback, genericPropertyCallback are null. **]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void contructorThrowsExceptionIfClientIsNull()
-    {
-        DeviceTwin testTwin = new DeviceTwin(null, mockedConfig,
-                mockedStatusCB, null, mockedGenericPropertyCB, null);
+    @Test
+    public void contructorThrowsExceptionIfClientIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            DeviceTwin testTwin = new DeviceTwin(null, mockedConfig,
+                    mockedStatusCB, null, mockedGenericPropertyCB, null);
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void contructorThrowsExceptionIfConfigIsNull()
-    {
-        DeviceTwin testTwin = new DeviceTwin(mockedDeviceIO, null,
-                mockedStatusCB, null, mockedGenericPropertyCB, null);
+    @Test
+    public void contructorThrowsExceptionIfConfigIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            DeviceTwin testTwin = new DeviceTwin(mockedDeviceIO, null,
+                    mockedStatusCB, null, mockedGenericPropertyCB, null);
 
+        });
     }
 
     /*
@@ -349,15 +351,16 @@ public class DeviceTwinTest
     /*
      **Tests_SRS_DEVICETWIN_25_009: [**The method shall throw InvalidParameter Exception if reportedProperties is null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void updateReportedPropThrowsExceptionPropIsNull() throws IOException
-    {
-        // arrange
-        DeviceTwin testTwin = new DeviceTwin(mockedDeviceIO, mockedConfig,
-                mockedStatusCB, null, mockedGenericPropertyCB, null);
+    @Test
+    public void updateReportedPropThrowsExceptionPropIsNull() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            DeviceTwin testTwin = new DeviceTwin(mockedDeviceIO, mockedConfig,
+                    mockedStatusCB, null, mockedGenericPropertyCB, null);
 
-        // act - assert
-        testTwin.updateReportedProperties(null);
+            // act - assert
+            testTwin.updateReportedProperties(null);
+        });
     }
 
     /*
@@ -423,29 +426,30 @@ public class DeviceTwinTest
     }
 
     //Tests_SRS_DEVICETWIN_34_032: [If the provided set of properties contains two keys with the same name, this function shall throw an IOException.]                 
-    @Test (expected = IOException.class)
+    @Test
     public void updateReportedPropThrowsForDuplicateKeys(
-            @Mocked final IotHubTransportMessage mockedDeviceTwinMessage) throws IOException
-    {
-        // arrange
-        final String prop1 = "prop1";
-        final String prop2 = "prop1";
-        final String val1 = "val1";
-        final int val2 = 100;
+            @Mocked final IotHubTransportMessage mockedDeviceTwinMessage) throws IOException {
+        assertThrows(IOException.class, () -> {
+            // arrange
+            final String prop1 = "prop1";
+            final String prop2 = "prop1";
+            final String val1 = "val1";
+            final int val2 = 100;
 
-        final HashSet<Property> reportedProp = new HashSet<Property>()
-        {
+            final HashSet<Property> reportedProp = new HashSet<Property>()
             {
-                add(new Property(prop1, val1));
-                add(new Property(prop2, val2));
-            }
-        };
+                {
+                    add(new Property(prop1, val1));
+                    add(new Property(prop2, val2));
+                }
+            };
 
-        DeviceTwin testTwin = new DeviceTwin(mockedDeviceIO, mockedConfig,
-                mockedStatusCB, null, mockedGenericPropertyCB, null);
+            DeviceTwin testTwin = new DeviceTwin(mockedDeviceIO, mockedConfig,
+                    mockedStatusCB, null, mockedGenericPropertyCB, null);
 
-        // act
-        testTwin.updateReportedProperties(reportedProp);
+            // act
+            testTwin.updateReportedProperties(reportedProp);
+        });
     }
 
     /*

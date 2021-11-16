@@ -3,11 +3,11 @@
 
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.X509ThumbprintParser;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code Coverage:
@@ -66,19 +66,21 @@ public class X509ThumbprintParserTest
     }
 
     //Tests_SRS_X509ThumbprintParser_34_002: [If the provided primaryThumbprint value is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void testSetPrimaryThumbprintNullThrows()
-    {
-        //act
-        new X509ThumbprintParser().setPrimaryThumbprint(null);
+    @Test
+    public void testSetPrimaryThumbprintNullThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new X509ThumbprintParser().setPrimaryThumbprint(null);
+        });
     }
 
     //Tests_SRS_X509ThumbprintParser_34_005: [If the provided secondaryThumbprint value is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void testSetSecondaryThumbprintNullThrows()
-    {
-        //act
-        new X509ThumbprintParser().setSecondaryThumbprint(null);
+    @Test
+    public void testSetSecondaryThumbprintNullThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new X509ThumbprintParser().setSecondaryThumbprint(null);
+        });
     }
 
     //Tests_SRS_X509ThumbprintParser_34_001: [This method shall return the value of primaryThumbprint]
@@ -101,26 +103,29 @@ public class X509ThumbprintParserTest
     }
 
     //Tests_SRS_X509ThumbprintParser_34_010: [If the provided json is null or empty or cannot be parsed into an X509Thumbprint object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullJson()
-    {
-        //act
-        new X509ThumbprintParser(null);
+    @Test
+    public void constructorThrowsForNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new X509ThumbprintParser(null);
+        });
     }
 
     //Tests_SRS_X509ThumbprintParser_34_010: [If the provided json is null or empty or cannot be parsed into an X509Thumbprint object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyJson()
-    {
-        //act
-        new X509ThumbprintParser("");
+    @Test
+    public void constructorThrowsForEmptyJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new X509ThumbprintParser("");
+        });
     }
 
     //Tests_SRS_X509ThumbprintParser_34_010: [If the provided json is null or empty or cannot be parsed into an X509Thumbprint object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForInvalidJson()
-    {
-        //act
-        new X509ThumbprintParser("{");
+    @Test
+    public void constructorThrowsForInvalidJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new X509ThumbprintParser("{");
+        });
     }
 }

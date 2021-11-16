@@ -6,11 +6,10 @@
 package com.microsoft.azure.sdk.iot.service.devicetwin;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.QueryResponseParser;
-import com.microsoft.azure.sdk.iot.service.devicetwin.QueryResponse;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  *  Unit test for Query Response
@@ -65,44 +65,47 @@ public class QueryResponseTest
     }
 
     //**SRS_QUERY_RESPONSE_25_002: [**If the jsonString is null or empty, the constructor shall throw an IllegalArgumentException.**]**
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullString() throws IOException
-    {
-        //arrange
-        final String json = null;
+    @Test
+    public void constructorThrowsOnNullString() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String json = null;
 
-        //act
-        QueryResponse testResponse = Deencapsulation.newInstance(QueryResponse.class, String.class);
+            //act
+            QueryResponse testResponse = Deencapsulation.newInstance(QueryResponse.class, String.class);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyString() throws IOException
-    {
-        //arrange
-        final String json = "";
+    @Test
+    public void constructorThrowsOnEmptyString() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String json = "";
 
-        //act
-        QueryResponse testResponse = Deencapsulation.newInstance(QueryResponse.class, json);
+            //act
+            QueryResponse testResponse = Deencapsulation.newInstance(QueryResponse.class, json);
+        });
     }
 
-    @Test (expected = IOException.class)
-    public void constructorThrowsWhenParserThrows() throws IOException
-    {
-        //arrange
-        final String json = "testJson";
-        final List<String> testList = new LinkedList();
-        testList.add("testValue");
+    @Test
+    public void constructorThrowsWhenParserThrows() throws IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            final String json = "testJson";
+            final List<String> testList = new LinkedList();
+            testList.add("testValue");
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                new QueryResponseParser(anyString);
-                result = new IOException();
-            }
-        };
+                {
+                    new QueryResponseParser(anyString);
+                    result = new IOException();
+                }
+            };
 
-        //act
-        QueryResponse testResponse = Deencapsulation.newInstance(QueryResponse.class, json);
+            //act
+            QueryResponse testResponse = Deencapsulation.newInstance(QueryResponse.class, json);
+        });
     }
 
     //Tests_SRS__QUERY_RESPONSE_25_003: [The method shall return true if next element from QueryResponse is available and false otherwise.]
@@ -173,24 +176,25 @@ public class QueryResponseTest
         assertNotNull(testResponse.next());
     }
 
-    @Test (expected = NoSuchElementException.class)
-    public void nextThrowsWhenNotFound() throws IOException
-    {
-        //arrange
-        final String json = "testJson";
-        final List<String> testList = new LinkedList<>();
+    @Test
+    public void nextThrowsWhenNotFound() throws IOException {
+        assertThrows(NoSuchElementException.class, () -> {
+            //arrange
+            final String json = "testJson";
+            final List<String> testList = new LinkedList<>();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedQueryResponseParser.getJsonItems();
-                result = testList;
-            }
-        };
-        QueryResponse testResponse = Deencapsulation.newInstance(QueryResponse.class, json);
+                {
+                    mockedQueryResponseParser.getJsonItems();
+                    result = testList;
+                }
+            };
+            QueryResponse testResponse = Deencapsulation.newInstance(QueryResponse.class, json);
 
-        //act
-        assertFalse(testResponse.hasNext());
-        assertNull(testResponse.next());
+            //act
+            assertFalse(testResponse.hasNext());
+            assertNull(testResponse.next());
+        });
     }
 }

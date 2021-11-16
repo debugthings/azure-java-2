@@ -5,12 +5,10 @@
 
 package com.microsoft.azure.sdk.iot.service;
 
-import com.azure.core.credential.TokenCredential;
-import com.microsoft.azure.sdk.iot.service.*;
 import com.microsoft.azure.sdk.iot.service.auth.IotHubServiceSasToken;
 import com.microsoft.azure.sdk.iot.service.transport.amqps.AmqpSend;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -18,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ServiceClientTest
 {
@@ -30,26 +29,28 @@ public class ServiceClientTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_001: [The constructor shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromConnectionString_input_null() throws Exception
-    {
-        // Arrange
-        String connectionString = null;
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        // Act
-        ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+    @Test
+    public void createFromConnectionString_input_null() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String connectionString = null;
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            // Act
+            ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_001: [The constructor shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromConnectionString_input_empty() throws Exception
-    {
-        // Arrange
-        String connectionString = "";
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        // Act
-        ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+    @Test
+    public void createFromConnectionString_input_empty() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String connectionString = "";
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            // Act
+            ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_002: [The constructor shall create IotHubConnectionString object using the IotHubConnectionStringBuilder]
@@ -80,14 +81,15 @@ public class ServiceClientTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_004: [The constructor shall throw IllegalArgumentException if the input object is null]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_input_null() throws Exception
-    {
-        // Arrange
-        IotHubConnectionString iotHubConnectionString = null;
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        // Act
-        ServiceClient serviceClient = Deencapsulation.newInstance(ServiceClient.class, iotHubConnectionString, iotHubServiceClientProtocol); 
+    @Test
+    public void constructor_input_null() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            IotHubConnectionString iotHubConnectionString = null;
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            // Act
+            ServiceClient serviceClient = Deencapsulation.newInstance(ServiceClient.class, iotHubConnectionString, iotHubServiceClientProtocol);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_005: [The constructor shall create a SAS token object using the IotHubConnectionString]
@@ -118,22 +120,23 @@ public class ServiceClientTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_008: [The function shall throw IOException if the member AMQP sender object has not been initialized]
     // Assert
-    @Test (expected = IOException.class)
-    public void open_sender_null() throws Exception
-    {
-        // Arrange
-        String iotHubName = "IOTHUBNAME";
-        String hostName = "HOSTNAME";
-        String sharedAccessKeyName = "ACCESSKEYNAME";
-        String policyName = "SharedAccessKey";
-        String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
-        Deencapsulation.setField(serviceClient, "amqpMessageSender", null);
-        // Act
-        serviceClient.open();
+    @Test
+    public void open_sender_null() throws Exception {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            String iotHubName = "IOTHUBNAME";
+            String hostName = "HOSTNAME";
+            String sharedAccessKeyName = "ACCESSKEYNAME";
+            String policyName = "SharedAccessKey";
+            String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+            Deencapsulation.setField(serviceClient, "amqpMessageSender", null);
+            // Act
+            serviceClient.open();
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_009: [The function shall call open() on the member AMQP sender object]
@@ -163,22 +166,23 @@ public class ServiceClientTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_010: [The function shall throw IOException if the member AMQP sender object has not been initialized]
     // Assert
-    @Test (expected = IOException.class)
-    public void close_sender_null() throws Exception
-    {
-        // Arrange
-        String iotHubName = "IOTHUBNAME";
-        String hostName = "HOSTNAME";
-        String sharedAccessKeyName = "ACCESSKEYNAME";
-        String policyName = "SharedAccessKey";
-        String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
-        Deencapsulation.setField(serviceClient, "amqpMessageSender", null);
-        // Act
-        serviceClient.close();
+    @Test
+    public void close_sender_null() throws Exception {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            String iotHubName = "IOTHUBNAME";
+            String hostName = "HOSTNAME";
+            String sharedAccessKeyName = "ACCESSKEYNAME";
+            String policyName = "SharedAccessKey";
+            String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+            Deencapsulation.setField(serviceClient, "amqpMessageSender", null);
+            // Act
+            serviceClient.close();
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_011: [The function shall call close() on the member AMQP sender object]
@@ -208,24 +212,25 @@ public class ServiceClientTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_0012: [The function shall throw IOException if the member AMQP sender object has not been initialized]
     // Assert
-    @Test (expected = IOException.class)
-    public void send_sender_null() throws Exception
-    {
-        // Arrange
-        String iotHubName = "IOTHUBNAME";
-        String hostName = "HOSTNAME";
-        String sharedAccessKeyName = "ACCESSKEYNAME";
-        String policyName = "SharedAccessKey";
-        String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        String deviceId = "XXX";
-        String content = "HELLO";
-        Message iotMessage = new Message(content);
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
-        Deencapsulation.setField(serviceClient, "amqpMessageSender", null);
-        // Act
-        serviceClient.send(deviceId, iotMessage);
+    @Test
+    public void send_sender_null() throws Exception {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            String iotHubName = "IOTHUBNAME";
+            String hostName = "HOSTNAME";
+            String sharedAccessKeyName = "ACCESSKEYNAME";
+            String policyName = "SharedAccessKey";
+            String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            String deviceId = "XXX";
+            String content = "HELLO";
+            Message iotMessage = new Message(content);
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+            Deencapsulation.setField(serviceClient, "amqpMessageSender", null);
+            // Act
+            serviceClient.send(deviceId, iotMessage);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_013: [The function shall call send() on the member AMQP sender object with the given parameters]
@@ -258,25 +263,26 @@ public class ServiceClientTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_28_001: [The function shall throw IOException if the member AMQP sender object has not been initialized]
     // Assert
-    @Test (expected = IOException.class)
-    public void send_module_sender_null() throws Exception
-    {
-        // Arrange
-        String iotHubName = "IOTHUBNAME";
-        String hostName = "HOSTNAME";
-        String sharedAccessKeyName = "ACCESSKEYNAME";
-        String policyName = "SharedAccessKey";
-        String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        String deviceId = "XXX";
-        String moduleId = "XXX";
-        String content = "HELLO";
-        Message iotMessage = new Message(content);
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
-        Deencapsulation.setField(serviceClient, "amqpMessageSender", null);
-        // Act
-        serviceClient.send(deviceId, moduleId, iotMessage);
+    @Test
+    public void send_module_sender_null() throws Exception {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            String iotHubName = "IOTHUBNAME";
+            String hostName = "HOSTNAME";
+            String sharedAccessKeyName = "ACCESSKEYNAME";
+            String policyName = "SharedAccessKey";
+            String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            String deviceId = "XXX";
+            String moduleId = "XXX";
+            String content = "HELLO";
+            Message iotMessage = new Message(content);
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+            Deencapsulation.setField(serviceClient, "amqpMessageSender", null);
+            // Act
+            serviceClient.send(deviceId, moduleId, iotMessage);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_28_002: [The function shall call send() on the member AMQP sender object with the given parameters]
@@ -337,30 +343,31 @@ public class ServiceClientTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_014: [The function shall create an async wrapper around the open() function call, handle the return value or delegate exception]
     // Assert
-    @Test (expected = Exception.class)
-    public void open_async_future_throw() throws Exception
-    {
-        // Arrange
-        new MockUp<ServiceClient>()
-        {
-            @Mock
-            public void open() throws IOException
+    @Test
+    public void open_async_future_throw() throws Exception {
+        assertThrows(Exception.class, () -> {
+            // Arrange
+            new MockUp<ServiceClient>()
             {
-                throw new IOException();
-            }
-        };
-        String iotHubName = "IOTHUBNAME";
-        String hostName = "HOSTNAME";
-        String sharedAccessKeyName = "ACCESSKEYNAME";
-        String policyName = "SharedAccessKey";
-        String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
-        // Act
-        CompletableFuture<Void> completableFuture = serviceClient.openAsync();
-        completableFuture.get();
+                @Mock
+                public void open() throws IOException
+                {
+                    throw new IOException();
+                }
+            };
+            String iotHubName = "IOTHUBNAME";
+            String hostName = "HOSTNAME";
+            String sharedAccessKeyName = "ACCESSKEYNAME";
+            String policyName = "SharedAccessKey";
+            String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+            // Act
+            CompletableFuture<Void> completableFuture = serviceClient.openAsync();
+            completableFuture.get();
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_015: [The function shall create an async wrapper around the close() function call, handle the return value or delegate exception]
@@ -392,29 +399,30 @@ public class ServiceClientTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_015: [The function shall create an async wrapper around the close() function call, handle the return value or delegate exception]
     // Assert
-    @Test (expected = Exception.class)
-    public void close_async_future_throw() throws Exception
-    {
-        // Arrange
-        new MockUp<ServiceClient>()
-        {
-            @Mock
-            public void close() throws IOException
+    @Test
+    public void close_async_future_throw() throws Exception {
+        assertThrows(Exception.class, () -> {
+            // Arrange
+            new MockUp<ServiceClient>()
             {
-                throw new IOException();
-            }
-        };
-        String iotHubName = "IOTHUBNAME";
-        String hostName = "HOSTNAME";
-        String sharedAccessKeyName = "ACCESSKEYNAME";
-        String policyName = "SharedAccessKey";
-        String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
-        // Act
-        CompletableFuture<Void> completableFuture = serviceClient.closeAsync();
-        completableFuture.get();
+                @Mock
+                public void close() throws IOException
+                {
+                    throw new IOException();
+                }
+            };
+            String iotHubName = "IOTHUBNAME";
+            String hostName = "HOSTNAME";
+            String sharedAccessKeyName = "ACCESSKEYNAME";
+            String policyName = "SharedAccessKey";
+            String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+            // Act
+            CompletableFuture<Void> completableFuture = serviceClient.closeAsync();
+            completableFuture.get();
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_016: [The function shall create an async wrapper around the send() function call, handle the return value or delegate exception]
@@ -448,32 +456,33 @@ public class ServiceClientTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_016: [The function shall create an async wrapper around the send() function call, handle the return value or delegate exception]
     // Assert
-    @Test (expected = Exception.class)
-    public void send_async_future_throw() throws Exception
-    {
-        // Arrange
-        new MockUp<ServiceClient>()
-        {
-            @Mock
-            public void send(String deviceId, String message) throws IOException
+    @Test
+    public void send_async_future_throw() throws Exception {
+        assertThrows(Exception.class, () -> {
+            // Arrange
+            new MockUp<ServiceClient>()
             {
-                throw new IOException();
-            }
-        };
-        String iotHubName = "IOTHUBNAME";
-        String hostName = "HOSTNAME";
-        String sharedAccessKeyName = "ACCESSKEYNAME";
-        String policyName = "SharedAccessKey";
-        String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        String deviceId = "XXX";
-        String content = "HELLO";
-        Message iotMessage = new Message(content);
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
-        // Act
-        CompletableFuture<Void> completableFuture = serviceClient.sendAsync(deviceId, iotMessage);
-        completableFuture.get();
+                @Mock
+                public void send(String deviceId, String message) throws IOException
+                {
+                    throw new IOException();
+                }
+            };
+            String iotHubName = "IOTHUBNAME";
+            String hostName = "HOSTNAME";
+            String sharedAccessKeyName = "ACCESSKEYNAME";
+            String policyName = "SharedAccessKey";
+            String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            String connectionString = "HostName=" + hostName + "." + iotHubName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            String deviceId = "XXX";
+            String content = "HELLO";
+            Message iotMessage = new Message(content);
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            ServiceClient serviceClient = ServiceClient.createFromConnectionString(connectionString, iotHubServiceClientProtocol);
+            // Act
+            CompletableFuture<Void> completableFuture = serviceClient.sendAsync(deviceId, iotMessage);
+            completableFuture.get();
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICECLIENT_12_017: [The function shall create a FeedbackReceiver object and returns with it]

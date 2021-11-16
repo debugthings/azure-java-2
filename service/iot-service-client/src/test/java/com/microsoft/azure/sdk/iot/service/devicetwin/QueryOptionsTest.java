@@ -5,12 +5,12 @@
 
 package com.microsoft.azure.sdk.iot.service.devicetwin;
 
-import com.microsoft.azure.sdk.iot.service.devicetwin.QueryOptions;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for QueryOptions.java
@@ -53,19 +53,21 @@ public class QueryOptionsTest
     }
 
     //Tests_SRS_QUERYOPTIONS_34_004: [If the provided continuation token is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setContinuationTokenThrowsForNullContinuationToken()
-    {
-        //act
-        new QueryOptions().setContinuationToken(null);
+    @Test
+    public void setContinuationTokenThrowsForNullContinuationToken() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new QueryOptions().setContinuationToken(null);
+        });
     }
 
     //Tests_SRS_QUERYOPTIONS_34_004: [If the provided continuation token is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setContinuationTokenThrowsForEmptyContinuationToken()
-    {
-        //act
-        new QueryOptions().setContinuationToken("");
+    @Test
+    public void setContinuationTokenThrowsForEmptyContinuationToken() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new QueryOptions().setContinuationToken("");
+        });
     }
 
     //Tests_SRS_QUERYOPTIONS_34_006: [This function shall save the provided continuation token string.]
@@ -101,27 +103,30 @@ public class QueryOptionsTest
     }
 
     //Tests_SRS_QUERYOPTIONS_34_005: [If the provided page size is null or is not a positive integer, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setPageSizeThrowsForNullPageSize()
-    {
-        //act
-        new QueryOptions().setPageSize(null);
+    @Test
+    public void setPageSizeThrowsForNullPageSize() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new QueryOptions().setPageSize(null);
+        });
     }
 
     //Tests_SRS_QUERYOPTIONS_34_005: [If the provided page size is null or is not a positive integer, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setPageSizeThrowsForZeroPageSize()
-    {
-        //act
-        new QueryOptions().setPageSize(0);
+    @Test
+    public void setPageSizeThrowsForZeroPageSize() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new QueryOptions().setPageSize(0);
+        });
     }
 
     //Tests_SRS_QUERYOPTIONS_34_005: [If the provided page size is null or is not a positive integer, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setPageSizeThrowsForNegativePageSize()
-    {
-        //act
-        new QueryOptions().setPageSize(-25);
+    @Test
+    public void setPageSizeThrowsForNegativePageSize() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new QueryOptions().setPageSize(-25);
+        });
     }
 
     //Tests_SRS_QUERYOPTIONS_34_007: [This function shall save the provided page size.]

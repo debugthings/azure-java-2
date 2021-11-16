@@ -4,13 +4,13 @@
 package com.microsoft.azure.sdk.iot.service;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.JobPropertiesParser;
-import com.microsoft.azure.sdk.iot.service.JobProperties;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code Coverage
@@ -86,10 +86,11 @@ public class JobPropertiesTest
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_JOB_PROPERTIES_34_004: [If the provided jobId is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void cannotSetJobIdToNull()
-    {
-        new JobProperties().setJobIdFinal(null);
+    @Test
+    public void cannotSetJobIdToNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new JobProperties().setJobIdFinal(null);
+        });
     }
 
     private JobPropertiesParser toJobPropertiesParser(JobProperties jobProperties)

@@ -6,8 +6,6 @@
 package com.microsoft.azure.sdk.iot.device.auth;
 
 import com.microsoft.azure.sdk.iot.deps.auth.IotHubSSLContext;
-import com.microsoft.azure.sdk.iot.device.auth.IotHubAuthenticationProvider;
-import com.microsoft.azure.sdk.iot.device.auth.IotHubX509HardwareAuthenticationProvider;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.provisioning.security.SecurityProvider;
 import com.microsoft.azure.sdk.iot.provisioning.security.SecurityProviderX509;
@@ -15,12 +13,13 @@ import com.microsoft.azure.sdk.iot.provisioning.security.exceptions.SecurityProv
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for IotHubX509HardwareAuthenticationProvider.java
@@ -52,52 +51,56 @@ public class IotHubX509HardwareIotHubAuthenticationProviderTest
     }
 
     //Tests_SRS_IOTHUBX509HARDWAREAUTHENTICATION_34_002: [If the provided security provider is not an instance of SecurityProviderX509, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForInvalidSecurityProviderInstance()
-    {
-        //act
-        IotHubAuthenticationProvider authentication = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProvider);
+    @Test
+    public void constructorThrowsForInvalidSecurityProviderInstance() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            IotHubAuthenticationProvider authentication = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProvider);
+        });
     }
 
     //Tests_SRS_IOTHUBX509AUTHENTICATION_34_032: [If this object was created using a constructor that takes an SSLContext, this function shall throw an UnsupportedOperationException.]
-    @Test(expected = UnsupportedOperationException.class)
-    public void cannotSetNewDefaultCertPathIfConstructedWithSSLContext()
-    {
-        //arrange
-        IotHubAuthenticationProvider authentication = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
+    @Test
+    public void cannotSetNewDefaultCertPathIfConstructedWithSSLContext() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            //arrange
+            IotHubAuthenticationProvider authentication = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
 
-        //act
-        authentication.setPathToIotHubTrustedCert("any path");
+            //act
+            authentication.setPathToIotHubTrustedCert("any path");
+        });
     }
 
     //Tests_SRS_IOTHUBX509AUTHENTICATION_34_033: [If this object was created using a constructor that takes an SSLContext, this function shall throw an UnsupportedOperationException.]
-    @Test (expected = UnsupportedOperationException.class)
-    public void cannotSetNewDefaultCertIfConstructedWithSSLContext()
-    {
-        //arrange
-        IotHubAuthenticationProvider authentication = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
+    @Test
+    public void cannotSetNewDefaultCertIfConstructedWithSSLContext() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            //arrange
+            IotHubAuthenticationProvider authentication = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
 
-        //act
-        authentication.setIotHubTrustedCert("any string");
+            //act
+            authentication.setIotHubTrustedCert("any string");
+        });
     }
 
     //Tests_SRS_IOTHUBX509HARDWAREAUTHENTICATION_34_004: [If the security provider throws a SecurityProviderException while generating an SSLContext, this function shall throw an IOException.]
-    @Test (expected = IOException.class)
-    public void getSSLContextThrowsIOExceptionIfExceptionEncountered() throws SecurityProviderException, IOException, TransportException
-    {
-        //arrange
-        IotHubAuthenticationProvider authentication = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
+    @Test
+    public void getSSLContextThrowsIOExceptionIfExceptionEncountered() throws SecurityProviderException, IOException, TransportException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            IotHubAuthenticationProvider authentication = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockSecurityProviderX509.getSSLContext();
-                result = new SecurityProviderException("");
-            }
-        };
+                {
+                    mockSecurityProviderX509.getSSLContext();
+                    result = new SecurityProviderException("");
+                }
+            };
 
-        //act
-        authentication.getSSLContext();
+            //act
+            authentication.getSSLContext();
+        });
     }
 
     //Tests_SRS_IOTHUBX509HARDWAREAUTHENTICATION_34_003: [If this object's ssl context has not been generated yet, this function shall generate it from the saved security provider.]
@@ -133,24 +136,26 @@ public class IotHubX509HardwareIotHubAuthenticationProviderTest
     }
 
     //Tests_SRS_IOTHUBX509HARDWAREAUTHENTICATION_34_006: [This function shall throw an UnsupportedOperationException.]
-    @Test (expected = UnsupportedOperationException.class)
-    public void setPathToCertificateThrows()
-    {
-        //arrange
-        IotHubAuthenticationProvider auth = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
+    @Test
+    public void setPathToCertificateThrows() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            //arrange
+            IotHubAuthenticationProvider auth = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
 
-        //act
-        auth.setPathToIotHubTrustedCert("any string");
+            //act
+            auth.setPathToIotHubTrustedCert("any string");
+        });
     }
 
     //Tests_SRS_IOTHUBX509HARDWAREAUTHENTICATION_34_007: [This function shall throw an UnsupportedOperationException.]
-    @Test (expected = UnsupportedOperationException.class)
-    public void setCertificateThrows()
-    {
-        //arrange
-        IotHubAuthenticationProvider auth = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
+    @Test
+    public void setCertificateThrows() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            //arrange
+            IotHubAuthenticationProvider auth = new IotHubX509HardwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, mockSecurityProviderX509);
 
-        //act
-        auth.setIotHubTrustedCert("any string");
+            //act
+            auth.setIotHubTrustedCert("any string");
+        });
     }
 }

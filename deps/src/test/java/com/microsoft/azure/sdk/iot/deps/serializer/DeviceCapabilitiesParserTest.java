@@ -3,8 +3,7 @@
 
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.DeviceCapabilitiesParser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;

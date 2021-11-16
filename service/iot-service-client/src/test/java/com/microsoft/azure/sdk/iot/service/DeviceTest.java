@@ -7,19 +7,17 @@ package com.microsoft.azure.sdk.iot.service;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.*;
 import com.microsoft.azure.sdk.iot.deps.twin.DeviceCapabilities;
-import com.microsoft.azure.sdk.iot.service.Device;
-import com.microsoft.azure.sdk.iot.service.DeviceConnectionState;
-import com.microsoft.azure.sdk.iot.service.DeviceStatus;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
 import com.microsoft.azure.sdk.iot.service.auth.SymmetricKey;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code coverage:
@@ -80,47 +78,51 @@ public class DeviceTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_DEVICE_12_002: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromId_input_null()
-    {
-        // Arrange
-        String deviceId = null;
+    @Test
+    public void createFromId_input_null() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String deviceId = null;
 
-        // Act
-        Device.createFromId(deviceId, null, null);
+            // Act
+            Device.createFromId(deviceId, null, null);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_DEVICE_12_002: [The constructor shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromId_input_empty()
-    {
-        // Arrange
-        String deviceId = "";
+    @Test
+    public void createFromId_input_empty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String deviceId = "";
 
-        // Act
-        Device.createFromId(deviceId, null, null);
+            // Act
+            Device.createFromId(deviceId, null, null);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_DEVICE_34_009: [The function shall throw IllegalArgumentException if the provided deviceId or authenticationType is empty or null.]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void createDeviceThrowsIllegalArgumentExceptionWhenGivenNullDeviceId()
-    {
-        // Arrange
-        String deviceId = null;
+    @Test
+    public void createDeviceThrowsIllegalArgumentExceptionWhenGivenNullDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String deviceId = null;
 
-        // Act
-        Device.createDevice(deviceId, AuthenticationType.CERTIFICATE_AUTHORITY);
+            // Act
+            Device.createDevice(deviceId, AuthenticationType.CERTIFICATE_AUTHORITY);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_DEVICE_34_009: [The function shall throw IllegalArgumentException if the provided deviceId or authenticationType is empty or null.]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void createDeviceThrowsIllegalArgumentExceptionWhenGivenNullAuthenticationType()
-    {
-        // Act
-        Device.createDevice("someDevice", null);
+    @Test
+    public void createDeviceThrowsIllegalArgumentExceptionWhenGivenNullAuthenticationType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Device.createDevice("someDevice", null);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_DEVICE_12_003: [The constructor shall create a new instance of Device using the given deviceId and return with it]

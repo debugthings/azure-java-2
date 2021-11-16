@@ -8,8 +8,6 @@ package com.microsoft.azure.sdk.iot.service.transport.amqps;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import com.microsoft.azure.sdk.iot.service.IotHubServiceClientProtocol;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
-import com.microsoft.azure.sdk.iot.service.transport.amqps.AmqpFeedbackReceivedEvent;
-import com.microsoft.azure.sdk.iot.service.transport.amqps.AmqpFeedbackReceivedHandler;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
@@ -30,7 +28,7 @@ import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -41,6 +39,7 @@ import java.util.Map;
 import static com.microsoft.azure.sdk.iot.service.transport.amqps.AmqpFeedbackReceivedHandler.RECEIVE_TAG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for AmqpFeedbackReceivedHandler */
 @RunWith(JMockit.class)
@@ -249,83 +248,87 @@ public class AmqpFeedbackReceivedHandlerTest
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_AMQPFEEDBACKRECEIVEDHANDLER_34_019: [if 'connectionWasOpened' is false, or 'isConnectionError' is true, this function shall throw an IOException]
-    @Test (expected = IOException.class)
-    public void verifyConnectionOpenedChecksForSavedException() throws IOException, IotHubException
-    {
-        // Arrange
-        String hostName = "aaa";
-        String userName = "bbb";
-        String sasToken = "ccc";
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        AmqpFeedbackReceivedHandler amqpReceiveHandler = new AmqpFeedbackReceivedHandler(hostName, userName, sasToken, iotHubServiceClientProtocol, null);
+    @Test
+    public void verifyConnectionOpenedChecksForSavedException() throws IOException, IotHubException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            String hostName = "aaa";
+            String userName = "bbb";
+            String sasToken = "ccc";
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            AmqpFeedbackReceivedHandler amqpReceiveHandler = new AmqpFeedbackReceivedHandler(hostName, userName, sasToken, iotHubServiceClientProtocol, null);
 
-        Deencapsulation.setField(amqpReceiveHandler, "linkOpenedRemotely", true);
-        Deencapsulation.setField(amqpReceiveHandler, "sessionOpenedRemotely", true);
-        Deencapsulation.setField(amqpReceiveHandler, "connectionOpenedRemotely", true);
-        Deencapsulation.setField(amqpReceiveHandler, "savedException", new SSLHandshakeException("some nonsense exception"));
+            Deencapsulation.setField(amqpReceiveHandler, "linkOpenedRemotely", true);
+            Deencapsulation.setField(amqpReceiveHandler, "sessionOpenedRemotely", true);
+            Deencapsulation.setField(amqpReceiveHandler, "connectionOpenedRemotely", true);
+            Deencapsulation.setField(amqpReceiveHandler, "savedException", new SSLHandshakeException("some nonsense exception"));
 
-        // Act
-        Deencapsulation.invoke(amqpReceiveHandler, "verifyConnectionWasOpened");
+            // Act
+            Deencapsulation.invoke(amqpReceiveHandler, "verifyConnectionWasOpened");
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_AMQPFEEDBACKRECEIVEDHANDLER_34_019: [if 'connectionWasOpened' is false, or 'isConnectionError' is true, this function shall throw an IOException]
-    @Test (expected = IOException.class)
-    public void verifyConnectionOpenedChecksThatConnectionWasOpened() throws IOException, IotHubException
-    {
-        // Arrange
-        String hostName = "aaa";
-        String userName = "bbb";
-        String sasToken = "ccc";
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        AmqpFeedbackReceivedHandler amqpReceiveHandler = new AmqpFeedbackReceivedHandler(hostName, userName, sasToken, iotHubServiceClientProtocol, null);
+    @Test
+    public void verifyConnectionOpenedChecksThatConnectionWasOpened() throws IOException, IotHubException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            String hostName = "aaa";
+            String userName = "bbb";
+            String sasToken = "ccc";
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            AmqpFeedbackReceivedHandler amqpReceiveHandler = new AmqpFeedbackReceivedHandler(hostName, userName, sasToken, iotHubServiceClientProtocol, null);
 
-        Deencapsulation.setField(amqpReceiveHandler, "connectionOpenedRemotely", false);
-        Deencapsulation.setField(amqpReceiveHandler, "linkOpenedRemotely", true);
-        Deencapsulation.setField(amqpReceiveHandler, "sessionOpenedRemotely", true);
-        Deencapsulation.setField(amqpReceiveHandler, "savedException", null);
+            Deencapsulation.setField(amqpReceiveHandler, "connectionOpenedRemotely", false);
+            Deencapsulation.setField(amqpReceiveHandler, "linkOpenedRemotely", true);
+            Deencapsulation.setField(amqpReceiveHandler, "sessionOpenedRemotely", true);
+            Deencapsulation.setField(amqpReceiveHandler, "savedException", null);
 
-        // Act
-        Deencapsulation.invoke(amqpReceiveHandler, "verifyConnectionWasOpened");
+            // Act
+            Deencapsulation.invoke(amqpReceiveHandler, "verifyConnectionWasOpened");
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_AMQPFEEDBACKRECEIVEDHANDLER_34_019: [if 'connectionWasOpened' is false, or 'isConnectionError' is true, this function shall throw an IOException]
-    @Test (expected = IOException.class)
-    public void verifyConnectionOpenedChecksThatSessionWasOpened() throws IOException, IotHubException
-    {
-        // Arrange
-        String hostName = "aaa";
-        String userName = "bbb";
-        String sasToken = "ccc";
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        AmqpFeedbackReceivedHandler amqpReceiveHandler = new AmqpFeedbackReceivedHandler(hostName, userName, sasToken, iotHubServiceClientProtocol, null);
+    @Test
+    public void verifyConnectionOpenedChecksThatSessionWasOpened() throws IOException, IotHubException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            String hostName = "aaa";
+            String userName = "bbb";
+            String sasToken = "ccc";
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            AmqpFeedbackReceivedHandler amqpReceiveHandler = new AmqpFeedbackReceivedHandler(hostName, userName, sasToken, iotHubServiceClientProtocol, null);
 
-        Deencapsulation.setField(amqpReceiveHandler, "sessionOpenedRemotely", false);
-        Deencapsulation.setField(amqpReceiveHandler, "linkOpenedRemotely", true);
-        Deencapsulation.setField(amqpReceiveHandler, "connectionOpenedRemotely", true);
-        Deencapsulation.setField(amqpReceiveHandler, "savedException", null);
+            Deencapsulation.setField(amqpReceiveHandler, "sessionOpenedRemotely", false);
+            Deencapsulation.setField(amqpReceiveHandler, "linkOpenedRemotely", true);
+            Deencapsulation.setField(amqpReceiveHandler, "connectionOpenedRemotely", true);
+            Deencapsulation.setField(amqpReceiveHandler, "savedException", null);
 
-        // Act
-        Deencapsulation.invoke(amqpReceiveHandler, "verifyConnectionWasOpened");
+            // Act
+            Deencapsulation.invoke(amqpReceiveHandler, "verifyConnectionWasOpened");
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_AMQPFEEDBACKRECEIVEDHANDLER_34_019: [if 'connectionWasOpened' is false, or 'isConnectionError' is true, this function shall throw an IOException]
-    @Test (expected = IOException.class)
-    public void verifyConnectionOpenedChecksThatLinkWasOpened() throws IOException, IotHubException
-    {
-        // Arrange
-        String hostName = "aaa";
-        String userName = "bbb";
-        String sasToken = "ccc";
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        AmqpFeedbackReceivedHandler amqpReceiveHandler = new AmqpFeedbackReceivedHandler(hostName, userName, sasToken, iotHubServiceClientProtocol, null);
+    @Test
+    public void verifyConnectionOpenedChecksThatLinkWasOpened() throws IOException, IotHubException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            String hostName = "aaa";
+            String userName = "bbb";
+            String sasToken = "ccc";
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            AmqpFeedbackReceivedHandler amqpReceiveHandler = new AmqpFeedbackReceivedHandler(hostName, userName, sasToken, iotHubServiceClientProtocol, null);
 
-        Deencapsulation.setField(amqpReceiveHandler, "linkOpenedRemotely", false);
-        Deencapsulation.setField(amqpReceiveHandler, "sessionOpenedRemotely", true);
-        Deencapsulation.setField(amqpReceiveHandler, "connectionOpenedRemotely", true);
-        Deencapsulation.setField(amqpReceiveHandler, "savedException", null);
+            Deencapsulation.setField(amqpReceiveHandler, "linkOpenedRemotely", false);
+            Deencapsulation.setField(amqpReceiveHandler, "sessionOpenedRemotely", true);
+            Deencapsulation.setField(amqpReceiveHandler, "connectionOpenedRemotely", true);
+            Deencapsulation.setField(amqpReceiveHandler, "savedException", null);
 
-        // Act
-        Deencapsulation.invoke(amqpReceiveHandler, "verifyConnectionWasOpened");
+            // Act
+            Deencapsulation.invoke(amqpReceiveHandler, "verifyConnectionWasOpened");
+        });
     }
 
     private void createProtonObjects()

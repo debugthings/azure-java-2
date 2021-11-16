@@ -41,11 +41,9 @@ import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceTwinClientOptions;
 import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceTwinDevice;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.littleshoot.proxy.HttpProxyServer;
@@ -207,7 +205,7 @@ public class MultiplexingClientTests extends IntegrationTest
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception
     {
         if (registryManager != null)
@@ -221,7 +219,7 @@ public class MultiplexingClientTests extends IntegrationTest
         }
     }
 
-    @After
+    @AfterEach
     public void tearDownTest()
     {
         if (testInstance != null)
@@ -230,7 +228,7 @@ public class MultiplexingClientTests extends IntegrationTest
         }
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void startProxy()
     {
         proxyServer = DefaultHttpProxyServer.bootstrap()
@@ -239,7 +237,7 @@ public class MultiplexingClientTests extends IntegrationTest
                 .start();
     }
 
-    @AfterClass
+    @AfterAll
     public static void stopProxy()
     {
         proxyServer.stop();
@@ -361,7 +359,7 @@ public class MultiplexingClientTests extends IntegrationTest
         testInstance.multiplexingClient.close();
     }
 
-    @Ignore  // This is more of a performance test than a typical test. It should only be run locally, not at the gate
+    @Disabled  // This is more of a performance test than a typical test. It should only be run locally, not at the gate
     @ContinuousIntegrationTest
     @Test
     public void sendMessagesMaxDevicesAllowedTimes10MultiplexingClientsParallelOpen() throws Exception
@@ -443,7 +441,7 @@ public class MultiplexingClientTests extends IntegrationTest
         log.debug("Close time: " + (finishCloseTime - startCloseTime) / 1000.0);
     }
 
-    @Ignore  // This is more of a performance test than a typical test. It should only be run locally, not at the gate
+    @Disabled  // This is more of a performance test than a typical test. It should only be run locally, not at the gate
     @ContinuousIntegrationTest
     @Test
     public void sendMessagesMaxDevicesAllowedTimes10MultiplexingClientsSerialOpen() throws Exception

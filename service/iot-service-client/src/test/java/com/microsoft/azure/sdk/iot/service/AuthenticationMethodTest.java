@@ -5,10 +5,8 @@
 
 package com.microsoft.azure.sdk.iot.service;
 
-import com.microsoft.azure.sdk.iot.service.ServiceAuthenticationWithSharedAccessPolicyKey;
-import com.microsoft.azure.sdk.iot.service.ServiceAuthenticationWithSharedAccessPolicyToken;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;

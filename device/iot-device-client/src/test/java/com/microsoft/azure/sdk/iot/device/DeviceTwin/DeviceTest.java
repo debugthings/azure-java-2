@@ -4,17 +4,14 @@
 
 package com.microsoft.azure.sdk.iot.device.DeviceTwin;
 
-import com.microsoft.azure.sdk.iot.device.DeviceTwin.Device;
-import com.microsoft.azure.sdk.iot.device.DeviceTwin.Pair;
-import com.microsoft.azure.sdk.iot.device.DeviceTwin.Property;
-import com.microsoft.azure.sdk.iot.device.DeviceTwin.PropertyCallBack;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device.java
@@ -133,21 +130,22 @@ public class DeviceTest
     /*
     **Tests_SRS_DEVICE_25_004: [**If the parameter reportedProp is null then this method shall throw IllegalArgumentException**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void setReportedPropertyCannotAddNullProperty()
-    {
-        //arrange
-        Device testDev = new Device()
-        {
-            @Override
-            public void PropertyCall(String propertyKey, Object propertyValue, Object context)
+    @Test
+    public void setReportedPropertyCannotAddNullProperty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            Device testDev = new Device()
             {
+                @Override
+                public void PropertyCall(String propertyKey, Object propertyValue, Object context)
+                {
 
-            }
-        };
+                }
+            };
 
-        //act
-        testDev.setReportedProp(null);
+            //act
+            testDev.setReportedProp(null);
+        });
     }
 
     /*
@@ -207,24 +205,25 @@ public class DeviceTest
     /*
     **Tests_SRS_DEVICE_25_007: [**If the parameter desiredProp is null then this method shall throw IllegalArgumentException**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void setDesiredPropertyCallbackCannotAddNullProperty()
-    {
-        //arrange
-        Device testDev = new Device()
-        {
-            @Override
-            public void PropertyCall(String propertyKey, Object propertyValue, Object context)
+    @Test
+    public void setDesiredPropertyCallbackCannotAddNullProperty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            Device testDev = new Device()
             {
+                @Override
+                public void PropertyCall(String propertyKey, Object propertyValue, Object context)
+                {
 
-            }
-        };
+                }
+            };
 
-        Property test = new Property("DesiredProp1", null);
+            Property test = new Property("DesiredProp1", null);
 
-        //act
-        testDev.setDesiredPropertyCallback(null, testDev, null);
+            //act
+            testDev.setDesiredPropertyCallback(null, testDev, null);
 
+        });
     }
 
     /*

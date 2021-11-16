@@ -7,7 +7,6 @@ package tests.integration.com.microsoft.azure.sdk.iot.iothub.serviceclient;
 
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.microsoft.azure.sdk.iot.deps.serializer.JobsResponseParser;
 import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
@@ -31,11 +30,8 @@ import com.microsoft.azure.sdk.iot.service.jobs.JobResult;
 import com.microsoft.azure.sdk.iot.service.jobs.JobStatus;
 import com.microsoft.azure.sdk.iot.service.jobs.JobType;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.DeviceEmulator;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.DeviceTestManager;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.IntegrationTest;
@@ -68,7 +64,7 @@ import static org.junit.Assert.*;
 /**
  * Test class containing all tests to be run on JVM and android pertaining to method and twin jobs.
  */
-@Ignore
+@Disabled
 @Slf4j
 @IotHubTest
 public class JobClientTests extends IntegrationTest
@@ -99,7 +95,7 @@ public class JobClientTests extends IntegrationTest
     private static final int MAX_NUMBER_JOBS = 3;
     private static final long MAX_EXECUTION_TIME_IN_SECONDS = 15;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws IOException, IotHubException, InterruptedException, URISyntaxException
     {
         iotHubConnectionString = Tools.retrieveEnvironmentVariableValue(TestConstants.IOT_HUB_CONNECTION_STRING_ENV_VAR_NAME);
@@ -176,7 +172,7 @@ public class JobClientTests extends IntegrationTest
         throw new AssertionError("queryDeviceJob did not find the job");
     }
 
-    @Before
+    @BeforeEach
     public void cleanToStart() throws IOException, IotHubException
     {
         for (DeviceTestManager device : devices)
@@ -213,7 +209,7 @@ public class JobClientTests extends IntegrationTest
         log.info("Done waiting for jobs to finish!");
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception
     {
         for (DeviceTestManager device : devices)
@@ -229,7 +225,7 @@ public class JobClientTests extends IntegrationTest
     }
 
     @Test(timeout = TEST_TIMEOUT_MILLISECONDS)
-    @Ignore
+    @Disabled
     public void scheduleUpdateTwinSucceed() throws InterruptedException
     {
         // Arrange
@@ -312,7 +308,7 @@ public class JobClientTests extends IntegrationTest
     }
 
     @Test(timeout = TEST_TIMEOUT_MILLISECONDS)
-    @Ignore
+    @Disabled
     public void scheduleDeviceMethodSucceed() throws InterruptedException
     {
         // Arrange
@@ -484,7 +480,7 @@ public class JobClientTests extends IntegrationTest
 
     @Test(timeout = TEST_TIMEOUT_MILLISECONDS)
     @ContinuousIntegrationTest
-    @Ignore
+    @Disabled
     public void mixScheduleInFutureSucceed() throws InterruptedException
     {
         // Arrange
@@ -603,7 +599,7 @@ public class JobClientTests extends IntegrationTest
 
     @Test(timeout = TEST_TIMEOUT_MILLISECONDS)
     @ContinuousIntegrationTest
-    @Ignore
+    @Disabled
     public void cancelScheduleDeviceMethodSucceed() throws InterruptedException
     {
         // Arrange

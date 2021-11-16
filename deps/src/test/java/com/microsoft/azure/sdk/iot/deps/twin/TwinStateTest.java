@@ -7,9 +7,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.microsoft.azure.sdk.iot.deps.Helpers;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the TwinState
@@ -338,48 +339,51 @@ public class TwinStateTest
     }
 
     /* SRS_TWIN_STATE_21_011: [The factory shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromTwinJsonThrowsOnNull()
-    {
-        // arrange
-        final String json = null;
+    @Test
+    public void createFromTwinJsonThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = null;
 
-        // act
-        TwinState.createFromTwinJson(json);
+            // act
+            TwinState.createFromTwinJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_011: [The factory shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromTwinJsonThrowsOnEmpty()
-    {
-        // arrange
-        final String json = "";
+    @Test
+    public void createFromTwinJsonThrowsOnEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = "";
 
-        // act
-        TwinState.createFromTwinJson(json);
+            // act
+            TwinState.createFromTwinJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_012: [The factory shall throw JsonSyntaxException if the JSON is invalid.] */
-    @Test (expected = JsonSyntaxException.class)
-    public void createFromTwinJsonThrowsOnInvalidJSON()
-    {
-        // arrange
-        final String json =
-                "{" +
-                    REGISTER_MANAGER_SAMPLE + //Missing comma.
-                    TAGS_SAMPLE + "," +
-                    PROPERTIES_SAMPLE + "," +
-                    CONFIGURATIONS_SAMPLE +
-                "}";
+    @Test
+    public void createFromTwinJsonThrowsOnInvalidJSON() {
+        assertThrows(JsonSyntaxException.class, () -> {
+            // arrange
+            final String json =
+                    "{" +
+                        REGISTER_MANAGER_SAMPLE + //Missing comma.
+                        TAGS_SAMPLE + "," +
+                        PROPERTIES_SAMPLE + "," +
+                        CONFIGURATIONS_SAMPLE +
+                    "}";
 
-        // act
-        TwinState.createFromTwinJson(json);
+            // act
+            TwinState.createFromTwinJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_013: [The factory shall deserialize the provided JSON for the Twin class and subclasses.] */
@@ -413,45 +417,48 @@ public class TwinStateTest
     }
 
     /* SRS_TWIN_STATE_21_014: [The factory shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromDesiredPropertyJsonThrowsOnNull()
-    {
-        // arrange
-        final String json = null;
+    @Test
+    public void createFromDesiredPropertyJsonThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = null;
 
-        // act
-        TwinState.createFromDesiredPropertyJson(json);
+            // act
+            TwinState.createFromDesiredPropertyJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_014: [The factory shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromDesiredPropertyJsonThrowsOnEmpty()
-    {
-        // arrange
-        final String json = "";
+    @Test
+    public void createFromDesiredPropertyJsonThrowsOnEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = "";
 
-        // act
-        TwinState.createFromDesiredPropertyJson(json);
+            // act
+            TwinState.createFromDesiredPropertyJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_015: [The factory shall throw JsonSyntaxException if the JSON is invalid.] */
-    @Test (expected = JsonSyntaxException.class)
-    public void createFromDesiredPropertyJsonThrowsOnInvalidJSON()
-    {
-        // arrange
-        final String json =
-                "{" +
-                        "\"desired\":," +
-                "}";
+    @Test
+    public void createFromDesiredPropertyJsonThrowsOnInvalidJSON() {
+        assertThrows(JsonSyntaxException.class, () -> {
+            // arrange
+            final String json =
+                    "{" +
+                            "\"desired\":," +
+                    "}";
 
-        // act
-        TwinState.createFromDesiredPropertyJson(json);
+            // act
+            TwinState.createFromDesiredPropertyJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_016: [The factory shall deserialize the provided JSON for the Twin class and subclasses.] */
@@ -469,45 +476,48 @@ public class TwinStateTest
     }
 
     /* SRS_TWIN_STATE_21_017: [The factory shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromReportedPropertyJsonThrowsOnNull()
-    {
-        // arrange
-        final String json = null;
+    @Test
+    public void createFromReportedPropertyJsonThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = null;
 
-        // act
-        TwinState.createFromReportedPropertyJson(json);
+            // act
+            TwinState.createFromReportedPropertyJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_017: [The factory shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromReportedPropertyJsonThrowsOnEmpty()
-    {
-        // arrange
-        final String json = "";
+    @Test
+    public void createFromReportedPropertyJsonThrowsOnEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = "";
 
-        // act
-        TwinState.createFromReportedPropertyJson(json);
+            // act
+            TwinState.createFromReportedPropertyJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_018: [The factory shall throw JsonSyntaxException if the JSON is invalid.] */
-    @Test (expected = JsonSyntaxException.class)
-    public void createFromReportedPropertyJsonThrowsOnInvalidJSON()
-    {
-        // arrange
-        final String json =
-                "{" +
-                    "\"reported\":," +
-                "}";
+    @Test
+    public void createFromReportedPropertyJsonThrowsOnInvalidJSON() {
+        assertThrows(JsonSyntaxException.class, () -> {
+            // arrange
+            final String json =
+                    "{" +
+                        "\"reported\":," +
+                    "}";
 
-        // act
-        TwinState.createFromReportedPropertyJson(json);
+            // act
+            TwinState.createFromReportedPropertyJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_019: [The factory shall deserialize the provided JSON for the Twin class and subclasses.] */
@@ -525,45 +535,48 @@ public class TwinStateTest
     }
 
     /* SRS_TWIN_STATE_21_020: [The factory shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromPropertiesJsonThrowsOnNull()
-    {
-        // arrange
-        final String json = null;
+    @Test
+    public void createFromPropertiesJsonThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = null;
 
-        // act
-        TwinState.createFromPropertiesJson(json);
+            // act
+            TwinState.createFromPropertiesJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_020: [The factory shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromPropertiesJsonThrowsOnEmpty()
-    {
-        // arrange
-        final String json = "";
+    @Test
+    public void createFromPropertiesJsonThrowsOnEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = "";
 
-        // act
-        TwinState.createFromPropertiesJson(json);
+            // act
+            TwinState.createFromPropertiesJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_021: [The factory shall throw JsonSyntaxException if the JSON is invalid.] */
-    @Test (expected = JsonSyntaxException.class)
-    public void createFromPropertiesJsonThrowsOnInvalidJSON()
-    {
-        // arrange
-        final String json =
-                "{" +
-                        "\"reported\":," +
-                        "}";
+    @Test
+    public void createFromPropertiesJsonThrowsOnInvalidJSON() {
+        assertThrows(JsonSyntaxException.class, () -> {
+            // arrange
+            final String json =
+                    "{" +
+                            "\"reported\":," +
+                            "}";
 
-        // act
-        TwinState.createFromPropertiesJson(json);
+            // act
+            TwinState.createFromPropertiesJson(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_STATE_21_022: [The factory shall deserialize the provided JSON for the Twin class and subclasses.] */

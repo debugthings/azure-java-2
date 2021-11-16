@@ -8,12 +8,13 @@ import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.provisioning.service.Helpers;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service bulk operation result deserializer
@@ -51,86 +52,91 @@ public class BulkEnrollmentOperationResultTest
             "}";
 
     /* SRS_BULK_OPERATION_RESULT_21_001: [The constructor shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullJson()
-    {
-        // arrange
+    @Test
+    public void constructorThrowsOnNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        new BulkEnrollmentOperationResult(null);
+            // act
+            new BulkEnrollmentOperationResult(null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_BULK_OPERATION_RESULT_21_001: [The constructor shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyJson()
-    {
-        // arrange
+    @Test
+    public void constructorThrowsOnEmptyJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        new BulkEnrollmentOperationResult("");
+            // act
+            new BulkEnrollmentOperationResult("");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_BULK_OPERATION_RESULT_21_002: [The constructor shall throw JsonSyntaxException if the JSON is invalid.] */
-    @Test (expected = JsonSyntaxException.class)
-    public void constructorThrowsOnInvalidJson()
-    {
-        // arrange
+    @Test
+    public void constructorThrowsOnInvalidJson() {
+        assertThrows(JsonSyntaxException.class, () -> {
+            // arrange
 
-        // act
-        new BulkEnrollmentOperationResult("{\"isSuccessful\": \"true\",}");
+            // act
+            new BulkEnrollmentOperationResult("{\"isSuccessful\": \"true\",}");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_BULK_OPERATION_RESULT_21_004: [The constructor shall throw IllegalArgumentException if the JSON contains invalid error.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnMissingRegistrationId()
-    {
-        // arrange
-        final String missingSuccessful =
-                "{\n" +
-                        "  \"errors\": \n" +
-                        "    [\n" +
-                        VALID_ERROR_JSON_1 + ",\n" +
-                        VALID_ERROR_JSON_2 + "\n" +
-                        "    ]\n" +
-                        "}";
+    @Test
+    public void constructorThrowsOnMissingRegistrationId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String missingSuccessful =
+                    "{\n" +
+                            "  \"errors\": \n" +
+                            "    [\n" +
+                            VALID_ERROR_JSON_1 + ",\n" +
+                            VALID_ERROR_JSON_2 + "\n" +
+                            "    ]\n" +
+                            "}";
 
-        // act
-        new BulkEnrollmentOperationResult(missingSuccessful);
+            // act
+            new BulkEnrollmentOperationResult(missingSuccessful);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_BULK_OPERATION_RESULT_21_005: [The constructor shall throw IllegalArgumentException if the JSON contains invalid error.] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void constructorThrowsOnErrorsWithFail(
-            @Mocked final BulkEnrollmentOperationError mockedBulkEnrollmentOperationError)
-    {
-        // arrange
-        new NonStrictExpectations()
-        {
+            @Mocked final BulkEnrollmentOperationError mockedBulkEnrollmentOperationError) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            new NonStrictExpectations()
             {
-                Deencapsulation.invoke(mockedBulkEnrollmentOperationError, "validateError");
-                result = new IllegalArgumentException();
-            }
-        };
+                {
+                    Deencapsulation.invoke(mockedBulkEnrollmentOperationError, "validateError");
+                    result = new IllegalArgumentException();
+                }
+            };
 
-        // act
-        new BulkEnrollmentOperationResult(VALID_JSON);
+            // act
+            new BulkEnrollmentOperationResult(VALID_JSON);
 
-        // assert
-        new Verifications()
-        {
+            // assert
+            new Verifications()
             {
-                Deencapsulation.invoke(mockedBulkEnrollmentOperationError, "validateError");
-                times = 1;
-            }
-        };
+                {
+                    Deencapsulation.invoke(mockedBulkEnrollmentOperationError, "validateError");
+                    times = 1;
+                }
+            };
+        });
     }
 
     /* SRS_BULK_OPERATION_RESULT_21_003: [The constructor shall deserialize the provided JSON for the enrollment class and subclasses.] */

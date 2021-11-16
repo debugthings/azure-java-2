@@ -3,11 +3,11 @@
 
 package com.microsoft.azure.sdk.iot.device;
 
-import com.microsoft.azure.sdk.iot.device.MessageProperty;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for Message Property class.
@@ -57,13 +57,14 @@ public class MessagePropertyTest
     }
     
     // Tests_SRS_MESSAGEPROPERTY_11_008: [If the name is a reserved property name, the function shall throw an IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorRejectsReservedPropertyName()
-    {
-        final String invalidName = "iothub-ack";
-        final String value = "test-value";
+    @Test
+    public void constructorRejectsReservedPropertyName() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String invalidName = "iothub-ack";
+            final String value = "test-value";
 
-        new MessageProperty(invalidName, value);
+            new MessageProperty(invalidName, value);
+        });
     }
 
     // Tests_SRS_MESSAGEPROPERTY_11_006: [The function shall return true if and only if the property has the given name, where the names are compared in a case-insensitive manner.]

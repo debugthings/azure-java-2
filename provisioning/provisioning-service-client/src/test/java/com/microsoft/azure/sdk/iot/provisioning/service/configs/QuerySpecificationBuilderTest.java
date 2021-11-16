@@ -4,10 +4,11 @@
 package com.microsoft.azure.sdk.iot.provisioning.service.configs;
 
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.provisioning.service.Helpers;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service query Specification builder
@@ -16,36 +17,39 @@ import static org.junit.Assert.*;
 public class QuerySpecificationBuilderTest
 {
     /* SRS_QUERY_SPECIFICATION_BUILDER_21_001: [The constructor shall throw IllegalArgumentException if the provided `selection` is null, empty, or `fromType` is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullSelection()
-    {
-        // arrange
-        // act
-        new QuerySpecificationBuilder(null, QuerySpecificationBuilder.FromType.ENROLLMENTS);
+    @Test
+    public void constructorThrowsOnNullSelection() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new QuerySpecificationBuilder(null, QuerySpecificationBuilder.FromType.ENROLLMENTS);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_SPECIFICATION_BUILDER_21_001: [The constructor shall throw IllegalArgumentException if the provided `selection` is null, empty, or `fromType` is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptySelection()
-    {
-        // arrange
-        // act
-        new QuerySpecificationBuilder("", QuerySpecificationBuilder.FromType.ENROLLMENTS);
+    @Test
+    public void constructorThrowsOnEmptySelection() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new QuerySpecificationBuilder("", QuerySpecificationBuilder.FromType.ENROLLMENTS);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_SPECIFICATION_BUILDER_21_001: [The constructor shall throw IllegalArgumentException if the provided `selection` is null, empty, or `fromType` is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullFromType()
-    {
-        // arrange
-        // act
-        new QuerySpecificationBuilder("*", null);
+    @Test
+    public void constructorThrowsOnNullFromType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new QuerySpecificationBuilder("*", null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_SPECIFICATION_BUILDER_21_002: [The constructor shall store the provided `selection` and `fromType` clauses.] */

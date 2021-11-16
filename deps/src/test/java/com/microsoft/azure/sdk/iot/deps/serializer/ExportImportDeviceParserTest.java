@@ -3,10 +3,9 @@
 
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.*;
 import com.microsoft.azure.sdk.iot.deps.twin.TwinCollection;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -14,6 +13,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code Coverage:
@@ -366,124 +366,131 @@ public class ExportImportDeviceParserTest
     }
 
     //Tests_SRS_EXPORTIMPORTDEVICE_PARSER_34_007: [If the provided id is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void idSetterCannotTakeNullArgument()
-    {
-        //act
-        new ExportImportDeviceParser().setId(null);
+    @Test
+    public void idSetterCannotTakeNullArgument() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ExportImportDeviceParser().setId(null);
+        });
     }
 
     //Tests_SRS_EXPORTIMPORTDEVICE_PARSER_34_006: [If the provided authentication is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void authenticationSetterCannotTakeNullArgument()
-    {
-        //act
-        new ExportImportDeviceParser().setAuthentication(null);
+    @Test
+    public void authenticationSetterCannotTakeNullArgument() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ExportImportDeviceParser().setAuthentication(null);
+        });
     }
 
     //Tests_SRS_EXPORTIMPORTDEVICE_PARSER_34_009: [If the provided json is missing the Authentication field, or its value is empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForMissingAuthentication()
-    {
-        //arrange
-        String json = "{\n" +
-                "  \"id\": \"test\",\n" +
-                "  \"eTag\": \"MA==\",\n" +
-                "  \"status\": \"enabled\",\n" +
-                "  \"twinETag\": \"AAAAAAAAAAE=\",\n" +
-                "  \"tags\": {},\n" +
-                "  \"properties\": {\n" +
-                "    \"desired\": {\n" +
-                "      \"$metadata\": {\n" +
-                "        \"$lastUpdated\": \"0001-01-01T00:00:00Z\"\n" +
-                "      },\n" +
-                "      \"$version\": 1\n" +
-                "    },\n" +
-                "    \"reported\": {\n" +
-                "      \"$metadata\": {\n" +
-                "        \"$lastUpdated\": \"2017-07-26T21:44:15.80668Z\"\n" +
-                "      },\n" +
-                "      \"$version\": 1\n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
+    @Test
+    public void constructorThrowsForMissingAuthentication() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{\n" +
+                    "  \"id\": \"test\",\n" +
+                    "  \"eTag\": \"MA==\",\n" +
+                    "  \"status\": \"enabled\",\n" +
+                    "  \"twinETag\": \"AAAAAAAAAAE=\",\n" +
+                    "  \"tags\": {},\n" +
+                    "  \"properties\": {\n" +
+                    "    \"desired\": {\n" +
+                    "      \"$metadata\": {\n" +
+                    "        \"$lastUpdated\": \"0001-01-01T00:00:00Z\"\n" +
+                    "      },\n" +
+                    "      \"$version\": 1\n" +
+                    "    },\n" +
+                    "    \"reported\": {\n" +
+                    "      \"$metadata\": {\n" +
+                    "        \"$lastUpdated\": \"2017-07-26T21:44:15.80668Z\"\n" +
+                    "      },\n" +
+                    "      \"$version\": 1\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}";
 
-        //act
-        new ExportImportDeviceParser(json);
+            //act
+            new ExportImportDeviceParser(json);
+        });
     }
 
 
     //Tests_SRS_EXPORTIMPORTDEVICE_PARSER_34_008: [If the provided json is missing the Id field, or its value is empty, an IllegalArgumentException shall be thrown]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForMissingId()
-    {
-        //arrange
-        String json = "{\n" +
-                "  \"eTag\": \"MA==\",\n" +
-                "  \"status\": \"enabled\",\n" +
-                "  \"authentication\": {\n" +
-                "    \"symmetricKey\": {\n" +
-                "      \"primaryKey\": null,\n" +
-                "      \"secondaryKey\": null\n" +
-                "    },\n" +
-                "    \"x509Thumbprint\": {\n" +
-                "      \"primaryThumbprint\":null,\n" +
-                "      \"secondaryThumbprint\":null\n" +
-                "    },\n" +
-                "    \"type\": \"" + CERTIFICATE_AUTHORITY_JSON_VALUE + "\"\n" +
-                "  },\n" +
-                "  \"twinETag\": \"AAAAAAAAAAE=\",\n" +
-                "  \"tags\": {},\n" +
-                "  \"properties\": {\n" +
-                "    \"desired\": {\n" +
-                "      \"$metadata\": {\n" +
-                "        \"$lastUpdated\": \"0001-01-01T00:00:00Z\"\n" +
-                "      },\n" +
-                "      \"$version\": 1\n" +
-                "    },\n" +
-                "    \"reported\": {\n" +
-                "      \"$metadata\": {\n" +
-                "        \"$lastUpdated\": \"2017-07-26T21:44:15.80668Z\"\n" +
-                "      },\n" +
-                "      \"$version\": 1\n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
+    @Test
+    public void constructorThrowsForMissingId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{\n" +
+                    "  \"eTag\": \"MA==\",\n" +
+                    "  \"status\": \"enabled\",\n" +
+                    "  \"authentication\": {\n" +
+                    "    \"symmetricKey\": {\n" +
+                    "      \"primaryKey\": null,\n" +
+                    "      \"secondaryKey\": null\n" +
+                    "    },\n" +
+                    "    \"x509Thumbprint\": {\n" +
+                    "      \"primaryThumbprint\":null,\n" +
+                    "      \"secondaryThumbprint\":null\n" +
+                    "    },\n" +
+                    "    \"type\": \"" + CERTIFICATE_AUTHORITY_JSON_VALUE + "\"\n" +
+                    "  },\n" +
+                    "  \"twinETag\": \"AAAAAAAAAAE=\",\n" +
+                    "  \"tags\": {},\n" +
+                    "  \"properties\": {\n" +
+                    "    \"desired\": {\n" +
+                    "      \"$metadata\": {\n" +
+                    "        \"$lastUpdated\": \"0001-01-01T00:00:00Z\"\n" +
+                    "      },\n" +
+                    "      \"$version\": 1\n" +
+                    "    },\n" +
+                    "    \"reported\": {\n" +
+                    "      \"$metadata\": {\n" +
+                    "        \"$lastUpdated\": \"2017-07-26T21:44:15.80668Z\"\n" +
+                    "      },\n" +
+                    "      \"$version\": 1\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}";
 
-        //act
-        new ExportImportDeviceParser(json);
+            //act
+            new ExportImportDeviceParser(json);
+        });
     }
 
     //Tests_SRS_EXPORTIMPORTDEVICE_PARSER_34_011: [If the provided json is null, empty, or cannot be parsed into an ExportImportDeviceParser object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForInvalidJson()
-    {
-        //arrange
-        String json = "}";
+    @Test
+    public void constructorThrowsForInvalidJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "}";
 
-        //act
-        new ExportImportDeviceParser(json);
+            //act
+            new ExportImportDeviceParser(json);
+        });
     }
 
     //Tests_SRS_EXPORTIMPORTDEVICE_PARSER_34_011: [If the provided json is null, empty, or cannot be parsed into an ExportImportDeviceParser object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyJson()
-    {
-        //arrange
-        String json = "";
+    @Test
+    public void constructorThrowsForEmptyJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "";
 
-        //act
-        new ExportImportDeviceParser(json);
+            //act
+            new ExportImportDeviceParser(json);
+        });
     }
 
     //Tests_SRS_EXPORTIMPORTDEVICE_PARSER_34_011: [If the provided json is null, empty, or cannot be parsed into an ExportImportDeviceParser object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullJson()
-    {
-        //arrange
-        String json = null;
+    @Test
+    public void constructorThrowsForNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = null;
 
-        //act
-        new ExportImportDeviceParser(json);
+            //act
+            new ExportImportDeviceParser(json);
+        });
     }
 }

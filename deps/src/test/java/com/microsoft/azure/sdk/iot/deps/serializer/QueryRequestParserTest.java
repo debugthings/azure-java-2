@@ -6,10 +6,11 @@
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.deps.Helpers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
     Unit tests for QueryResponseParser
@@ -34,34 +35,37 @@ public class QueryRequestParserTest
     }
 
     //Tests_SRS_QUERY_REQUEST_PARSER_25_003: [If the provided query is null, empty, or not valid, the constructor shall throws IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsInvalidQuery1() throws IllegalArgumentException
-    {
-        //arrange
-        final String testQuery = "from abc";
+    @Test
+    public void constructorThrowsInvalidQuery1() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String testQuery = "from abc";
 
-        //act
-        QueryRequestParser testParser = new QueryRequestParser(testQuery);
+            //act
+            QueryRequestParser testParser = new QueryRequestParser(testQuery);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsInvalidQuery2() throws IllegalArgumentException
-    {
-        //arrange
-        final String testQuery = "select *";
+    @Test
+    public void constructorThrowsInvalidQuery2() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String testQuery = "select *";
 
-        //act
-        QueryRequestParser testParser = new QueryRequestParser(testQuery);
+            //act
+            QueryRequestParser testParser = new QueryRequestParser(testQuery);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsInvalidQuery3() throws IllegalArgumentException
-    {
-        //arrange
-        final String testQuery = "select \u1234 from abc";
+    @Test
+    public void constructorThrowsInvalidQuery3() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String testQuery = "select \u1234 from abc";
 
-        //act
-        QueryRequestParser testParser = new QueryRequestParser(testQuery);
+            //act
+            QueryRequestParser testParser = new QueryRequestParser(testQuery);
+        });
     }
 
     //Tests_SRS_QUERY_REQUEST_PARSER_25_004: [The toJson shall return a string with a json that represents the contents of the QueryRequestParser.]

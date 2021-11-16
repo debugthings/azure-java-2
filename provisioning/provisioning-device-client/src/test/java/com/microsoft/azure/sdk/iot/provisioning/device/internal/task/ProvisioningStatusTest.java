@@ -7,9 +7,8 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.device.internal.task;
 
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.task.ProvisioningStatus;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.microsoft.azure.sdk.iot.provisioning.device.internal.task.ProvisioningStatus.*;
 import static org.junit.Assert.assertEquals;

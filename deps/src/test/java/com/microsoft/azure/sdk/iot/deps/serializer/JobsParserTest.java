@@ -5,13 +5,14 @@ package com.microsoft.azure.sdk.iot.deps.serializer;
 
 import com.microsoft.azure.sdk.iot.deps.twin.TwinState;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.deps.Helpers;
 
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for jobs serializer
@@ -83,82 +84,87 @@ public class JobsParserTest
 
     /* Tests_SRS_JOBSPARSER_21_002: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_015: [If the jobId is null, empty, or invalid, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorMethodNullJobIdThrows()
-    {
-        // Arrange
-        String jobId = null;
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = 10L;
-        MethodParser cloudToDeviceMethod = makeMethodSample();
+    @Test
+    public void constructorMethodNullJobIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = null;
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = 10L;
+            MethodParser cloudToDeviceMethod = makeMethodSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_002: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_015: [If the jobId is null, empty, or invalid, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorMethodEmptyJobIdThrows()
-    {
-        // Arrange
-        String jobId = "";
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = 10L;
-        MethodParser cloudToDeviceMethod = makeMethodSample();
+    @Test
+    public void constructorMethodEmptyJobIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "";
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = 10L;
+            MethodParser cloudToDeviceMethod = makeMethodSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_002: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_015: [If the jobId is null, empty, or invalid, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorMethodInvalidJobIdThrows()
-    {
-        // Arrange
-        String jobId = "test\u1234JobId";
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = 10L;
-        MethodParser cloudToDeviceMethod = makeMethodSample();
+    @Test
+    public void constructorMethodInvalidJobIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "test\u1234JobId";
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = 10L;
+            MethodParser cloudToDeviceMethod = makeMethodSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_002: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_017: [If the maxExecutionTimeInSeconds is negative, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorMethodInvalidMaxExecutionTimeInSecondsThrows()
-    {
-        // Arrange
-        String jobId = "testJobId";
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = -10L;
-        MethodParser cloudToDeviceMethod = makeMethodSample();
+    @Test
+    public void constructorMethodInvalidMaxExecutionTimeInSecondsThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "testJobId";
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = -10L;
+            MethodParser cloudToDeviceMethod = makeMethodSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_002: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_019: [If the startTime is null, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorMethodNullStartTimeThrows()
-    {
-        // Arrange
-        String jobId = "testJobId";
-        String queryCondition = "testDeviceId";
-        Date startTime = null;
-        long maxExecutionTimeInSeconds = 10L;
-        MethodParser cloudToDeviceMethod = makeMethodSample();
+    @Test
+    public void constructorMethodNullStartTimeThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "testJobId";
+            String queryCondition = "testDeviceId";
+            Date startTime = null;
+            long maxExecutionTimeInSeconds = 10L;
+            MethodParser cloudToDeviceMethod = makeMethodSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_003: [The constructor shall store the JsonElement for the cloudToDeviceMethod.] */
@@ -180,18 +186,19 @@ public class JobsParserTest
     }
 
     /* Tests_SRS_JOBSPARSER_21_004: [If the cloudToDeviceMethod is null, the constructor shall throws IllegalArgumentException.] */
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorMethodNullCloudToDeviceMethodThrows()
-    {
-        // Arrange
-        String jobId = "testJobId";
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = 10L;
-        MethodParser cloudToDeviceMethod = null;
+    @Test
+    public void constructorMethodNullCloudToDeviceMethodThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "testJobId";
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = 10L;
+            MethodParser cloudToDeviceMethod = null;
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, cloudToDeviceMethod, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_005: [The constructor shall set the jobType as scheduleDeviceMethod.] */
@@ -305,82 +312,87 @@ public class JobsParserTest
 
     /* Tests_SRS_JOBSPARSER_21_008: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_015: [If the jobId is null, empty, or invalid, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void ConstructorTwinNullJobIdThrows()
-    {
-        // Arrange
-        String jobId = null;
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = 10L;
-        TwinState twinState = makeTwinSample();
+    @Test
+    public void ConstructorTwinNullJobIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = null;
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = 10L;
+            TwinState twinState = makeTwinSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_008: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_015: [If the jobId is null, empty, or invalid, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void ConstructorEmptyJobIdThrows()
-    {
-        // Arrange
-        String jobId = "";
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = 10L;
-        TwinState twinState = makeTwinSample();
+    @Test
+    public void ConstructorEmptyJobIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "";
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = 10L;
+            TwinState twinState = makeTwinSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_008: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_015: [If the jobId is null, empty, or invalid, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void ConstructorInvalidJobIdThrows()
-    {
-        // Arrange
-        String jobId = "test\u1234JobId";
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = 10L;
-        TwinState twinState = makeTwinSample();
+    @Test
+    public void ConstructorInvalidJobIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "test\u1234JobId";
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = 10L;
+            TwinState twinState = makeTwinSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_008: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_017: [If the maxExecutionTimeInSeconds is negative, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void ConstructorInvalidMaxExecutionTimeInSecondsThrows()
-    {
-        // Arrange
-        String jobId = "testJobId";
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = -10L;
-        TwinState twinState = makeTwinSample();
+    @Test
+    public void ConstructorInvalidMaxExecutionTimeInSecondsThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "testJobId";
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = -10L;
+            TwinState twinState = makeTwinSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_008: [If any common parameter is invalid, the constructor shall throws IllegalArgumentException.] */
     /* Tests_SRS_JOBSPARSER_21_019: [If the startTime is null, the commonFields shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void ConstructorNullStartTimeThrows()
-    {
-        // Arrange
-        String jobId = "testJobId";
-        String queryCondition = "testDeviceId";
-        Date startTime = null;
-        long maxExecutionTimeInSeconds = 10L;
-        TwinState twinState = makeTwinSample();
+    @Test
+    public void ConstructorNullStartTimeThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "testJobId";
+            String queryCondition = "testDeviceId";
+            Date startTime = null;
+            long maxExecutionTimeInSeconds = 10L;
+            TwinState twinState = makeTwinSample();
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_009: [The constructor shall store the JsonElement for the updateTwin.] */
@@ -402,18 +414,19 @@ public class JobsParserTest
     }
 
     /* Tests_SRS_JOBSPARSER_21_010: [If the updateTwin is null, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void ConstructorNullUpdateTwinThrows()
-    {
-        // Arrange
-        String jobId = "testJobId";
-        String queryCondition = "testDeviceId";
-        Date startTime = new Date();
-        long maxExecutionTimeInSeconds = 10L;
-        TwinState twinState = null;
+    @Test
+    public void ConstructorNullUpdateTwinThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String jobId = "testJobId";
+            String queryCondition = "testDeviceId";
+            Date startTime = new Date();
+            long maxExecutionTimeInSeconds = 10L;
+            TwinState twinState = null;
 
-        // Act
-        JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+            // Act
+            JobsParser jobsParser= new JobsParser(jobId, twinState, queryCondition, startTime, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBSPARSER_21_011: [The constructor shall set the jobType as scheduleUpdateTwin.] */

@@ -8,8 +8,6 @@ package com.microsoft.azure.sdk.iot.service.transport.amqps;
 import com.microsoft.azure.sdk.iot.deps.serializer.FileUploadNotificationParser;
 import com.microsoft.azure.sdk.iot.service.FileUploadNotification;
 import com.microsoft.azure.sdk.iot.service.IotHubServiceClientProtocol;
-import com.microsoft.azure.sdk.iot.service.transport.amqps.AmqpFileUploadNotificationReceive;
-import com.microsoft.azure.sdk.iot.service.transport.amqps.AmqpFileUploadNotificationReceivedHandler;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.Verifications;
@@ -19,13 +17,14 @@ import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for AmqpFileUploadNotificationReceive */
 @RunWith(JMockit.class)
@@ -60,18 +59,19 @@ public class AmqpFileUploadNotificationReceiveTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_AMQPFILEUPLOADNOTIFICATIONRECEIVE_25_008: [The function shall throw IOException if the send handler object is not initialized]
     // Assert
-    @Test (expected = IOException.class)
-    public void receiveExceptionThrow() throws IOException, InterruptedException
-    {
-        // Arrange
-        final String hostName = "aaa";
-        final String userName = "bbb";
-        final String sasToken = "ccc";
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        int timeoutMs = 1;
-        AmqpFileUploadNotificationReceive amqpFileUploadNotificationReceive = new AmqpFileUploadNotificationReceive(hostName, userName, sasToken, iotHubServiceClientProtocol);
-        // Act
-        amqpFileUploadNotificationReceive.receive(timeoutMs);
+    @Test
+    public void receiveExceptionThrow() throws IOException, InterruptedException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            final String hostName = "aaa";
+            final String userName = "bbb";
+            final String sasToken = "ccc";
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            int timeoutMs = 1;
+            AmqpFileUploadNotificationReceive amqpFileUploadNotificationReceive = new AmqpFileUploadNotificationReceive(hostName, userName, sasToken, iotHubServiceClientProtocol);
+            // Act
+            amqpFileUploadNotificationReceive.receive(timeoutMs);
+        });
     }
 
     @Test

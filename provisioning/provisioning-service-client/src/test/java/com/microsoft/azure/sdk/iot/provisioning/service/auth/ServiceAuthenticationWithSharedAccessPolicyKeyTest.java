@@ -5,13 +5,13 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service.auth;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningConnectionString;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for Device Provisioning Service Authentication With Shared Access Policy Key
@@ -42,94 +42,99 @@ public class ServiceAuthenticationWithSharedAccessPolicyKeyTest
     }
 
     /* Tests_SRS_SERVICE_AUTHENTICATION_WITH_SHARED_ACCESS_POLICY_KEY_21_002: [If the provided policyName is null or empty, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullPolicyName()
-    {
-        // arrange
-        final String policyName = null;
-        final String key = "validKey";
+    @Test
+    public void constructorThrowsOnNullPolicyName() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String policyName = null;
+            final String key = "validKey";
 
-        // act
-        Object authenticationMethodResult = Deencapsulation.newInstance(
-                "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
-                new Class[] {String.class, String.class},
-                policyName, key);
+            // act
+            Object authenticationMethodResult = Deencapsulation.newInstance(
+                    "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
+                    new Class[] {String.class, String.class},
+                    policyName, key);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_SERVICE_AUTHENTICATION_WITH_SHARED_ACCESS_POLICY_KEY_21_002: [If the provided policyName is null or empty, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyPolicyName()
-    {
-        // arrange
-        final String policyName = "";
-        final String key = "validKey";
+    @Test
+    public void constructorThrowsOnEmptyPolicyName() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String policyName = "";
+            final String key = "validKey";
 
-        // act
-        Object authenticationMethodResult = Deencapsulation.newInstance(
-                "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
-                new Class[] {String.class, String.class},
-                policyName, key);
+            // act
+            Object authenticationMethodResult = Deencapsulation.newInstance(
+                    "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
+                    new Class[] {String.class, String.class},
+                    policyName, key);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_SERVICE_AUTHENTICATION_WITH_SHARED_ACCESS_POLICY_KEY_21_003: [If the provided key is null or empty, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullKey()
-    {
-        // arrange
-        final String policyName = "validPolicyName";
-        final String key = null;
+    @Test
+    public void constructorThrowsOnNullKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String policyName = "validPolicyName";
+            final String key = null;
 
-        // act
-        Object authenticationMethodResult = Deencapsulation.newInstance(
-                "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
-                new Class[] {String.class, String.class},
-                policyName, key);
+            // act
+            Object authenticationMethodResult = Deencapsulation.newInstance(
+                    "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
+                    new Class[] {String.class, String.class},
+                    policyName, key);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_SERVICE_AUTHENTICATION_WITH_SHARED_ACCESS_POLICY_KEY_21_003: [If the provided key is null or empty, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyKey()
-    {
-        // arrange
-        final String policyName = "validPolicyName";
-        final String key = "";
+    @Test
+    public void constructorThrowsOnEmptyKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String policyName = "validPolicyName";
+            final String key = "";
 
-        // act
-        Object authenticationMethodResult = Deencapsulation.newInstance(
-                "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
-                new Class[] {String.class, String.class},
-                policyName, key);
+            // act
+            Object authenticationMethodResult = Deencapsulation.newInstance(
+                    "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
+                    new Class[] {String.class, String.class},
+                    policyName, key);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_SERVICE_AUTHENTICATION_WITH_SHARED_ACCESS_POLICY_KEY_21_004: [If the provided provisioningConnectionString is null, the populateWithAuthenticationProperties shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void populateThrowsOnNullConnectionString()
-    {
-        // arrange
-        final String policyName = "validPolicyName";
-        final String key = "validKey";
-        final ProvisioningConnectionString provisioningConnectionString = null;
-        Object authenticationMethodResult = Deencapsulation.newInstance(
-                "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
-                new Class[] {String.class, String.class},
-                policyName, key);
+    @Test
+    public void populateThrowsOnNullConnectionString() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String policyName = "validPolicyName";
+            final String key = "validKey";
+            final ProvisioningConnectionString provisioningConnectionString = null;
+            Object authenticationMethodResult = Deencapsulation.newInstance(
+                    "com.microsoft.azure.sdk.iot.provisioning.service.auth.ServiceAuthenticationWithSharedAccessPolicyKey",
+                    new Class[] {String.class, String.class},
+                    policyName, key);
 
-        // act
-        Deencapsulation.invoke(
-                authenticationMethodResult,
-                "populateWithAuthenticationProperties",
-                new Class[]{ProvisioningConnectionString.class},
-                provisioningConnectionString);
+            // act
+            Deencapsulation.invoke(
+                    authenticationMethodResult,
+                    "populateWithAuthenticationProperties",
+                    new Class[]{ProvisioningConnectionString.class},
+                    provisioningConnectionString);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_SERVICE_AUTHENTICATION_WITH_SHARED_ACCESS_POLICY_KEY_21_005: [The populateWithAuthenticationProperties shall save the policyName and key to the target object.] */

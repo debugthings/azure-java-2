@@ -5,11 +5,10 @@
 
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.*;
 import mockit.Deencapsulation;
 import mockit.integration.junit4.JMockit;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +19,7 @@ import java.util.Date;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code coverage:
@@ -39,7 +39,7 @@ public class DeviceParserTest
     private static final String expectedPrimaryThumbprint = "0000000000000000000000000000000000000000";
     private static final String expectedSecondaryThumbprint = "1111111111111111111111111111111111111111";
 
-    @Before
+    @BeforeEach
     public void setUp() throws ParseException
     {
         Date validDate = new Date();
@@ -328,172 +328,183 @@ public class DeviceParserTest
     }
 
     //Tests_SRS_DEVICE_PARSER_34_004: [For each of this parser's properties, if the setter is called with a null argument, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void cantSetAuthenticationParserNull()
-    {
-        //act
-        new DeviceParser().setAuthenticationParser(null);
+    @Test
+    public void cantSetAuthenticationParserNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new DeviceParser().setAuthenticationParser(null);
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_004: [For each of this parser's properties, if the setter is called with a null argument, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void cantSetDeviceIdNull()
-    {
-        //act
-        new DeviceParser().setDeviceId(null);
+    @Test
+    public void cantSetDeviceIdNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new DeviceParser().setDeviceId(null);
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_005: [If the provided json is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullJson()
-    {
-        //act
-        new DeviceParser(null);
+    @Test
+    public void constructorThrowsForNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new DeviceParser(null);
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_005: [If the provided json is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyJson()
-    {
-        //act
-        new DeviceParser("");
+    @Test
+    public void constructorThrowsForEmptyJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new DeviceParser("");
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_006: [If the provided json cannot be parsed into a DeviceParser object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForInvalidJson()
-    {
-        //arrange
-        String json = "{";
+    @Test
+    public void constructorThrowsForInvalidJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{";
 
-        //act
-        new DeviceParser(json);
+            //act
+            new DeviceParser(json);
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_012: [If the provided json is missing the authentication field or its value is empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForJsonMissingAuthenticationParser()
-    {
-        //arrange
-        String json = "{\n" +
-                "  \"encryptionMethod\": \"AES\",\n" +
-                "  \"deviceId\": \"deviceId1234\",\n" +
-                "  \"generationId\": \"\",\n" +
-                "  \"etag\": \"\",\n" +
-                "  \"status\": \"enabled\",\n" +
-                "  \"statusReason\": \"\",\n" +
-                "  \"statusUpdatedTime\": \"" + validDateString + "\",\n" +
-                "  \"connectionState\": \"Disconnected\",\n" +
-                "  \"connectionStateUpdatedTime\": \"" + validDateString + "\",\n" +
-                "  \"lastActivityTime\": \"" + validDateString + "\",\n" +
-                "  \"cloudToDeviceMessageCount\": 0,\n" +
-                "  \"forceUpdate\": false\n" +
-                "  \"managedBy\": \"someentity\",\n" +
-                "  \"capabilities\": {\n" +
-                "    \"iotEdge\": true },\n" +
-                "}";
+    @Test
+    public void constructorThrowsForJsonMissingAuthenticationParser() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{\n" +
+                    "  \"encryptionMethod\": \"AES\",\n" +
+                    "  \"deviceId\": \"deviceId1234\",\n" +
+                    "  \"generationId\": \"\",\n" +
+                    "  \"etag\": \"\",\n" +
+                    "  \"status\": \"enabled\",\n" +
+                    "  \"statusReason\": \"\",\n" +
+                    "  \"statusUpdatedTime\": \"" + validDateString + "\",\n" +
+                    "  \"connectionState\": \"Disconnected\",\n" +
+                    "  \"connectionStateUpdatedTime\": \"" + validDateString + "\",\n" +
+                    "  \"lastActivityTime\": \"" + validDateString + "\",\n" +
+                    "  \"cloudToDeviceMessageCount\": 0,\n" +
+                    "  \"forceUpdate\": false\n" +
+                    "  \"managedBy\": \"someentity\",\n" +
+                    "  \"capabilities\": {\n" +
+                    "    \"iotEdge\": true },\n" +
+                    "}";
 
-        //act
-        new DeviceParser(json);
+            //act
+            new DeviceParser(json);
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_011: [If the provided json is missing the DeviceId field or its value is empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForJsonMissingDeviceId()
-    {
-        //arrange
-        String json = "{\n" +
-                "  \"encryptionMethod\": \"AES\",\n" +
-                "  \"generationId\": \"\",\n" +
-                "  \"etag\": \"\",\n" +
-                "  \"status\": \"enabled\",\n" +
-                "  \"statusReason\": \"\",\n" +
-                "  \"statusUpdatedTime\": \"" + validDateString + "\",\n" +
-                "  \"connectionState\": \"Disconnected\",\n" +
-                "  \"connectionStateUpdatedTime\": \"" + validDateString + "\",\n" +
-                "  \"lastActivityTime\": \"" + validDateString + "\",\n" +
-                "  \"cloudToDeviceMessageCount\": 0,\n" +
-                "  \"forceUpdate\": false,\n" +
-                "  \"managedBy\": \"someentity\",\n" +
-                "  \"capabilities\": {\n" +
-                "    \"iotEdge\": true },\n" +
-                "  \"authentication\": {\n" +
-                "    \"type\": \"" + SELF_SIGNED_JSON_VALUE + "\",\n" +
-                "    \"x509Thumbprint\": {\n" +
-                "      \"primaryThumbprint\": \"" + expectedPrimaryThumbprint + "\",\n" +
-                "      \"secondaryThumbprint\": \"" + expectedSecondaryThumbprint + "\"\n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
+    @Test
+    public void constructorThrowsForJsonMissingDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{\n" +
+                    "  \"encryptionMethod\": \"AES\",\n" +
+                    "  \"generationId\": \"\",\n" +
+                    "  \"etag\": \"\",\n" +
+                    "  \"status\": \"enabled\",\n" +
+                    "  \"statusReason\": \"\",\n" +
+                    "  \"statusUpdatedTime\": \"" + validDateString + "\",\n" +
+                    "  \"connectionState\": \"Disconnected\",\n" +
+                    "  \"connectionStateUpdatedTime\": \"" + validDateString + "\",\n" +
+                    "  \"lastActivityTime\": \"" + validDateString + "\",\n" +
+                    "  \"cloudToDeviceMessageCount\": 0,\n" +
+                    "  \"forceUpdate\": false,\n" +
+                    "  \"managedBy\": \"someentity\",\n" +
+                    "  \"capabilities\": {\n" +
+                    "    \"iotEdge\": true },\n" +
+                    "  \"authentication\": {\n" +
+                    "    \"type\": \"" + SELF_SIGNED_JSON_VALUE + "\",\n" +
+                    "    \"x509Thumbprint\": {\n" +
+                    "      \"primaryThumbprint\": \"" + expectedPrimaryThumbprint + "\",\n" +
+                    "      \"secondaryThumbprint\": \"" + expectedSecondaryThumbprint + "\"\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}";
 
-        //act
-        new DeviceParser(json);
+            //act
+            new DeviceParser(json);
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_011: [If the provided json is missing the DeviceId field or its value is empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForJsonEmptyDeviceId()
-    {
-        //arrange
-        String json = "{\n" +
-                "  \"encryptionMethod\": \"AES\",\n" +
-                "  \"deviceId\": \"\",\n" +
-                "  \"generationId\": \"\",\n" +
-                "  \"etag\": \"\",\n" +
-                "  \"status\": \"enabled\",\n" +
-                "  \"statusReason\": \"\",\n" +
-                "  \"statusUpdatedTime\": \"" + validDateString + "\",\n" +
-                "  \"connectionState\": \"Disconnected\",\n" +
-                "  \"connectionStateUpdatedTime\": \"" + validDateString + "\",\n" +
-                "  \"lastActivityTime\": \"" + validDateString + "\",\n" +
-                "  \"cloudToDeviceMessageCount\": 0,\n" +
-                "  \"forceUpdate\": false,\n" +
-                "  \"managedBy\": \"someentity\",\n" +
-                "  \"capabilities\": {\n" +
-                "    \"iotEdge\": true },\n" +
-                "  \"authentication\": {\n" +
-                "    \"type\": \"" + SELF_SIGNED_JSON_VALUE + "\",\n" +
-                "    \"x509Thumbprint\": {\n" +
-                "      \"primaryThumbprint\": \"" + expectedPrimaryThumbprint + "\",\n" +
-                "      \"secondaryThumbprint\": \"" + expectedSecondaryThumbprint + "\"\n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
+    @Test
+    public void constructorThrowsForJsonEmptyDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{\n" +
+                    "  \"encryptionMethod\": \"AES\",\n" +
+                    "  \"deviceId\": \"\",\n" +
+                    "  \"generationId\": \"\",\n" +
+                    "  \"etag\": \"\",\n" +
+                    "  \"status\": \"enabled\",\n" +
+                    "  \"statusReason\": \"\",\n" +
+                    "  \"statusUpdatedTime\": \"" + validDateString + "\",\n" +
+                    "  \"connectionState\": \"Disconnected\",\n" +
+                    "  \"connectionStateUpdatedTime\": \"" + validDateString + "\",\n" +
+                    "  \"lastActivityTime\": \"" + validDateString + "\",\n" +
+                    "  \"cloudToDeviceMessageCount\": 0,\n" +
+                    "  \"forceUpdate\": false,\n" +
+                    "  \"managedBy\": \"someentity\",\n" +
+                    "  \"capabilities\": {\n" +
+                    "    \"iotEdge\": true },\n" +
+                    "  \"authentication\": {\n" +
+                    "    \"type\": \"" + SELF_SIGNED_JSON_VALUE + "\",\n" +
+                    "    \"x509Thumbprint\": {\n" +
+                    "      \"primaryThumbprint\": \"" + expectedPrimaryThumbprint + "\",\n" +
+                    "      \"secondaryThumbprint\": \"" + expectedSecondaryThumbprint + "\"\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}";
 
-        //act
-        new DeviceParser(json);
+            //act
+            new DeviceParser(json);
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_010: [If the provided deviceId value is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setterForDeviceIdCalledWithNullThrowsIllegalArgumentException()
-    {
-        //arrange
-        DeviceParser parser = new DeviceParser();
+    @Test
+    public void setterForDeviceIdCalledWithNullThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceParser parser = new DeviceParser();
 
-        //act
-        parser.setDeviceId(null);
+            //act
+            parser.setDeviceId(null);
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_010: [If the provided deviceId value is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setterForDeviceIdCalledWithEmptyStringThrowsIllegalArgumentException()
-    {
-        //arrange
-        DeviceParser parser = new DeviceParser();
+    @Test
+    public void setterForDeviceIdCalledWithEmptyStringThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceParser parser = new DeviceParser();
 
-        //act
-        parser.setDeviceId("");
+            //act
+            parser.setDeviceId("");
+        });
     }
 
     //Tests_SRS_DEVICE_PARSER_34_008: [If the provided authenticationParser value is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setterForAuthenticationCalledWithNullThrowsIllegalArgumentException()
-    {
-        //arrange
-        DeviceParser parser = new DeviceParser();
+    @Test
+    public void setterForAuthenticationCalledWithNullThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceParser parser = new DeviceParser();
 
-        //act
-        parser.setAuthenticationParser(null);
+            //act
+            parser.setAuthenticationParser(null);
+        });
     }
 }

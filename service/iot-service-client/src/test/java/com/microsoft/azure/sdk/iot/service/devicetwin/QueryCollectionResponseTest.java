@@ -6,17 +6,17 @@
 package com.microsoft.azure.sdk.iot.service.devicetwin;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.QueryResponseParser;
-import com.microsoft.azure.sdk.iot.service.devicetwin.QueryCollectionResponse;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit Tests for QueryCollectionResponse.java
@@ -29,19 +29,21 @@ public class QueryCollectionResponseTest
     QueryResponseParser mockQueryResponseParser;
 
     //Tests_SRS_QUERY_COLLECTION_RESPONSE_34_001: [If the provided jsonString is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullJson()
-    {
-        //act
-        Deencapsulation.newInstance(QueryCollectionResponse.class, new Class[] {String.class, String.class}, null, "some continuation token");
+    @Test
+    public void constructorThrowsForNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(QueryCollectionResponse.class, new Class[] {String.class, String.class}, null, "some continuation token");
+        });
     }
 
     //Tests_SRS_QUERY_COLLECTION_RESPONSE_34_001: [If the provided jsonString is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyJson()
-    {
-        //act
-        Deencapsulation.newInstance(QueryCollectionResponse.class, new Class[] {String.class, String.class}, "", "some continuation token");
+    @Test
+    public void constructorThrowsForEmptyJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(QueryCollectionResponse.class, new Class[] {String.class, String.class}, "", "some continuation token");
+        });
     }
 
     //Tests_SRS_QUERY_COLLECTION_RESPONSE_34_002: [This constructor shall parse the provided jsonString using the QueryResponseParser class into a Collection and save it.]
@@ -95,14 +97,15 @@ public class QueryCollectionResponseTest
     }
 
     //Tests_SRS_QUERY_COLLECTION_RESPONSE_34_007: [If the provided Collection is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithCollectionThrowsForNullCollection()
-    {
-        //arrange
-        String expectedToken = "some valid token";
+    @Test
+    public void constructorWithCollectionThrowsForNullCollection() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String expectedToken = "some valid token";
 
-        //act
-        Deencapsulation.newInstance(QueryCollectionResponse.class, new Class[] {Collection.class, String.class}, null, expectedToken);
+            //act
+            Deencapsulation.newInstance(QueryCollectionResponse.class, new Class[] {Collection.class, String.class}, null, expectedToken);
+        });
     }
 
     //Tests_SRS_QUERY_COLLECTION_RESPONSE_34_005: [This function shall return the saved continuation token.]

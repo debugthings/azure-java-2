@@ -7,8 +7,6 @@ package com.microsoft.azure.sdk.iot.service.transport.amqps;
 
 import com.microsoft.azure.sdk.iot.service.FeedbackBatchMessage;
 import com.microsoft.azure.sdk.iot.service.IotHubServiceClientProtocol;
-import com.microsoft.azure.sdk.iot.service.transport.amqps.AmqpFeedbackReceivedHandler;
-import com.microsoft.azure.sdk.iot.service.transport.amqps.AmqpReceive;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
@@ -18,13 +16,14 @@ import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for AmqpReceive */
 @RunWith(JMockit.class)
@@ -58,18 +57,19 @@ public class AmqpReceiveTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_AMQPRECEIVE_12_008: [The function shall throw IOException if the send handler object is not initialized]
     // Assert
-    @Test (expected = IOException.class)
-    public void receiveException_throw() throws IOException, InterruptedException
-    {
-        // Arrange
-        String hostName = "aaa";
-        String userName = "bbb";
-        String sasToken = "ccc";
-        IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
-        int timeoutMs = 1;
-        AmqpReceive amqpReceive = new AmqpReceive(hostName, userName, sasToken, iotHubServiceClientProtocol);
-        // Act
-        amqpReceive.receive(timeoutMs);
+    @Test
+    public void receiveException_throw() throws IOException, InterruptedException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            String hostName = "aaa";
+            String userName = "bbb";
+            String sasToken = "ccc";
+            IotHubServiceClientProtocol iotHubServiceClientProtocol = IotHubServiceClientProtocol.AMQPS;
+            int timeoutMs = 1;
+            AmqpReceive amqpReceive = new AmqpReceive(hostName, userName, sasToken, iotHubServiceClientProtocol);
+            // Act
+            amqpReceive.receive(timeoutMs);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_AMQPRECEIVE_12_010: [The function shall parse the received Json string to FeedbackBath object]

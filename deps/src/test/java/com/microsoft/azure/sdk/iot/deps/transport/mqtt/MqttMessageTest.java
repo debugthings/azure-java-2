@@ -5,14 +5,12 @@
 
 package com.microsoft.azure.sdk.iot.deps.transport.mqtt;
 
-import com.microsoft.azure.sdk.iot.deps.transport.mqtt.MqttMessage;
-import com.microsoft.azure.sdk.iot.deps.transport.mqtt.MqttQos;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.integration.junit4.JMockit;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.nio.charset.StandardCharsets;

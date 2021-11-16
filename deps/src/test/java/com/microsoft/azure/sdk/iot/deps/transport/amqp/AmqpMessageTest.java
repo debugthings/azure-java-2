@@ -11,14 +11,15 @@ import mockit.integration.junit4.JMockit;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.message.impl.MessageImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import com.microsoft.azure.sdk.iot.deps.transport.amqp.AmqpMessage;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for AmqpConnection.
  * Coverage : 100% method, 100% line */
@@ -96,11 +97,12 @@ public class AmqpMessageTest
         amqpMessage.setApplicationProperty(userProperties);
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void decodeThrowsOnDataNull()
-    {
-        AmqpMessage amqpMessage = new AmqpMessage(mockedMessageImpl);
-        amqpMessage.decode(null, 0, 10);
+    @Test
+    public void decodeThrowsOnDataNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            AmqpMessage amqpMessage = new AmqpMessage(mockedMessageImpl);
+            amqpMessage.decode(null, 0, 10);
+        });
     }
 
     @Test
@@ -120,11 +122,12 @@ public class AmqpMessageTest
         amqpMessage.decode(data, 0, 10);
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void encodeThrowsOnDataNull() throws IOException
-    {
-        AmqpMessage amqpMessage = new AmqpMessage(mockedMessageImpl);
-        amqpMessage.encode(null, 0);
+    @Test
+    public void encodeThrowsOnDataNull() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            AmqpMessage amqpMessage = new AmqpMessage(mockedMessageImpl);
+            amqpMessage.encode(null, 0);
+        });
     }
 
     @Test

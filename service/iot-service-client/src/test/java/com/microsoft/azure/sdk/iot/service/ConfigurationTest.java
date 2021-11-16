@@ -1,43 +1,44 @@
 package com.microsoft.azure.sdk.iot.service;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.*;
-import com.microsoft.azure.sdk.iot.service.Configuration;
-import com.microsoft.azure.sdk.iot.service.ConfigurationMetrics;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ConfigurationTest
 {
     // Tests_SRS_SERVICE_SDK_JAVA_CONFIGURATION_28_001: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void constructor_string_null() throws IllegalArgumentException
-    {
-        // Arrange
-        String configurationId = null;
+    @Test
+    public void constructor_string_null() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String configurationId = null;
 
-        // Act
-        Deencapsulation.newInstance(Configuration.class, configurationId);
+            // Act
+            Deencapsulation.newInstance(Configuration.class, configurationId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_CONFIGURATION_28_001: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void constructor_string_empty() throws IllegalArgumentException
-    {
-        // Arrange
-        String configurationId = "";
+    @Test
+    public void constructor_string_empty() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String configurationId = "";
 
-        // Act
-        Deencapsulation.newInstance(Configuration.class, configurationId);
+            // Act
+            Deencapsulation.newInstance(Configuration.class, configurationId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_002: [The constructor shall initialize all properties to default values]

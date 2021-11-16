@@ -15,10 +15,10 @@ import com.microsoft.azure.sdk.iot.device.*;
 import com.microsoft.azure.sdk.iot.service.*;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.littleshoot.proxy.HttpProxyServer;
@@ -196,7 +196,7 @@ public class FileUploadTests extends IntegrationTest
         }
     }
 
-    @Before
+    @BeforeEach
     public void setUpFileUploadState()
     {
         testInstance.fileUploadState = new FileUploadState[MAX_FILES_TO_UPLOAD];
@@ -219,7 +219,7 @@ public class FileUploadTests extends IntegrationTest
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown()
     {
         if (registryManager != null)
@@ -231,7 +231,7 @@ public class FileUploadTests extends IntegrationTest
         serviceClient = null;
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void startProxy()
     {
         proxyServer = DefaultHttpProxyServer.bootstrap()
@@ -240,7 +240,7 @@ public class FileUploadTests extends IntegrationTest
                 .start();
     }
 
-    @AfterClass
+    @AfterAll
     public static void stopProxy()
     {
         proxyServer.stop();
@@ -289,7 +289,7 @@ public class FileUploadTests extends IntegrationTest
         fileUploadState.fileUploadNotificationReceived = SUCCESS;
     }
 
-    @Test (timeout = MAX_MILLISECS_TIMEOUT_KILL_TEST)
+    @Test(timeout = MAX_MILLISECS_TIMEOUT_KILL_TEST)
     @ContinuousIntegrationTest
     public void uploadToBlobAsyncSingleFileZeroLength() throws URISyntaxException, IOException, InterruptedException, IotHubException, GeneralSecurityException
     {

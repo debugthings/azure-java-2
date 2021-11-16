@@ -13,7 +13,6 @@ import com.microsoft.azure.sdk.iot.deps.transport.mqtt.MqttQos;
 import com.microsoft.azure.sdk.iot.deps.util.ObjectLock;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.ProvisioningDeviceClientConfig;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.ResponseCallback;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.mqtt.ContractAPIMqtt;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.ProvisioningDeviceClientException;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.ProvisioningDeviceConnectionException;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.parser.DeviceRegistrationParser;
@@ -24,7 +23,7 @@ import mockit.integration.junit4.JMockit;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.impl.MessageImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import javax.net.ssl.SSLContext;
@@ -33,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * Unit tests for ContractAPIMqtt
@@ -163,43 +163,45 @@ public class ContractAPIMqttTest
     }
 
     // SRS_ContractAPIMqtt_07_002: [The constructor shall throw ProvisioningDeviceClientException if either scopeId and hostName are null or empty.]
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void constructorThrowsOnNullScopeId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsOnNullScopeId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockedProvisioningDeviceClientConfig.getIdScope();
-                result = null;
-            }
-        };
+                {
+                    mockedProvisioningDeviceClientConfig.getIdScope();
+                    result = null;
+                }
+            };
 
-        //act
-        ContractAPIMqtt contractAPIMqtt = new ContractAPIMqtt(mockedProvisioningDeviceClientConfig);
+            //act
+            ContractAPIMqtt contractAPIMqtt = new ContractAPIMqtt(mockedProvisioningDeviceClientConfig);
 
-        //assert
+            //assert
+        });
     }
 
     // SRS_ContractAPIMqtt_07_002: [The constructor shall throw ProvisioningDeviceClientException if either scopeId and hostName are null or empty.]
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void constructorThrowsOnNullHostName() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsOnNullHostName() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockedProvisioningDeviceClientConfig.getIdScope();
-                result = TEST_SCOPE_ID;
-                mockedProvisioningDeviceClientConfig.getProvisioningServiceGlobalEndpoint();
-                result = null;
-            }
-        };
+                {
+                    mockedProvisioningDeviceClientConfig.getIdScope();
+                    result = TEST_SCOPE_ID;
+                    mockedProvisioningDeviceClientConfig.getProvisioningServiceGlobalEndpoint();
+                    result = null;
+                }
+            };
 
-        //act
-        ContractAPIMqtt contractAPIMqtt = new ContractAPIMqtt(mockedProvisioningDeviceClientConfig);
+            //act
+            ContractAPIMqtt contractAPIMqtt = new ContractAPIMqtt(mockedProvisioningDeviceClientConfig);
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -224,58 +226,61 @@ public class ContractAPIMqttTest
         //assert
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void openThrowsOnNullRequestData() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void openThrowsOnNullRequestData() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        //act
-        contractAPIMqtt.open(null);
+            //act
+            contractAPIMqtt.open(null);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void openThrowsOnNullRegistrationId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void openThrowsOnNullRegistrationId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = null;
-            }
-        };
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = null;
+                }
+            };
 
-        //act
-        contractAPIMqtt.open(mockedRequestData);
+            //act
+            contractAPIMqtt.open(mockedRequestData);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void openThrowsOnNullSSLContext() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void openThrowsOnNullSSLContext() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = null;
-            }
-        };
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = null;
+                }
+            };
 
-        //act
-        contractAPIMqtt.open(mockedRequestData);
+            //act
+            contractAPIMqtt.open(mockedRequestData);
 
-        //assert
+            //assert
+        });
     }
 
     // SRS_ContractAPIMqtt_07_022: [If the amqpConnection is NULL or Is not open this method will do nothing.]
@@ -332,35 +337,36 @@ public class ContractAPIMqttTest
         };
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void closeThrowOnDisconnect() throws ProvisioningDeviceClientException, IOException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void closeThrowOnDisconnect() throws ProvisioningDeviceClientException, IOException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.isX509();
-                result = true;
-            }
-        };
-        contractAPIMqtt.open(mockedRequestData);
-        new NonStrictExpectations()
-        {
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.isX509();
+                    result = true;
+                }
+            };
+            contractAPIMqtt.open(mockedRequestData);
+            new NonStrictExpectations()
             {
-                mockedMqttConnection.isMqttConnected();
-                result = new IOException();
-            }
-        };
+                {
+                    mockedMqttConnection.isMqttConnected();
+                    result = new IOException();
+                }
+            };
 
-        //act
-        contractAPIMqtt.close();
+            //act
+            contractAPIMqtt.close();
 
-        //assert
+            //assert
+        });
     }
 
     // SRS_ContractAPIMqtt_07_023: [This method will close the amqpConnection connection.]
@@ -398,23 +404,27 @@ public class ContractAPIMqttTest
     }
 
     //SRS_ContractAPIMqtt_07_003: [If responseCallback is null, this method shall throw ProvisioningDeviceClientException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
+    @Test
     public void authenticateWithProvisioningServiceThrowsOnResponseNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        //act
-        contractAPIMqtt.authenticateWithProvisioningService(mockedRequestData, null, null);
+            //act
+            contractAPIMqtt.authenticateWithProvisioningService(mockedRequestData, null, null);
+        });
     }
 
     // SRS_ContractAPIMqtt_07_004: [If amqpConnection is null or not connected, this method shall throw ProvisioningDeviceConnectionException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
+    @Test
     public void authenticateWithProvisioningServiceThrowsOnNotConnected() throws ProvisioningDeviceClientException, IOException, InterruptedException {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        //act
-        contractAPIMqtt.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
     // SRS_ContractAPIMqtt_07_005: [This method shall send an AMQP message with the property of iotdps-register.]
@@ -531,47 +541,48 @@ public class ContractAPIMqttTest
 
     //SRS_ContractAPIAmqp_34_021: [If the requestData is not x509, but the provided requestData does not contain a sas token, this function shall
     // throw a ProvisioningDeviceConnectionException.]
-    @Test (expected = ProvisioningDeviceConnectionException.class)
-    public void authenticateWithProvisioningServiceThrowsIfNotX509AndNoSasToken() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void authenticateWithProvisioningServiceThrowsIfNotX509AndNoSasToken() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceConnectionException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedMqttConnection.isMqttConnected();
-                result = true;
+                {
+                    mockedMqttConnection.isMqttConnected();
+                    result = true;
 
-                mockedMqttConnection.isMqttConnected();
-                result = true;
+                    mockedMqttConnection.isMqttConnected();
+                    result = true;
 
-                mockedMqttConnection.publishMessage(anyString, (MqttQos) any, null);
+                    mockedMqttConnection.publishMessage(anyString, (MqttQos) any, null);
 
-                mockedObjectLock.waitLock(anyInt);
+                    mockedObjectLock.waitLock(anyInt);
 
-                mockedRequestData.isX509();
-                result = false;
+                    mockedRequestData.isX509();
+                    result = false;
 
-                mockedRequestData.getSasToken();
-                result = "";
-            }
-        };
+                    mockedRequestData.getSasToken();
+                    result = "";
+                }
+            };
 
-        openContractAPI(contractAPIMqtt);
-        contractAPIMqtt.messageReceived(mockedMqttMessage);
+            openContractAPI(contractAPIMqtt);
+            contractAPIMqtt.messageReceived(mockedMqttMessage);
 
-        //act
-        contractAPIMqtt.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
 
-        //assert
-        new Verifications()
-        {
+            //assert
+            new Verifications()
             {
-                mockedMqttConnection.publishMessage(anyString, (MqttQos)any, null);
-                times = 1;
-            }
-        };
+                {
+                    mockedMqttConnection.publishMessage(anyString, (MqttQos)any, null);
+                    times = 1;
+                }
+            };
+        });
     }
 
     //SRS_ContractAPIAmqp_34_020: [If the requestData is not x509, this function shall assume SymmetricKey authentication, and shall open the connection with
@@ -630,116 +641,128 @@ public class ContractAPIMqttTest
     }
 
     // SRS_ContractAPIMqtt_07_009: [If requestData is null this method shall throw ProvisioningDeviceClientException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
+    @Test
     public void getRegistrationStatusThrowsOnRequestNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        //act
-        contractAPIMqtt.getRegistrationStatus(null, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.getRegistrationStatus(null, mockedResponseCallback, null);
+        });
     }
 
     // SRS_ContractAPIMqtt_07_010: [If requestData.getOperationId() is null or empty, this method shall throw ProvisioningDeviceClientException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
+    @Test
     public void getRegistrationStatusThrowsOnOperationIdNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getOperationId();
-                result = null;
-            }
-        };
+                {
+                    mockedRequestData.getOperationId();
+                    result = null;
+                }
+            };
 
-        //act
-        contractAPIMqtt.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
     // SRS_ContractAPIMqtt_07_010: [If requestData.getOperationId() is null or empty, this method shall throw ProvisioningDeviceClientException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
+    @Test
     public void getRegistrationStatusThrowsOnOperationIdEmpty() throws ProvisioningDeviceClientException, IOException, InterruptedException {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getOperationId();
-                result = "";
-            }
-        };
+                {
+                    mockedRequestData.getOperationId();
+                    result = "";
+                }
+            };
 
-        //act
-        contractAPIMqtt.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
     // SRS_ContractAPIMqtt_07_010: [If responseCallback is null, this method shall throw ProvisioningDeviceClientException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
+    @Test
     public void getRegistrationStatusThrowsOnResponseNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getOperationId();
-                result = TEST_OPERATION_ID;
-            }
-        };
+                {
+                    mockedRequestData.getOperationId();
+                    result = TEST_OPERATION_ID;
+                }
+            };
 
-        //act
-        contractAPIMqtt.getRegistrationStatus(mockedRequestData, null, null);
+            //act
+            contractAPIMqtt.getRegistrationStatus(mockedRequestData, null, null);
+        });
     }
 
     // SRS_ContractAPIMqtt_07_012: [If amqpConnection is null or not connected, this method shall throw ProvisioningDeviceConnectionException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
+    @Test
     public void getRegistrationStatusThrowsOnMqttNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getOperationId();
-                result = TEST_OPERATION_ID;
-            }
-        };
+                {
+                    mockedRequestData.getOperationId();
+                    result = TEST_OPERATION_ID;
+                }
+            };
 
-        //act
-        contractAPIMqtt.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
     // SRS_ContractAPIMqtt_07_012: [If amqpConnection is null or not connected, this method shall throw ProvisioningDeviceConnectionException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
+    @Test
     public void getRegistrationStatusThrowsOnNotConnected() throws ProvisioningDeviceClientException, IOException, InterruptedException {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getOperationId();
-                result = TEST_OPERATION_ID;
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-            }
-        };
+                {
+                    mockedRequestData.getOperationId();
+                    result = TEST_OPERATION_ID;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                }
+            };
 
-        contractAPIMqtt.open(mockedRequestData);
-        new NonStrictExpectations()
-        {
+            contractAPIMqtt.open(mockedRequestData);
+            new NonStrictExpectations()
             {
-                mockedMqttConnection.isMqttConnected();
-                result = false;
-            }
-        };
+                {
+                    mockedMqttConnection.isMqttConnected();
+                    result = false;
+                }
+            };
 
-        //act
-        contractAPIMqtt.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
     // SRS_ContractAPIMqtt_07_013: [This method shall send an AMQP message with the property of iotdps-get-operationstatus and the OperationId.]
@@ -787,174 +810,183 @@ public class ContractAPIMqttTest
         };
     }
 
-    @Test  (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceForTPMThrowProvisioningDeviceClientException() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void requestNonceForTPMThrowProvisioningDeviceClientException() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = mockedByteArray;
-                mockedRequestData.getStorageRootKey();
-                result = mockedByteArray;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-            }
-        };
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = mockedByteArray;
+                    mockedRequestData.getStorageRootKey();
+                    result = mockedByteArray;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                }
+            };
 
-        //act
-        contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test  (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceForTPMThrowResponseCallbackNull() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
-        openContractAPI(contractAPIMqtt);
+    @Test
+    public void requestNonceForTPMThrowResponseCallbackNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
+            openContractAPI(contractAPIMqtt);
 
-        //act
-        contractAPIMqtt.requestNonceForTPM(mockedRequestData, null, null);
+            //act
+            contractAPIMqtt.requestNonceForTPM(mockedRequestData, null, null);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test  (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceForTPMThrowSslContextNull() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void requestNonceForTPMThrowSslContextNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = mockedByteArray;
-                mockedRequestData.getStorageRootKey();
-                result = mockedByteArray;
-                mockedRequestData.getSslContext();
-                result = null;
-            }
-        };
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = mockedByteArray;
+                    mockedRequestData.getStorageRootKey();
+                    result = mockedByteArray;
+                    mockedRequestData.getSslContext();
+                    result = null;
+                }
+            };
 
-        //act
-        contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test  (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceForTPMThrowStorageRootKeyNull() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void requestNonceForTPMThrowStorageRootKeyNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = mockedByteArray;
-                mockedRequestData.getStorageRootKey();
-                result = null;
-            }
-        };
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = mockedByteArray;
+                    mockedRequestData.getStorageRootKey();
+                    result = null;
+                }
+            };
 
-        //act
-        contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test  (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceForTPMThrowEndorsementKeyNull() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        //arrange
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void requestNonceForTPMThrowEndorsementKeyNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = null;
-            }
-        };
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = null;
+                }
+            };
 
-        //act
-        contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test  (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceForTPMThrowRegistrationIdNull() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void requestNonceForTPMThrowRegistrationIdNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = null;
-            }
-        };
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = null;
+                }
+            };
 
-        //act
-        contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test  (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceForTPMThrowRegistrationIdEmpty() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void requestNonceForTPMThrowRegistrationIdEmpty() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = "";
-            }
-        };
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = "";
+                }
+            };
 
-        //act
-        contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test  (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceForTPMThrowRequestDataNull() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        ContractAPIMqtt ContractAPIMqtt = createContractClass();
+    @Test
+    public void requestNonceForTPMThrowRequestDataNull() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            ContractAPIMqtt ContractAPIMqtt = createContractClass();
 
-        //act
-        ContractAPIMqtt.requestNonceForTPM(null, mockedResponseCallback, null);
+            //act
+            ContractAPIMqtt.requestNonceForTPM(null, mockedResponseCallback, null);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test  (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceForTPMSuccess() throws ProvisioningDeviceClientException, IOException, InterruptedException
-    {
-        ContractAPIMqtt contractAPIMqtt = createContractClass();
+    @Test
+    public void requestNonceForTPMSuccess() throws ProvisioningDeviceClientException, IOException, InterruptedException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            ContractAPIMqtt contractAPIMqtt = createContractClass();
 
-        //act
-        contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIMqtt.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
 
-        //assert
+            //assert
+        });
     }
 }

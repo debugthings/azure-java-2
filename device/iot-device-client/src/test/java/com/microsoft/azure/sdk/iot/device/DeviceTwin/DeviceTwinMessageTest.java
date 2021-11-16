@@ -4,14 +4,14 @@
 
 package com.microsoft.azure.sdk.iot.device.DeviceTwin;
 
-import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceOperations;
 import com.microsoft.azure.sdk.iot.device.MessageType;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /* Unit tests for IotHubTransportMessage
 * 100% methods covered
@@ -47,11 +47,12 @@ public class DeviceTwinMessageTest
     /*
     **Tests_SRS_DEVICETWINMESSAGE_25_002: [**If the message body is null, the constructor shall throw an IllegalArgumentException thrown by base constructor.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfDataIsNULL()
-    {
-        IotHubTransportMessage msg = new IotHubTransportMessage(null, MessageType.DEVICE_TWIN);
+    @Test
+    public void constructorThrowsIfDataIsNULL() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            IotHubTransportMessage msg = new IotHubTransportMessage(null, MessageType.DEVICE_TWIN);
 
+        });
     }
 
     @Test

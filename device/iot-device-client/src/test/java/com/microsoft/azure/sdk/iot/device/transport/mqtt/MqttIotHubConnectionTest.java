@@ -13,13 +13,12 @@ import com.microsoft.azure.sdk.iot.device.transport.IotHubConnectionStatus;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubListener;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
 import com.microsoft.azure.sdk.iot.device.transport.TransportUtils;
-import com.microsoft.azure.sdk.iot.device.transport.mqtt.*;
 import mockit.*;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -30,6 +29,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * Unit tests for MqttIotHubConnection
@@ -127,100 +127,105 @@ public class MqttIotHubConnectionTest
 
     // Tests_SRS_MQTTIOTHUBCONNECTION_15_003: [The constructor shall throw a new IllegalArgumentException
     // if any of the parameters of the configuration is null or empty.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsIllegalArgumentExceptionIfHostNameIsEmpty() throws TransportException
-    {
-        new NonStrictExpectations() {
-            {
-                mockConfig.getIotHubHostname();
-                result = "";
-                mockConfig.getIotHubName();
-                result = hubName;
-                mockConfig.getDeviceId();
-                result = deviceId;
-            }
-        };
+    @Test
+    public void constructorThrowsIllegalArgumentExceptionIfHostNameIsEmpty() throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new NonStrictExpectations() {
+                {
+                    mockConfig.getIotHubHostname();
+                    result = "";
+                    mockConfig.getIotHubName();
+                    result = hubName;
+                    mockConfig.getDeviceId();
+                    result = deviceId;
+                }
+            };
 
-        new MqttIotHubConnection(mockConfig);
+            new MqttIotHubConnection(mockConfig);
+        });
     }
 
     // Tests_SRS_MQTTIOTHUBCONNECTION_15_003: [The constructor shall throw a new IllegalArgumentException
     // if any of the parameters of the configuration is null or empty.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsIllegalArgumentExceptionIfConfigIsNull() throws TransportException
-    {
-        new NonStrictExpectations() {
-            {
-                mockConfig.getIotHubHostname();
-                result = "";
-                mockConfig.getIotHubName();
-                result = hubName;
-                mockConfig.getDeviceId();
-                result = deviceId;
-            }
-        };
+    @Test
+    public void constructorThrowsIllegalArgumentExceptionIfConfigIsNull() throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new NonStrictExpectations() {
+                {
+                    mockConfig.getIotHubHostname();
+                    result = "";
+                    mockConfig.getIotHubName();
+                    result = hubName;
+                    mockConfig.getDeviceId();
+                    result = deviceId;
+                }
+            };
 
-        new MqttIotHubConnection(null);
+            new MqttIotHubConnection(null);
+        });
     }
 
     // Tests_SRS_MQTTIOTHUBCONNECTION_15_003: [The constructor shall throw a new IllegalArgumentException
     // if any of the parameters of the configuration is null or empty.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsIllegalArgumentExceptionIfHostNameIsNull() throws TransportException
-    {
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsIllegalArgumentExceptionIfHostNameIsNull() throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new NonStrictExpectations()
             {
-                mockConfig.getIotHubHostname();
-                result = null;
-                mockConfig.getIotHubName();
-                result = hubName;
-                mockConfig.getDeviceId();
-                result = deviceId;
-            }
-        };
+                {
+                    mockConfig.getIotHubHostname();
+                    result = null;
+                    mockConfig.getIotHubName();
+                    result = hubName;
+                    mockConfig.getDeviceId();
+                    result = deviceId;
+                }
+            };
 
-        new MqttIotHubConnection(mockConfig);
+            new MqttIotHubConnection(mockConfig);
+        });
     }
 
     // Tests_SRS_MQTTIOTHUBCONNECTION_15_003: [The constructor shall throw a new IllegalArgumentException
     // if any of the parameters of the configuration is null or empty.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsIllegalArgumentExceptionIfDeviceIDIsEmpty() throws TransportException
-    {
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsIllegalArgumentExceptionIfDeviceIDIsEmpty() throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new NonStrictExpectations()
             {
-                mockConfig.getIotHubHostname();
-                result = iotHubHostName;
-                mockConfig.getIotHubName();
-                result = hubName;
-                mockConfig.getDeviceId();
-                result = "";
-            }
-        };
+                {
+                    mockConfig.getIotHubHostname();
+                    result = iotHubHostName;
+                    mockConfig.getIotHubName();
+                    result = hubName;
+                    mockConfig.getDeviceId();
+                    result = "";
+                }
+            };
 
-        new MqttIotHubConnection(mockConfig);
+            new MqttIotHubConnection(mockConfig);
+        });
     }
 
     // Tests_SRS_MQTTIOTHUBCONNECTION_15_003: [The constructor shall throw a new IllegalArgumentException
     // if any of the parameters of the configuration is null or empty.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsIllegalArgumentExceptionIfDeviceIDIsNull() throws TransportException
-    {
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsIllegalArgumentExceptionIfDeviceIDIsNull() throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new NonStrictExpectations()
             {
-                mockConfig.getIotHubHostname();
-                result = iotHubHostName;
-                mockConfig.getIotHubName();
-                result = hubName;
-                mockConfig.getDeviceId();
-                result = null;
-            }
-        };
+                {
+                    mockConfig.getIotHubHostname();
+                    result = iotHubHostName;
+                    mockConfig.getIotHubName();
+                    result = hubName;
+                    mockConfig.getDeviceId();
+                    result = null;
+                }
+            };
 
-        new MqttIotHubConnection(mockConfig);
+            new MqttIotHubConnection(mockConfig);
+        });
     }
 
     // Tests_SRS_MQTTIOTHUBCONNECTION_15_004: [The function shall establish an MQTT connection with an IoT Hub
@@ -550,45 +555,47 @@ public class MqttIotHubConnectionTest
     }
 
     // Tests_SRS_MQTTIOTHUBCONNECTION_15_013: [If the MQTT connection is closed, the function shall throw an IllegalStateException.]
-    @Test(expected = IllegalStateException.class)
-    public void sendEventFailsIfConnectionNotYetOpened() throws TransportException
-    {
-        baseExpectations();
+    @Test
+    public void sendEventFailsIfConnectionNotYetOpened() throws TransportException {
+        assertThrows(IllegalStateException.class, () -> {
+            baseExpectations();
 
-        final byte[] msgBody = { 0x61, 0x62, 0x63 };
-        new NonStrictExpectations()
-        {
+            final byte[] msgBody = { 0x61, 0x62, 0x63 };
+            new NonStrictExpectations()
             {
-                mockedMessage.getBytes();
-                result = msgBody;
-            }
-        };
+                {
+                    mockedMessage.getBytes();
+                    result = msgBody;
+                }
+            };
 
-        MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
-        connection.sendMessage(mockedMessage);
+            MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
+            connection.sendMessage(mockedMessage);
+        });
     }
 
     // Tests_SRS_MQTTIOTHUBCONNECTION_15_013: [If the MQTT connection is closed, the function shall throw a IllegalStateException.]
-    @Test(expected = IllegalStateException.class)
-    public void sendEventFailsIfConnectionClosed() throws TransportException
-    {
-        baseExpectations();
+    @Test
+    public void sendEventFailsIfConnectionClosed() throws TransportException {
+        assertThrows(IllegalStateException.class, () -> {
+            baseExpectations();
 
-        final byte[] msgBody = { 0x61, 0x62, 0x63 };
-        new NonStrictExpectations()
-        {
+            final byte[] msgBody = { 0x61, 0x62, 0x63 };
+            new NonStrictExpectations()
             {
-                mockedMessage.getBytes();
-                result = msgBody;
-            }
-        };
+                {
+                    mockedMessage.getBytes();
+                    result = msgBody;
+                }
+            };
 
-        MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
-        Deencapsulation.setField(connection, "listener", mockedIotHubListener);
+            MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
+            Deencapsulation.setField(connection, "listener", mockedIotHubListener);
 
-        connection.open();
-        connection.close();
-        connection.sendMessage(mockedMessage);
+            connection.open();
+            connection.close();
+            connection.sendMessage(mockedMessage);
+        });
     }
 
     @Test
@@ -745,15 +752,16 @@ public class MqttIotHubConnectionTest
 
 
     //Tests_SRS_MQTTIOTHUBCONNECTION_34_049: [If the provided listener object is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setListenerThrowsForNullListener() throws TransportException
-    {
-        //arrange
-        baseExpectations();
-        MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
+    @Test
+    public void setListenerThrowsForNullListener() throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            baseExpectations();
+            MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
 
-        //act
-        connection.setListener(null);
+            //act
+            connection.setListener(null);
+        });
     }
 
     //Tests_SRS_MQTTIOTHUBCONNECTION_34_050: [This function shall save the provided listener object.]
@@ -774,53 +782,56 @@ public class MqttIotHubConnectionTest
 
 
     //Tests_SRS_MQTTIOTHUBCONNECTION_34_051: [If this object has not received the provided message from the service, this function shall throw a TransportException.]
-    @Test (expected = TransportException.class)
-    public void sendMessageResultThrowsWhenMessageNotReceivedFirst() throws TransportException, IOException, MqttException
-    {
-        //arrange
-        baseExpectations();
-        openExpectations(null);
-        final IotHubMessageResult expectedResult = IotHubMessageResult.COMPLETE;
-        MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
-        Deencapsulation.setField(connection, "listener", mockedIotHubListener);
-        connection.open();
-        Map<IotHubTransportMessage, Integer> receivedMessagesToAcknowledge = new ConcurrentHashMap<>();
-        Deencapsulation.setField(connection, "receivedMessagesToAcknowledge", receivedMessagesToAcknowledge);
+    @Test
+    public void sendMessageResultThrowsWhenMessageNotReceivedFirst() throws TransportException, IOException, MqttException {
+        assertThrows(TransportException.class, () -> {
+            //arrange
+            baseExpectations();
+            openExpectations(null);
+            final IotHubMessageResult expectedResult = IotHubMessageResult.COMPLETE;
+            MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
+            Deencapsulation.setField(connection, "listener", mockedIotHubListener);
+            connection.open();
+            Map<IotHubTransportMessage, Integer> receivedMessagesToAcknowledge = new ConcurrentHashMap<>();
+            Deencapsulation.setField(connection, "receivedMessagesToAcknowledge", receivedMessagesToAcknowledge);
 
-        //act
-        connection.sendMessageResult(mockedTransportMessage, expectedResult);
+            //act
+            connection.sendMessageResult(mockedTransportMessage, expectedResult);
+        });
     }
 
     //Tests_SRS_MQTTIOTHUBCONNECTION_34_057: [If the provided message or result is null, this function shall throw a TransportException.]
-    @Test (expected = TransportException.class)
-    public void sendMessageResultThrowsForNullMessage() throws TransportException, IOException, MqttException
-    {
-        //arrange
-        baseExpectations();
-        openExpectations(null);
-        final IotHubMessageResult expectedResult = IotHubMessageResult.COMPLETE;
-        MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
-        Deencapsulation.setField(connection, "listener", mockedIotHubListener);
-        connection.open();
+    @Test
+    public void sendMessageResultThrowsForNullMessage() throws TransportException, IOException, MqttException {
+        assertThrows(TransportException.class, () -> {
+            //arrange
+            baseExpectations();
+            openExpectations(null);
+            final IotHubMessageResult expectedResult = IotHubMessageResult.COMPLETE;
+            MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
+            Deencapsulation.setField(connection, "listener", mockedIotHubListener);
+            connection.open();
 
-        //act
-        connection.sendMessageResult(null, expectedResult);
+            //act
+            connection.sendMessageResult(null, expectedResult);
+        });
     }
 
     //Tests_SRS_MQTTIOTHUBCONNECTION_34_057: [If the provided message or result is null, this function shall throw a TransportException.]
-    @Test (expected = TransportException.class)
-    public void sendMessageResultThrowsForNullResult() throws TransportException, IOException, MqttException
-    {
-        //arrange
-        baseExpectations();
-        openExpectations(null);
-        final IotHubMessageResult expectedResult = IotHubMessageResult.COMPLETE;
-        MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
-        Deencapsulation.setField(connection, "listener", mockedIotHubListener);
-        connection.open();
+    @Test
+    public void sendMessageResultThrowsForNullResult() throws TransportException, IOException, MqttException {
+        assertThrows(TransportException.class, () -> {
+            //arrange
+            baseExpectations();
+            openExpectations(null);
+            final IotHubMessageResult expectedResult = IotHubMessageResult.COMPLETE;
+            MqttIotHubConnection connection = new MqttIotHubConnection(mockConfig);
+            Deencapsulation.setField(connection, "listener", mockedIotHubListener);
+            connection.open();
 
-        //act
-        connection.sendMessageResult(mockedTransportMessage, null);
+            //act
+            connection.sendMessageResult(mockedTransportMessage, null);
+        });
     }
 
     //Tests_SRS_MQTTIOTHUBCONNECTION_34_053: [If the provided message has message type DEVICE_METHODS, this function shall invoke the methods client to send the ack and return the result.]

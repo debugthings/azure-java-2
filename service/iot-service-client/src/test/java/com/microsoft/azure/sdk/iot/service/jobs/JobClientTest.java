@@ -21,11 +21,6 @@ import com.microsoft.azure.sdk.iot.service.devicetwin.Query;
 import com.microsoft.azure.sdk.iot.service.devicetwin.QueryType;
 import com.microsoft.azure.sdk.iot.service.devicetwin.SqlQuery;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
-import com.microsoft.azure.sdk.iot.service.jobs.JobClient;
-import com.microsoft.azure.sdk.iot.service.jobs.JobClientOptions;
-import com.microsoft.azure.sdk.iot.service.jobs.JobResult;
-import com.microsoft.azure.sdk.iot.service.jobs.JobStatus;
-import com.microsoft.azure.sdk.iot.service.jobs.JobType;
 import com.microsoft.azure.sdk.iot.service.transport.http.HttpMethod;
 import com.microsoft.azure.sdk.iot.service.transport.http.HttpResponse;
 import mockit.Deencapsulation;
@@ -33,8 +28,8 @@ import mockit.Expectations;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -47,6 +42,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for job client
@@ -91,7 +87,7 @@ public class JobClientTest
     @Mocked
     IotHubServiceSasToken mockIotHubServiceSasToken;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException
     {
         VALID_SQL_QUERY = SqlQuery.createSqlQuery("*",
@@ -122,44 +118,47 @@ public class JobClientTest
     }
 
     /* Tests_SRS_JOBCLIENT_21_001: [The constructor shall throw IllegalArgumentException if the input string is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullCS() throws IOException
-    {
-        //arrange
-        final String connectionString = null;
+    @Test
+    public void constructorThrowsOnNullCS() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = null;
 
-        //act
-        JobClient.createFromConnectionString(connectionString);
+            //act
+            JobClient.createFromConnectionString(connectionString);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_001: [The constructor shall throw IllegalArgumentException if the input string is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyCS() throws IOException
-    {
-        //arrange
-        final String connectionString = "";
+    @Test
+    public void constructorThrowsOnEmptyCS() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "";
 
-        //act
-        JobClient.createFromConnectionString(connectionString);
+            //act
+            JobClient.createFromConnectionString(connectionString);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_001: [The constructor shall throw IllegalArgumentException if the input string is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnInvalidCS() throws IOException
-    {
-        //arrange
-        final String connectionString = "ImproperCSFormat";
+    @Test
+    public void constructorThrowsOnInvalidCS() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "ImproperCSFormat";
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
-                result = new IllegalArgumentException();
-            }
-        };
+                {
+                    IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
+                    result = new IllegalArgumentException();
+                }
+            };
 
-        //act
-        JobClient.createFromConnectionString(connectionString);
+            //act
+            JobClient.createFromConnectionString(connectionString);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_004: [The scheduleUpdateTwin shall create a json String that represent the twin job using the JobsParser class.] */
@@ -360,192 +359,198 @@ public class JobClientTest
     }
 
     /* Tests_SRS_JOBCLIENT_21_005: [If the JobId is null, empty, or invalid, the scheduleUpdateTwin shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleUpdateThrowsOnNullJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = null;
-        final String queryCondition = "validQueryCondition";
-        final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
-
-        //act
-        testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
-    }
-
-    /* Tests_SRS_JOBCLIENT_21_005: [If the JobId is null, empty, or invalid, the scheduleUpdateTwin shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleUpdateThrowsOnEmptyJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "";
-        final String queryCondition = "validQueryCondition";
-        final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
-
-        //act
-        testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
-    }
-
-    /* Tests_SRS_JOBCLIENT_21_005: [If the JobId is null, empty, or invalid, the scheduleUpdateTwin shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleUpdateThrowsOnInvalidJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "invalidJobId";
-        final String deviceId = "validDeviceId";
-        final String queryCondition = "validQueryCondition";
-        final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        Set<Pair> testTags = new HashSet<>();
-        testTags.add(new Pair("testTag", "tagObject"));
-        final String json = "validJson";
-        JobClient testJobClient = null;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void scheduleUpdateThrowsOnNullJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = null;
+            final String queryCondition = "validQueryCondition";
+            final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+            try
             {
-                IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
-                result = mockedIotHubConnectionString;
-
-                mockedDeviceTwinDevice.getTags();
-                result = testTags;
-
-                mockedDeviceTwinDevice.getDesiredProperties();
-                result = null;
-
-                mockedDeviceTwinDevice.getReportedProperties();
-                result = null;
-
-                new TwinState((TwinCollection)any, null, null);
-                result = mockedTwinState;
-
-                mockedDeviceTwinDevice.getDeviceId();
-                result = deviceId;
-
-                mockedDeviceTwinDevice.getETag();
-                result = null;
-
-                new JobsParser(jobId, mockedTwinState, queryCondition, startTimeUtc, maxExecutionTimeInSeconds);
-                result = mockedJobsParser;
-
-                mockedJobsParser.toJson();
-                result = json;
-
-                IotHubConnectionString.getUrlJobs(anyString, jobId);
-                result = new MalformedURLException();
+                testJobClient = JobClient.createFromConnectionString(connectionString);
             }
-        };
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+            //act
+            testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+        });
+    }
 
-        //act
-        testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+    /* Tests_SRS_JOBCLIENT_21_005: [If the JobId is null, empty, or invalid, the scheduleUpdateTwin shall throws IllegalArgumentException.] */
+    @Test
+    public void scheduleUpdateThrowsOnEmptyJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "";
+            final String queryCondition = "validQueryCondition";
+            final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
+
+            //act
+            testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+        });
+    }
+
+    /* Tests_SRS_JOBCLIENT_21_005: [If the JobId is null, empty, or invalid, the scheduleUpdateTwin shall throws IllegalArgumentException.] */
+    @Test
+    public void scheduleUpdateThrowsOnInvalidJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "invalidJobId";
+            final String deviceId = "validDeviceId";
+            final String queryCondition = "validQueryCondition";
+            final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            Set<Pair> testTags = new HashSet<>();
+            testTags.add(new Pair("testTag", "tagObject"));
+            final String json = "validJson";
+            JobClient testJobClient = null;
+            new NonStrictExpectations()
+            {
+                {
+                    IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
+                    result = mockedIotHubConnectionString;
+
+                    mockedDeviceTwinDevice.getTags();
+                    result = testTags;
+
+                    mockedDeviceTwinDevice.getDesiredProperties();
+                    result = null;
+
+                    mockedDeviceTwinDevice.getReportedProperties();
+                    result = null;
+
+                    new TwinState((TwinCollection)any, null, null);
+                    result = mockedTwinState;
+
+                    mockedDeviceTwinDevice.getDeviceId();
+                    result = deviceId;
+
+                    mockedDeviceTwinDevice.getETag();
+                    result = null;
+
+                    new JobsParser(jobId, mockedTwinState, queryCondition, startTimeUtc, maxExecutionTimeInSeconds);
+                    result = mockedJobsParser;
+
+                    mockedJobsParser.toJson();
+                    result = json;
+
+                    IotHubConnectionString.getUrlJobs(anyString, jobId);
+                    result = new MalformedURLException();
+                }
+            };
+
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
+
+            //act
+            testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_006: [If the updateTwin is null, the scheduleUpdateTwin shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleUpdateThrowsOnNullUpdateTwin() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "validJobId";
-        final String queryCondition = "validQueryCondition";
-        final DeviceTwinDevice updateTwin = null;
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+    @Test
+    public void scheduleUpdateThrowsOnNullUpdateTwin() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "validJobId";
+            final String queryCondition = "validQueryCondition";
+            final DeviceTwinDevice updateTwin = null;
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+            //act
+            testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_007: [If the startTimeUtc is null, the scheduleUpdateTwin shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleUpdateThrowsOnNullStartTimeUtc() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "validJobId";
-        final String queryCondition = "validQueryCondition";
-        final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
-        final Date startTimeUtc = null;
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+    @Test
+    public void scheduleUpdateThrowsOnNullStartTimeUtc() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "validJobId";
+            final String queryCondition = "validQueryCondition";
+            final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
+            final Date startTimeUtc = null;
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+            //act
+            testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_008: [If the maxExecutionTimeInSeconds is negative, the scheduleUpdateTwin shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleUpdateThrowsOnNullMaxExecutionTimeInSeconds() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "validJobId";
-        final String queryCondition = "validQueryCondition";
-        final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = -10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+    @Test
+    public void scheduleUpdateThrowsOnNullMaxExecutionTimeInSeconds() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "validJobId";
+            final String queryCondition = "validQueryCondition";
+            final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = -10;
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+            //act
+            testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_009: [The scheduleUpdateTwin shall create a URL for Jobs using the iotHubConnectionString.] */
@@ -696,64 +701,65 @@ public class JobClientTest
 
     /* Tests_SRS_JOBCLIENT_21_011: [If the scheduleUpdateTwin failed to send a PUT request, it shall throw IOException.] */
     /* Tests_SRS_JOBCLIENT_21_012: [If the scheduleUpdateTwin failed to verify the iothub response, it shall throw IotHubException.] */
-    @Test (expected = IOException.class)
-    public void scheduleUpdateTwinThrowsOnSendPUT() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "validJobId";
-        final String deviceId = "validDeviceId";
-        final String queryCondition = "validQueryCondition";
-        final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        final String json = "validJson";
+    @Test
+    public void scheduleUpdateTwinThrowsOnSendPUT() throws IOException, IotHubException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "validJobId";
+            final String deviceId = "validDeviceId";
+            final String queryCondition = "validQueryCondition";
+            final DeviceTwinDevice updateTwin = mockedDeviceTwinDevice;
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            final String json = "validJson";
 
-        Set<Pair> testTags = new HashSet<>();
-        testTags.add(new Pair("testTag", "tagObject"));
+            Set<Pair> testTags = new HashSet<>();
+            testTags.add(new Pair("testTag", "tagObject"));
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
-                result = mockedIotHubConnectionString;
+                {
+                    IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
+                    result = mockedIotHubConnectionString;
 
-                mockedDeviceTwinDevice.getTags();
-                result = testTags;
+                    mockedDeviceTwinDevice.getTags();
+                    result = testTags;
 
-                mockedDeviceTwinDevice.getDesiredProperties();
-                result = null;
+                    mockedDeviceTwinDevice.getDesiredProperties();
+                    result = null;
 
-                mockedDeviceTwinDevice.getReportedProperties();
-                result = null;
+                    mockedDeviceTwinDevice.getReportedProperties();
+                    result = null;
 
-                new TwinState((TwinCollection)any, null, null);
-                result = mockedTwinState;
+                    new TwinState((TwinCollection)any, null, null);
+                    result = mockedTwinState;
 
-                mockedDeviceTwinDevice.getDeviceId();
-                result = deviceId;
+                    mockedDeviceTwinDevice.getDeviceId();
+                    result = deviceId;
 
-                mockedDeviceTwinDevice.getETag();
-                result = null;
+                    mockedDeviceTwinDevice.getETag();
+                    result = null;
 
-                new JobsParser(jobId, mockedTwinState, queryCondition, startTimeUtc, maxExecutionTimeInSeconds);
-                result = mockedJobsParser;
+                    new JobsParser(jobId, mockedTwinState, queryCondition, startTimeUtc, maxExecutionTimeInSeconds);
+                    result = mockedJobsParser;
 
-                mockedJobsParser.toJson();
-                result = json;
+                    mockedJobsParser.toJson();
+                    result = json;
 
-                IotHubConnectionString.getUrlJobs(anyString, jobId);
-                result = mockedURL;
+                    IotHubConnectionString.getUrlJobs(anyString, jobId);
+                    result = mockedURL;
 
-                DeviceOperations.request(anyString, mockedURL, HttpMethod.PUT, json.getBytes(StandardCharsets.UTF_8), (String)any, anyInt, anyInt, (Proxy) any);
-                result = new IOException();
-            }
-        };
+                    DeviceOperations.request(anyString, mockedURL, HttpMethod.PUT, json.getBytes(StandardCharsets.UTF_8), (String)any, anyInt, anyInt, (Proxy) any);
+                    result = new IOException();
+                }
+            };
 
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        //act
-        testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+            //act
+            testJobClient.scheduleUpdateTwin(jobId, queryCondition, updateTwin, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_013: [The scheduleUpdateTwin shall parse the iothub response and return it as JobResult.] */
@@ -824,242 +830,250 @@ public class JobClientTest
     }
 
     /* Tests_SRS_JOBCLIENT_21_014: [If the JobId is null, empty, or invalid, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleDeviceMethodThrowsOnNullJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = null;
-        final String queryCondition = "validQueryCondition";
-        final String methodName = "validMethodName";
-        final Set<String> payload = new HashSet<>();
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+    @Test
+    public void scheduleDeviceMethodThrowsOnNullJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = null;
+            final String queryCondition = "validQueryCondition";
+            final String methodName = "validMethodName";
+            final Set<String> payload = new HashSet<>();
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+            //act
+            testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_014: [If the JobId is null, empty, or invalid, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleDeviceMethodThrowsOnEmptyJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "";
-        final String queryCondition = "validQueryCondition";
-        final String methodName = "validMethodName";
-        final Set<String> payload = new HashSet<>();
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+    @Test
+    public void scheduleDeviceMethodThrowsOnEmptyJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "";
+            final String queryCondition = "validQueryCondition";
+            final String methodName = "validMethodName";
+            final Set<String> payload = new HashSet<>();
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+            //act
+            testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_014: [If the JobId is null, empty, or invalid, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleDeviceMethodThrowsOnInvalidJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "invalidJobId";
-        final String queryCondition = "validQueryCondition";
-        final String methodName = "validMethodName";
-        final Set<String> payload = new HashSet<>();
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        final String json = "validJson";
-        JobClient testJobClient = null;
+    @Test
+    public void scheduleDeviceMethodThrowsOnInvalidJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "invalidJobId";
+            final String queryCondition = "validQueryCondition";
+            final String methodName = "validMethodName";
+            final Set<String> payload = new HashSet<>();
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            final String json = "validJson";
+            JobClient testJobClient = null;
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
-                result = mockedIotHubConnectionString;
+                {
+                    IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
+                    result = mockedIotHubConnectionString;
 
-                new MethodParser(methodName, null, null, payload);
-                result = mockedMethodParser;
+                    new MethodParser(methodName, null, null, payload);
+                    result = mockedMethodParser;
 
-                new JobsParser(jobId, mockedMethodParser, queryCondition, startTimeUtc, maxExecutionTimeInSeconds);
-                result = mockedJobsParser;
+                    new JobsParser(jobId, mockedMethodParser, queryCondition, startTimeUtc, maxExecutionTimeInSeconds);
+                    result = mockedJobsParser;
 
-                mockedJobsParser.toJson();
-                result = json;
+                    mockedJobsParser.toJson();
+                    result = json;
 
-                IotHubConnectionString.getUrlJobs(anyString, jobId);
-                result = new MalformedURLException();
-            }
-        };
+                    IotHubConnectionString.getUrlJobs(anyString, jobId);
+                    result = new MalformedURLException();
+                }
+            };
 
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
-
-        //act
-        testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
-    }
-
-    /* Tests_SRS_JOBCLIENT_21_015: [If the methodName is null or empty, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleDeviceMethodThrowsOnNullMethodName() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "ValidJobId";
-        final String queryCondition = "validQueryCondition";
-        final String methodName = null;
-        final Set<String> payload = new HashSet<>();
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
-
-        //act
-        testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
-    }
-
-    /* Tests_SRS_JOBCLIENT_21_015: [If the methodName is null or empty, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleDeviceMethodThrowsOnEmptyMethodName() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "ValidJobId";
-        final String queryCondition = "validQueryCondition";
-        final String methodName = "";
-        final Set<String> payload = new HashSet<>();
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
-
-        //act
-        testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
-    }
-
-    /* Tests_SRS_JOBCLIENT_21_015: [If the methodName is null or empty, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleDeviceMethodThrowsOnInvalidMethodName() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "ValidJobId";
-        final String queryCondition = "validQueryCondition";
-        final String methodName = "invalidMethodName";
-        final Set<String> payload = new HashSet<>();
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-        new NonStrictExpectations()
-        {
+            try
             {
-                new MethodParser(methodName, null, null, payload);
-                result = new IllegalArgumentException();
+                testJobClient = JobClient.createFromConnectionString(connectionString);
             }
-        };
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+            //act
+            testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+        });
+    }
 
-        //act
-        testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+    /* Tests_SRS_JOBCLIENT_21_015: [If the methodName is null or empty, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
+    @Test
+    public void scheduleDeviceMethodThrowsOnNullMethodName() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "ValidJobId";
+            final String queryCondition = "validQueryCondition";
+            final String methodName = null;
+            final Set<String> payload = new HashSet<>();
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
+
+            //act
+            testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+        });
+    }
+
+    /* Tests_SRS_JOBCLIENT_21_015: [If the methodName is null or empty, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
+    @Test
+    public void scheduleDeviceMethodThrowsOnEmptyMethodName() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "ValidJobId";
+            final String queryCondition = "validQueryCondition";
+            final String methodName = "";
+            final Set<String> payload = new HashSet<>();
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
+
+            //act
+            testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+        });
+    }
+
+    /* Tests_SRS_JOBCLIENT_21_015: [If the methodName is null or empty, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
+    @Test
+    public void scheduleDeviceMethodThrowsOnInvalidMethodName() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "ValidJobId";
+            final String queryCondition = "validQueryCondition";
+            final String methodName = "invalidMethodName";
+            final Set<String> payload = new HashSet<>();
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+            new NonStrictExpectations()
+            {
+                {
+                    new MethodParser(methodName, null, null, payload);
+                    result = new IllegalArgumentException();
+                }
+            };
+
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
+
+            //act
+            testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_016: [If the startTimeUtc is null, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleDeviceMethodThrowsOnNullStartTimeUtc() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "ValidJobId";
-        final String queryCondition = "validQueryCondition";
-        final String methodName = "validMethodName";
-        final Set<String> payload = new HashSet<>();
-        final Date startTimeUtc = null;
-        final long maxExecutionTimeInSeconds = 10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+    @Test
+    public void scheduleDeviceMethodThrowsOnNullStartTimeUtc() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "ValidJobId";
+            final String queryCondition = "validQueryCondition";
+            final String methodName = "validMethodName";
+            final Set<String> payload = new HashSet<>();
+            final Date startTimeUtc = null;
+            final long maxExecutionTimeInSeconds = 10;
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+            //act
+            testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_017: [If the maxExecutionTimeInSeconds is negative, the scheduleDeviceMethod shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void scheduleDeviceMethodThrowsOnNegativeMaxExecutionTimeInSeconds() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "ValidJobId";
-        final String queryCondition = "validQueryCondition";
-        final String methodName = "validMethodName";
-        final Set<String> payload = new HashSet<>();
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = -10;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+    @Test
+    public void scheduleDeviceMethodThrowsOnNegativeMaxExecutionTimeInSeconds() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "ValidJobId";
+            final String queryCondition = "validQueryCondition";
+            final String methodName = "validMethodName";
+            final Set<String> payload = new HashSet<>();
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = -10;
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+            //act
+            testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_018: [The scheduleDeviceMethod shall create a json String that represent the invoke method job using the JobsParser class.] */
@@ -1221,46 +1235,47 @@ public class JobClientTest
 
     /* Tests_SRS_JOBCLIENT_21_021: [If the scheduleDeviceMethod failed to send a PUT request, it shall throw IOException.] */
     /* Tests_SRS_JOBCLIENT_21_022: [If the scheduleDeviceMethod failed to verify the iothub response, it shall throw IotHubException.] */
-    @Test (expected = IOException.class)
-    public void scheduleDeviceMethodThrowsOnSendPUT() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "validJobId";
-        final String queryCondition = "validQueryCondition";
-        final String methodName = "validMethodName";
-        final Set<String> payload = new HashSet<>();
-        final Date startTimeUtc = new Date();
-        final long maxExecutionTimeInSeconds = 10;
-        final String json = "validJson";
+    @Test
+    public void scheduleDeviceMethodThrowsOnSendPUT() throws IOException, IotHubException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "validJobId";
+            final String queryCondition = "validQueryCondition";
+            final String methodName = "validMethodName";
+            final Set<String> payload = new HashSet<>();
+            final Date startTimeUtc = new Date();
+            final long maxExecutionTimeInSeconds = 10;
+            final String json = "validJson";
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
-                result = mockedIotHubConnectionString;
+                {
+                    IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
+                    result = mockedIotHubConnectionString;
 
-                new MethodParser(methodName, null, null, payload);
-                result = mockedMethodParser;
+                    new MethodParser(methodName, null, null, payload);
+                    result = mockedMethodParser;
 
-                new JobsParser(jobId, mockedMethodParser, queryCondition, startTimeUtc, maxExecutionTimeInSeconds);
-                result = mockedJobsParser;
+                    new JobsParser(jobId, mockedMethodParser, queryCondition, startTimeUtc, maxExecutionTimeInSeconds);
+                    result = mockedJobsParser;
 
-                mockedJobsParser.toJson();
-                result = json;
+                    mockedJobsParser.toJson();
+                    result = json;
 
-                IotHubConnectionString.getUrlJobs(anyString, jobId);
-                result = mockedURL;
+                    IotHubConnectionString.getUrlJobs(anyString, jobId);
+                    result = mockedURL;
 
-                DeviceOperations.request(anyString, mockedURL, HttpMethod.PUT, json.getBytes(StandardCharsets.UTF_8), (String)any, anyInt, anyInt, (Proxy) any);
-                result = new IOException();
-            }
-        };
+                    DeviceOperations.request(anyString, mockedURL, HttpMethod.PUT, json.getBytes(StandardCharsets.UTF_8), (String)any, anyInt, anyInt, (Proxy) any);
+                    result = new IOException();
+                }
+            };
 
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        //act
-        testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+            //act
+            testJobClient.scheduleDeviceMethod(jobId, queryCondition, methodName, null, null, payload, startTimeUtc, maxExecutionTimeInSeconds);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_023: [The scheduleDeviceMethod shall parse the iothub response and return it as JobResult.] */
@@ -1314,76 +1329,79 @@ public class JobClientTest
 
 
     /* Tests_SRS_JOBCLIENT_21_024: [If the JobId is null, empty, or invalid, the getJob shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void getJobThrowsOnNullJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = null;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
-
-        //act
-        testJobClient.getJob(jobId);
-    }
-
-    /* Tests_SRS_JOBCLIENT_21_024: [If the JobId is null, empty, or invalid, the getJob shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void getJobThrowsOnEmptyJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "";
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
-
-        //act
-        testJobClient.getJob(jobId);
-    }
-
-    /* Tests_SRS_JOBCLIENT_21_024: [If the JobId is null, empty, or invalid, the getJob shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void getJobThrowsOnInvalidJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "invalidJobId";
-        JobClient testJobClient = null;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void getJobThrowsOnNullJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = null;
+            JobClient testJobClient = null;
+            try
             {
-                IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
-                result = mockedIotHubConnectionString;
-
-                IotHubConnectionString.getUrlJobs(anyString, jobId);
-                result = new MalformedURLException();
+                testJobClient = JobClient.createFromConnectionString(connectionString);
             }
-        };
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.getJob(jobId);
+            //act
+            testJobClient.getJob(jobId);
+        });
+    }
+
+    /* Tests_SRS_JOBCLIENT_21_024: [If the JobId is null, empty, or invalid, the getJob shall throws IllegalArgumentException.] */
+    @Test
+    public void getJobThrowsOnEmptyJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "";
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
+
+            //act
+            testJobClient.getJob(jobId);
+        });
+    }
+
+    /* Tests_SRS_JOBCLIENT_21_024: [If the JobId is null, empty, or invalid, the getJob shall throws IllegalArgumentException.] */
+    @Test
+    public void getJobThrowsOnInvalidJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "invalidJobId";
+            JobClient testJobClient = null;
+            new NonStrictExpectations()
+            {
+                {
+                    IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
+                    result = mockedIotHubConnectionString;
+
+                    IotHubConnectionString.getUrlJobs(anyString, jobId);
+                    result = new MalformedURLException();
+                }
+            };
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
+
+            //act
+            testJobClient.getJob(jobId);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_025: [The getJob shall create a URL for Jobs using the iotHubConnectionString.] */
@@ -1519,76 +1537,79 @@ public class JobClientTest
     }
 
     /* Tests_SRS_JOBCLIENT_21_030: [If the JobId is null, empty, or invalid, the cancelJob shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void cancelJobThrowsOnNullJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = null;
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
-
-        //act
-        testJobClient.cancelJob(jobId);
-    }
-
-    /* Tests_SRS_JOBCLIENT_21_030: [If the JobId is null, empty, or invalid, the cancelJob shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void cancelJobThrowsOnEmptyJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "";
-        JobClient testJobClient = null;
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
-
-        //act
-        testJobClient.cancelJob(jobId);
-    }
-
-    /* Tests_SRS_JOBCLIENT_21_030: [If the JobId is null, empty, or invalid, the cancelJob shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void cancelJobThrowsOnInvalidJobId() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "invalidJobId";
-        JobClient testJobClient = null;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void cancelJobThrowsOnNullJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = null;
+            JobClient testJobClient = null;
+            try
             {
-                IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
-                result = mockedIotHubConnectionString;
-
-                IotHubConnectionString.getUrlJobsCancel(anyString, jobId);
-                result = new MalformedURLException();
+                testJobClient = JobClient.createFromConnectionString(connectionString);
             }
-        };
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.cancelJob(jobId);
+            //act
+            testJobClient.cancelJob(jobId);
+        });
+    }
+
+    /* Tests_SRS_JOBCLIENT_21_030: [If the JobId is null, empty, or invalid, the cancelJob shall throws IllegalArgumentException.] */
+    @Test
+    public void cancelJobThrowsOnEmptyJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "";
+            JobClient testJobClient = null;
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
+
+            //act
+            testJobClient.cancelJob(jobId);
+        });
+    }
+
+    /* Tests_SRS_JOBCLIENT_21_030: [If the JobId is null, empty, or invalid, the cancelJob shall throws IllegalArgumentException.] */
+    @Test
+    public void cancelJobThrowsOnInvalidJobId() throws IOException, IotHubException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "invalidJobId";
+            JobClient testJobClient = null;
+            new NonStrictExpectations()
+            {
+                {
+                    IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
+                    result = mockedIotHubConnectionString;
+
+                    IotHubConnectionString.getUrlJobsCancel(anyString, jobId);
+                    result = new MalformedURLException();
+                }
+            };
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
+
+            //act
+            testJobClient.cancelJob(jobId);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_031: [The cancelJob shall create a cancel URL for Jobs using the iotHubConnectionString.] */
@@ -1685,37 +1706,38 @@ public class JobClientTest
 
     /* Tests_SRS_JOBCLIENT_21_033: [If the cancelJob failed to send a POST request, it shall throw IOException.] */
     /* Tests_SRS_JOBCLIENT_21_034: [If the cancelJob failed to verify the iothub response, it shall throw IotHubException.] */
-    @Test (expected = IOException.class)
-    public void cancelJobThrowsOnSendPOST() throws IOException, IotHubException
-    {
-        //arrange
-        final String connectionString = "testString";
-        final String jobId = "validJobId";
-        JobClient testJobClient = null;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void cancelJobThrowsOnSendPOST() throws IOException, IotHubException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            final String jobId = "validJobId";
+            JobClient testJobClient = null;
+            new NonStrictExpectations()
             {
-                IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
-                result = mockedIotHubConnectionString;
+                {
+                    IotHubConnectionStringBuilder.createIotHubConnectionString(connectionString);
+                    result = mockedIotHubConnectionString;
 
-                IotHubConnectionString.getUrlJobsCancel(anyString, jobId);
-                result = mockedURL;
+                    IotHubConnectionString.getUrlJobsCancel(anyString, jobId);
+                    result = mockedURL;
 
-                DeviceOperations.request(anyString, mockedURL, HttpMethod.POST, (byte[]) any, (String)any, anyInt, anyInt, (Proxy) any);
-                result = new IOException();
+                    DeviceOperations.request(anyString, mockedURL, HttpMethod.POST, (byte[]) any, (String)any, anyInt, anyInt, (Proxy) any);
+                    result = new IOException();
+                }
+            };
+            try
+            {
+                testJobClient = JobClient.createFromConnectionString(connectionString);
             }
-        };
-        try
-        {
-            testJobClient = JobClient.createFromConnectionString(connectionString);
-        }
-        catch (IllegalArgumentException e)
-        {
-            assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
-        }
+            catch (IllegalArgumentException e)
+            {
+                assertTrue("Test did not run because createFromConnectionString failed to create new instance of the JobClient", true);
+            }
 
-        //act
-        testJobClient.cancelJob(jobId);
+            //act
+            testJobClient.cancelJob(jobId);
+        });
     }
 
     /* Tests_SRS_JOBCLIENT_21_035: [The cancelJob shall parse the iothub response and return it as JobResult.] */
@@ -1789,70 +1811,75 @@ public class JobClientTest
     }
 
     //Tests_SRS_JOBCLIENT_25_036: [If the sqlQuery is null, empty, or invalid, the queryDeviceJob shall throw IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void queryDeviceJobThrowsOnNullQuery(@Mocked Query mockedQuery) throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void queryDeviceJobThrowsOnNullQuery(@Mocked Query mockedQuery) throws IotHubException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        //act
-        testJobClient.queryDeviceJob(null);
+            //act
+            testJobClient.queryDeviceJob(null);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void queryDeviceJobThrowsOnEmptyQuery() throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void queryDeviceJobThrowsOnEmptyQuery() throws IotHubException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        //act
-        testJobClient.queryDeviceJob("");
+            //act
+            testJobClient.queryDeviceJob("");
+        });
     }
 
     //Tests_SRS_JOBCLIENT_25_037: [If the pageSize is null, zero or negative, the queryDeviceJob shall throw IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void queryDeviceJobThrowsOnNegativePageSize() throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void queryDeviceJobThrowsOnNegativePageSize() throws IotHubException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        //act
-        testJobClient.queryDeviceJob(VALID_SQL_QUERY, -1);
+            //act
+            testJobClient.queryDeviceJob(VALID_SQL_QUERY, -1);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void queryDeviceJobThrowsOnZeroPageSize() throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void queryDeviceJobThrowsOnZeroPageSize() throws IotHubException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        //act
-        testJobClient.queryDeviceJob(VALID_SQL_QUERY, 0);
+            //act
+            testJobClient.queryDeviceJob(VALID_SQL_QUERY, 0);
+        });
     }
 
-    @Test (expected = IotHubException.class)
-    public void queryDeviceJobThrowsOnNewQueryThrows(@Mocked Query mockedQuery) throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void queryDeviceJobThrowsOnNewQueryThrows(@Mocked Query mockedQuery) throws IotHubException, IOException {
+        assertThrows(IotHubException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
-                result = mockedQuery;
-                mockedQuery.sendQueryRequest((TokenCredentialCache) any, (AzureSasCredential) any, (IotHubConnectionString) any, (URL) any, HttpMethod.POST, anyInt, anyInt, (Proxy) any);
-                result = new IotHubException();
-            }
-        };
+                {
+                    Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
+                    result = mockedQuery;
+                    mockedQuery.sendQueryRequest((TokenCredentialCache) any, (AzureSasCredential) any, (IotHubConnectionString) any, (URL) any, HttpMethod.POST, anyInt, anyInt, (Proxy) any);
+                    result = new IotHubException();
+                }
+            };
 
-        //act
-        testJobClient.queryDeviceJob(VALID_SQL_QUERY);
+            //act
+            testJobClient.queryDeviceJob(VALID_SQL_QUERY);
+        });
     }
 
     /*
@@ -1916,26 +1943,28 @@ public class JobClientTest
     }
 
     //Tests_SRS_JOBCLIENT_25_042: [If the pageSize is null, zero or negative, the queryJobResponse shall throw IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void queryJobResponseThrowsOnNegativePageSize() throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void queryJobResponseThrowsOnNegativePageSize() throws IotHubException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        //act
-        testJobClient.queryJobResponse(JOB_TYPE_DEFAULT, JOB_STATUS_DEFAULT, -1);
+            //act
+            testJobClient.queryJobResponse(JOB_TYPE_DEFAULT, JOB_STATUS_DEFAULT, -1);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void queryJobResponseThrowsOnZeroPageSize() throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void queryJobResponseThrowsOnZeroPageSize() throws IotHubException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        //act
-        testJobClient.queryJobResponse(JOB_TYPE_DEFAULT, JOB_STATUS_DEFAULT, 0);
+            //act
+            testJobClient.queryJobResponse(JOB_TYPE_DEFAULT, JOB_STATUS_DEFAULT, 0);
+        });
     }
 
     //Tests_SRS_JOBCLIENT_25_047: [hasNextJob shall return true if the next job exist, false other wise.]
@@ -1974,48 +2003,50 @@ public class JobClientTest
     }
 
     //Tests_SRS_JOBCLIENT_25_046: [If the input query is null, empty, or invalid, the hasNextJob shall throw IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void hasNextThrowsOnNullQuery(@Mocked Query mockedQuery) throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void hasNextThrowsOnNullQuery(@Mocked Query mockedQuery) throws IotHubException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
-                result = mockedQuery;
-            }
-        };
+                {
+                    Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
+                    result = mockedQuery;
+                }
+            };
 
-        Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
+            Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
 
-        //act
-        boolean result = testJobClient.hasNextJob(null);
+            //act
+            boolean result = testJobClient.hasNextJob(null);
+        });
     }
 
-    @Test (expected = IotHubException.class)
-    public void hasNextThrowsIfQueryHasNextThrows(@Mocked Query mockedQuery) throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void hasNextThrowsIfQueryHasNextThrows(@Mocked Query mockedQuery) throws IotHubException, IOException {
+        assertThrows(IotHubException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
-                result = mockedQuery;
-                Deencapsulation.invoke(mockedQuery, "hasNext");
-                result = new IotHubException();
-            }
-        };
+                {
+                    Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
+                    result = mockedQuery;
+                    Deencapsulation.invoke(mockedQuery, "hasNext");
+                    result = new IotHubException();
+                }
+            };
 
-        Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
+            Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
 
-        //act
-        boolean result = testJobClient.hasNextJob(testQuery);
+            //act
+            boolean result = testJobClient.hasNextJob(testQuery);
+        });
     }
 
     //Tests_SRS_JOBCLIENT_25_049: [getNextJob shall return next Job Result if the exist, and throw NoSuchElementException other wise.]
@@ -2061,98 +2092,102 @@ public class JobClientTest
     }
 
     //Tests_SRS_JOBCLIENT_25_048: [If the input query is null, empty, or invalid, the getNextJob shall throw IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void nextThrowsOnNullQuery(@Mocked Query mockedQuery) throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void nextThrowsOnNullQuery(@Mocked Query mockedQuery) throws IotHubException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
-                result = mockedQuery;
-            }
-        };
+                {
+                    Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
+                    result = mockedQuery;
+                }
+            };
 
-        Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
+            Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
 
-        //act
-        testJobClient.getNextJob(null);
+            //act
+            testJobClient.getNextJob(null);
+        });
     }
 
-    @Test (expected = IotHubException.class)
-    public void nextThrowsOnQueryNextThrows(@Mocked Query mockedQuery) throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void nextThrowsOnQueryNextThrows(@Mocked Query mockedQuery) throws IotHubException, IOException {
+        assertThrows(IotHubException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
-                result = mockedQuery;
-                Deencapsulation.invoke(mockedQuery, "next");
-                result = new IotHubException();
-            }
-        };
+                {
+                    Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
+                    result = mockedQuery;
+                    Deencapsulation.invoke(mockedQuery, "next");
+                    result = new IotHubException();
+                }
+            };
 
-        Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
+            Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
 
-        //act
-        testJobClient.getNextJob(testQuery);
+            //act
+            testJobClient.getNextJob(testQuery);
+        });
     }
 
-    @Test (expected = NoSuchElementException.class)
-    public void nextThrowsIfNoNewElements(@Mocked Query mockedQuery) throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void nextThrowsIfNoNewElements(@Mocked Query mockedQuery) throws IotHubException, IOException {
+        assertThrows(NoSuchElementException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
-                result = mockedQuery;
-                Deencapsulation.invoke(mockedQuery, "hasNext");
-                result = false;
-                Deencapsulation.invoke(mockedQuery, "next");
-                result = new NoSuchElementException();
-            }
-        };
+                {
+                    Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
+                    result = mockedQuery;
+                    Deencapsulation.invoke(mockedQuery, "hasNext");
+                    result = false;
+                    Deencapsulation.invoke(mockedQuery, "next");
+                    result = new NoSuchElementException();
+                }
+            };
 
-        Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
+            Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
 
-        //act
-        testJobClient.getNextJob(testQuery);
+            //act
+            testJobClient.getNextJob(testQuery);
+        });
     }
 
     //Tests_SRS_JOBCLIENT_25_050: [getNextJob shall throw IOException if next Job Result exist and is not a string.]
-    @Test (expected = IOException.class)
-    public void nextThrowsIfNonStringRetrieved(@Mocked Query mockedQuery) throws IotHubException, IOException
-    {
-        //arrange
-        final String connectionString = "testString";
-        JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
+    @Test
+    public void nextThrowsIfNonStringRetrieved(@Mocked Query mockedQuery) throws IotHubException, IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            final String connectionString = "testString";
+            JobClient testJobClient = JobClient.createFromConnectionString(connectionString);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
-                result = mockedQuery;
-                Deencapsulation.invoke(mockedQuery, "hasNext");
-                result = true;
-                Deencapsulation.invoke(mockedQuery, "next");
-                result = 5;
-            }
-        };
+                {
+                    Deencapsulation.newInstance(Query.class, new Class[] {String.class, Integer.class, QueryType.class}, anyString, anyInt, QueryType.DEVICE_JOB);
+                    result = mockedQuery;
+                    Deencapsulation.invoke(mockedQuery, "hasNext");
+                    result = true;
+                    Deencapsulation.invoke(mockedQuery, "next");
+                    result = 5;
+                }
+            };
 
-        Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
+            Query testQuery = testJobClient.queryDeviceJob(VALID_SQL_QUERY);
 
-        //act
-        testJobClient.getNextJob(testQuery);
+            //act
+            testJobClient.getNextJob(testQuery);
+        });
     }
 }

@@ -6,13 +6,9 @@
 package com.microsoft.azure.sdk.iot.service.transport.http;
 
 import com.microsoft.azure.sdk.iot.service.transport.TransportUtils;
-import com.microsoft.azure.sdk.iot.service.transport.http.HttpConnection;
-import com.microsoft.azure.sdk.iot.service.transport.http.HttpMethod;
-import com.microsoft.azure.sdk.iot.service.transport.http.HttpRequest;
-import com.microsoft.azure.sdk.iot.service.transport.http.HttpResponse;
 import mockit.*;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
@@ -25,6 +21,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for HttpRequest. */
 @SuppressWarnings("EmptyMethod")
@@ -109,23 +106,24 @@ public class HttpsRequestTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_HTTPSREQUEST_12_004: [If an IOException occurs in setting up the HTTPS connection, the function shall throw an IOException.]
     // Assert
-    @Test(expected = IOException.class)
-    public void constructorThrowsIoExceptionIfCannotSetupConnection(@Mocked final HttpConnection mockConn, final @Mocked URL mockUrl) throws IOException
-    {
-        // Arrange
-        final HttpMethod httpsMethod = HttpMethod.GET;
-        final byte[] body = new byte[0];
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsIoExceptionIfCannotSetupConnection(@Mocked final HttpConnection mockConn, final @Mocked URL mockUrl) throws IOException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            final HttpMethod httpsMethod = HttpMethod.GET;
+            final byte[] body = new byte[0];
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "http";
-                new HttpConnection(mockUrl, httpsMethod, (Proxy) any);
-                result = new IOException();
-            }
-        };
-        // Act
-        new HttpRequest(mockUrl, httpsMethod, body);
+                {
+                    mockUrl.getProtocol();
+                    result = "http";
+                    new HttpConnection(mockUrl, httpsMethod, (Proxy) any);
+                    result = new IOException();
+                }
+            };
+            // Act
+            new HttpRequest(mockUrl, httpsMethod, body);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_HTTPSREQUEST_12_005: [The function shall send an HTTPS request as formatted in the constructor.]
@@ -495,32 +493,33 @@ public class HttpsRequestTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_HTTPSREQUEST_12_007: [If the client cannot connect to the server, the function shall throw an IOException.]
     // Assert
-    @Test(expected = IOException.class)
-    public void sendThrowsIoExceptionIfCannotConnect(@Mocked final HttpConnection mockConn, final @Mocked URL mockUrl) throws IOException
-    {
-        // Arrange
-        final HttpMethod httpsMethod = HttpMethod.POST;
-        final byte[] body = new byte[0];
-        new NonStrictExpectations()
-        {
+    @Test
+    public void sendThrowsIoExceptionIfCannotConnect(@Mocked final HttpConnection mockConn, final @Mocked URL mockUrl) throws IOException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            final HttpMethod httpsMethod = HttpMethod.POST;
+            final byte[] body = new byte[0];
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "http";
-                mockConn.connect();
-                result = new IOException();
-                mockConn.getResponseHeaders();
-                result = new IOException();
-                mockConn.getResponseStatus();
-                result = new IOException();
-                mockConn.readInput();
-                result = new IOException();
-                mockConn.readError();
-                result = new IOException();
-            }
-        };
-        HttpRequest request = new HttpRequest(mockUrl, httpsMethod, body);
-        // Act
-        request.send();
+                {
+                    mockUrl.getProtocol();
+                    result = "http";
+                    mockConn.connect();
+                    result = new IOException();
+                    mockConn.getResponseHeaders();
+                    result = new IOException();
+                    mockConn.getResponseStatus();
+                    result = new IOException();
+                    mockConn.readInput();
+                    result = new IOException();
+                    mockConn.readError();
+                    result = new IOException();
+                }
+            };
+            HttpRequest request = new HttpRequest(mockUrl, httpsMethod, body);
+            // Act
+            request.send();
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_HTTPSREQUEST_12_008: [If an I/O exception occurs because of a bad response status code, the function shall attempt to flush or read the error stream so that the underlying HTTPS connection can be reused.]

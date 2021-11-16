@@ -5,17 +5,16 @@
 
 package com.microsoft.azure.sdk.iot.service;
 
-import com.microsoft.azure.sdk.iot.service.IotHubConnectionString;
-import com.microsoft.azure.sdk.iot.service.IotHubConnectionStringBuilder;
 import mockit.Deencapsulation;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Iot Hub Connection String class.
@@ -49,40 +48,42 @@ public class IotHubConnectionStringTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_12_002: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlDeviceDeviceNameNull() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = null;
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
-        
-        // act
-        iotHubConnectionString.getUrlDevice(deviceId);
+    @Test
+    public void getUrlDeviceDeviceNameNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = null;
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+
+            // act
+            iotHubConnectionString.getUrlDevice(deviceId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_12_002: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlDeviceDeviceNameEmpty() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = "";
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
-        
-        // act
-        iotHubConnectionString.getUrlDevice(deviceId);
+    @Test
+    public void getUrlDeviceDeviceNameEmpty() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = "";
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+
+            // act
+            iotHubConnectionString.getUrlDevice(deviceId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_12_003: [The function shall create a URL object from the given deviceId using the following format: https:hostname/devices/deviceId?api-version=201X-XX-XX]        StringBuilder stringBuilder = new StringBuilder();
@@ -109,40 +110,42 @@ public class IotHubConnectionStringTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_12_004: [The constructor shall throw NullPointerException if the input integer is null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlDeviceListMaxCountNull() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        Integer maxCount = null;
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
-        
-        // act
-        iotHubConnectionString.getUrlDeviceList(maxCount);
+    @Test
+    public void getUrlDeviceListMaxCountNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            Integer maxCount = null;
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+
+            // act
+            iotHubConnectionString.getUrlDeviceList(maxCount);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_12_004: [The constructor shall throw NullPointerException if the input integer is null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlDeviceListMaxCountZero() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        Integer maxCount = 0;
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
-        
-        // act
-        iotHubConnectionString.getUrlDeviceList(maxCount);
+    @Test
+    public void getUrlDeviceListMaxCountZero() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            Integer maxCount = 0;
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+
+            // act
+            iotHubConnectionString.getUrlDeviceList(maxCount);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_12_005: [The function shall create a URL object from the given integer using the following format: https:hostname/devices/?maxCount=XX&api-version=201X-XX-XX]
@@ -237,40 +240,42 @@ public class IotHubConnectionStringTest
     /*
     **Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_25_010: [The function shall throw IllegalArgumentException if the input string is empty or null ]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlTwinThrowsOnEmptyDeviceID() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final String deviceId = "";
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlTwinThrowsOnEmptyDeviceID() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final String deviceId = "";
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlTwin(deviceId).toString();
+            // act
+            iotHubConnectionString.getUrlTwin(deviceId).toString();
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlTwinThrowsOnNullDeviceID() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final String deviceId = null;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlTwinThrowsOnNullDeviceID() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final String deviceId = null;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlTwin(deviceId).toString();
+            // act
+            iotHubConnectionString.getUrlTwin(deviceId).toString();
 
+        });
     }
 
     /*
@@ -300,38 +305,40 @@ public class IotHubConnectionStringTest
     /*
     **Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_21_016: [The function shall throw IllegalArgumentException if the input string is empty or null ]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlMethodThrowsOnEmptyDeviceID() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final String deviceId = "";
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlMethodThrowsOnEmptyDeviceID() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final String deviceId = "";
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlMethod(deviceId).toString();
+            // act
+            iotHubConnectionString.getUrlMethod(deviceId).toString();
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlMethodThrowsOnNullDeviceID() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final String deviceId = null;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlMethodThrowsOnNullDeviceID() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final String deviceId = null;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlMethod(deviceId).toString();
+            // act
+            iotHubConnectionString.getUrlMethod(deviceId).toString();
+        });
     }
 
     /*
@@ -361,38 +368,40 @@ public class IotHubConnectionStringTest
     /*
     ** Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_21_018: [The function shall throw IllegalArgumentException if the input string is empty or null ]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlJobsThrowsOnEmptyJobID() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final String jobId = "";
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlJobsThrowsOnEmptyJobID() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final String jobId = "";
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlJobs(jobId).toString();
+            // act
+            iotHubConnectionString.getUrlJobs(jobId).toString();
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlJobsThrowsOnNullJobID() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final String jobId = null;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlJobsThrowsOnNullJobID() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final String jobId = null;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlJobs(jobId).toString();
+            // act
+            iotHubConnectionString.getUrlJobs(jobId).toString();
+        });
     }
 
     /*
@@ -422,38 +431,40 @@ public class IotHubConnectionStringTest
     /*
     ** Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_21_020: [The function shall throw IllegalArgumentException if the input string is empty or null ]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlJobsCancelThrowsOnEmptyJobID() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final String jobId = "";
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlJobsCancelThrowsOnEmptyJobID() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final String jobId = "";
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlJobsCancel(jobId).toString();
+            // act
+            iotHubConnectionString.getUrlJobsCancel(jobId).toString();
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlJobsCancelThrowsOnNullJobID() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final String jobId = null;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlJobsCancelThrowsOnNullJobID() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final String jobId = null;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlJobsCancel(jobId).toString();
+            // act
+            iotHubConnectionString.getUrlJobsCancel(jobId).toString();
+        });
     }
 
     /*
@@ -621,82 +632,86 @@ public class IotHubConnectionStringTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_001: [The function shall throw IllegalArgumentException if the deviceId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleDeviceNameNull() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = null;
-        final String moduleId = "somemodule";
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleDeviceNameNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = null;
+            final String moduleId = "somemodule";
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModule(deviceId, moduleId);
+            // act
+            iotHubConnectionString.getUrlModule(deviceId, moduleId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_001: [The function shall throw IllegalArgumentException if the deviceId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleDeviceNameEmpty() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = "";
-        final String moduleId = "somemodule";
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleDeviceNameEmpty() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = "";
+            final String moduleId = "somemodule";
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModule(deviceId, moduleId);
+            // act
+            iotHubConnectionString.getUrlModule(deviceId, moduleId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_002: [The function shall throw IllegalArgumentException if the moduleId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleModuleNameNull() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = "somedevice";
-        final String moduleId = null;
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleModuleNameNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = "somedevice";
+            final String moduleId = null;
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModule(deviceId, moduleId);
+            // act
+            iotHubConnectionString.getUrlModule(deviceId, moduleId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_002: [The function shall throw IllegalArgumentException if the moduleId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleModuleNameEmpty() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = "somedevice";
-        final String moduleId = "";
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleModuleNameEmpty() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = "somedevice";
+            final String moduleId = "";
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModule(deviceId, moduleId);
+            // act
+            iotHubConnectionString.getUrlModule(deviceId, moduleId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_12_003: [The function shall create a URL object from the given deviceId using the following format: https:hostname/devices/deviceId?api-version=201X-XX-XX]        StringBuilder stringBuilder = new StringBuilder();
@@ -724,40 +739,42 @@ public class IotHubConnectionStringTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_004: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlConfigurationConfigurationNameNull() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String configurationId = null;
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlConfigurationConfigurationNameNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String configurationId = null;
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlConfiguration(configurationId);
+            // act
+            iotHubConnectionString.getUrlConfiguration(configurationId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_004: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlConfigurationConfigurationNameEmpty() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String configurationId = "";
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlConfigurationConfigurationNameEmpty() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String configurationId = "";
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlConfiguration(configurationId);
+            // act
+            iotHubConnectionString.getUrlConfiguration(configurationId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_005: [The function shall create a URL object from the given configurationId
@@ -785,40 +802,42 @@ public class IotHubConnectionStringTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_006: [The constructor shall throw NullPointerException if the input integer is null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlConfigurationListMaxCountNull() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        Integer maxCount = null;
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlConfigurationListMaxCountNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            Integer maxCount = null;
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlConfigurationsList(maxCount);
+            // act
+            iotHubConnectionString.getUrlConfigurationsList(maxCount);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_006: [The constructor shall throw NullPointerException if the input integer is 0]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlConfigurationListMaxCountZero() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        Integer maxCount = 0;
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlConfigurationListMaxCountZero() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            Integer maxCount = 0;
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlConfigurationsList(maxCount);
+            // act
+            iotHubConnectionString.getUrlConfigurationsList(maxCount);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_007: [The function shall create a URL object from the given
@@ -846,40 +865,42 @@ public class IotHubConnectionStringTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_008: [The function shall throw IllegalArgumentException if the moduleId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleOnDeviceDeviceNameNull() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = null;
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleOnDeviceDeviceNameNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = null;
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModulesOnDevice(deviceId);
+            // act
+            iotHubConnectionString.getUrlModulesOnDevice(deviceId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_008: [The function shall throw IllegalArgumentException if the moduleId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleOnDeviceDeviceNameEmpty() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = "";
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleOnDeviceDeviceNameEmpty() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = "";
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModulesOnDevice(deviceId);
+            // act
+            iotHubConnectionString.getUrlModulesOnDevice(deviceId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_009: [The function shall create a URL object from the given
@@ -907,16 +928,17 @@ public class IotHubConnectionStringTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_34_026: [The function shall throw IllegalArgumentException
     // if the deviceId string is empty or null]
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlApplyConfigurationContentThrowsIfDeviceIdNull() throws MalformedURLException
-    {
-        //arrange
-        String hostname = "somehostname.com";
-        IotHubConnectionString connectionString = Deencapsulation.newInstance(IotHubConnectionString.class);
-        Deencapsulation.setField(connectionString, "hostName", hostname);
+    @Test
+    public void getUrlApplyConfigurationContentThrowsIfDeviceIdNull() throws MalformedURLException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String hostname = "somehostname.com";
+            IotHubConnectionString connectionString = Deencapsulation.newInstance(IotHubConnectionString.class);
+            Deencapsulation.setField(connectionString, "hostName", hostname);
 
-        //act
-        connectionString.getUrlApplyConfigurationContent(null);
+            //act
+            connectionString.getUrlApplyConfigurationContent(null);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_34_026: [The function shall return a URL in the format
@@ -940,82 +962,86 @@ public class IotHubConnectionStringTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_010: [The function shall throw IllegalArgumentException if the deviceId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleTwinDeviceNameNull() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = null;
-        final String moduleId = "somemodule";
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleTwinDeviceNameNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = null;
+            final String moduleId = "somemodule";
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModuleTwin(deviceId, moduleId);
+            // act
+            iotHubConnectionString.getUrlModuleTwin(deviceId, moduleId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_010: [The function shall throw IllegalArgumentException if the deviceId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleTwinDeviceNameEmpty() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = "";
-        final String moduleId = "somemodule";
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleTwinDeviceNameEmpty() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = "";
+            final String moduleId = "somemodule";
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModuleTwin(deviceId, moduleId);
+            // act
+            iotHubConnectionString.getUrlModuleTwin(deviceId, moduleId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_011: [The function shall throw IllegalArgumentException if the moduleId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleTwinModuleNameNull() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = "somedevice";
-        final String moduleId = null;
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleTwinModuleNameNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = "somedevice";
+            final String moduleId = null;
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModuleTwin(deviceId, moduleId);
+            // act
+            iotHubConnectionString.getUrlModuleTwin(deviceId, moduleId);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_011: [The function shall throw IllegalArgumentException if the moduleId string is empty or null]
     // assert
-    @Test (expected = IllegalArgumentException.class)
-    public void getUrlModuleTwinModuleNameEmpty() throws IOException, IllegalArgumentException
-    {
-        // arrange
-        final String deviceId = "somedevice";
-        final String moduleId = "";
-        final String iotHubName = "b.c.d";
-        final String hostName = "HOSTNAME." + iotHubName;
-        final String sharedAccessKeyName = "ACCESSKEYNAME";
-        final String policyName = "SharedAccessKey";
-        final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
-        final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
-        final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+    @Test
+    public void getUrlModuleTwinModuleNameEmpty() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String deviceId = "somedevice";
+            final String moduleId = "";
+            final String iotHubName = "b.c.d";
+            final String hostName = "HOSTNAME." + iotHubName;
+            final String sharedAccessKeyName = "ACCESSKEYNAME";
+            final String policyName = "SharedAccessKey";
+            final String sharedAccessKey = "1234567890abcdefghijklmnopqrstvwxyz=";
+            final String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+            final IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
 
-        // act
-        iotHubConnectionString.getUrlModuleTwin(deviceId, moduleId);
+            // act
+            iotHubConnectionString.getUrlModuleTwin(deviceId, moduleId);
+        });
     }
 
    //Tests_SRS_SERVICE_SDK_JAVA_IOTHUBCONNECTIONSTRING_28_012: [** The function shall create a URL object from the given deviceId and moduleId

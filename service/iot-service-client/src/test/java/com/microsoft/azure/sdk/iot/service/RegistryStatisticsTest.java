@@ -4,17 +4,16 @@
 package com.microsoft.azure.sdk.iot.service;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.RegistryStatisticsParser;
-import com.microsoft.azure.sdk.iot.service.RegistryManager;
-import com.microsoft.azure.sdk.iot.service.RegistryStatistics;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code Coverage
@@ -97,10 +96,11 @@ public class RegistryStatisticsTest
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_REGISTRY_STATISTICS_34_003: [If the provided RegistryStatisticsParser object is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorRejectsNullParser()
-    {
-        //act
-        Deencapsulation.newInstance(RegistryStatistics.class, new Class[] {RegistryStatisticsParser.class}, null);
+    @Test
+    public void constructorRejectsNullParser() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(RegistryStatistics.class, new Class[] {RegistryStatisticsParser.class}, null);
+        });
     }
 }

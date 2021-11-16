@@ -17,9 +17,9 @@ import com.microsoft.azure.sdk.iot.service.RegistryManagerOptions;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.Timeout;
 import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
@@ -75,7 +75,7 @@ public class TokenRenewalTests extends IntegrationTest
         timeout = new Timeout(TOKEN_RENEWAL_TEST_TIMEOUT_MILLISECONDS);
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws IOException
     {
         iotHubConnectionString = Tools.retrieveEnvironmentVariableValue(TestConstants.IOT_HUB_CONNECTION_STRING_ENV_VAR_NAME);
@@ -85,7 +85,7 @@ public class TokenRenewalTests extends IntegrationTest
         registryManager = RegistryManager.createFromConnectionString(iotHubConnectionString, RegistryManagerOptions.builder().httpReadTimeout(HTTP_READ_TIMEOUT).build());
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void startProxy()
     {
         proxyServer = DefaultHttpProxyServer.bootstrap()
@@ -94,7 +94,7 @@ public class TokenRenewalTests extends IntegrationTest
                 .start();
     }
 
-    @AfterClass
+    @AfterAll
     public static void stopProxy()
     {
         proxyServer.stop();

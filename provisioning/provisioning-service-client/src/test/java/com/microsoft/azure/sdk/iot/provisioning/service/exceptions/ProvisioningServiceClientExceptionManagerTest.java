@@ -5,14 +5,14 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service.exceptions;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.*;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for ProvisioningServiceClient Exception Manager
@@ -23,117 +23,126 @@ public class ProvisioningServiceClientExceptionManagerTest
 {
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_001: [The function shall throw ProvisioningServiceClientBadFormatException if the response status equal 400]
     // Assert
-    @Test (expected = ProvisioningServiceClientBadFormatException.class)
-    public void httpResponseVerification400() throws ProvisioningServiceClientServiceException
-    {
-        // Arrange
-        final int status = 400;
-        final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
-        // Act
-        ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+    @Test
+    public void httpResponseVerification400() throws ProvisioningServiceClientServiceException {
+        assertThrows(ProvisioningServiceClientBadFormatException.class, () -> {
+            // Arrange
+            final int status = 400;
+            final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
+            // Act
+            ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_002: [The function shall throw ProvisioningServiceClientUnathorizedException if the response status equal 401]
     // Assert
-    @Test (expected = ProvisioningServiceClientUnathorizedException.class)
-    public void httpResponseVerification401() throws ProvisioningServiceClientServiceException
-    {
-        // Arrange
-        final int status = 401;
-        final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
-        // Act
-        ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+    @Test
+    public void httpResponseVerification401() throws ProvisioningServiceClientServiceException {
+        assertThrows(ProvisioningServiceClientUnathorizedException.class, () -> {
+            // Arrange
+            final int status = 401;
+            final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
+            // Act
+            ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_004: [The function shall throw ProvisioningServiceClientNotFoundException if the response status equal 404]
     // Assert
-    @Test (expected = ProvisioningServiceClientNotFoundException.class)
-    public void httpResponseVerification404() throws ProvisioningServiceClientServiceException
-    {
-        // Arrange
-        final int status = 404;
-        final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
+    @Test
+    public void httpResponseVerification404() throws ProvisioningServiceClientServiceException {
+        assertThrows(ProvisioningServiceClientNotFoundException.class, () -> {
+            // Arrange
+            final int status = 404;
+            final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
 
-        // Act
-        ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+            // Act
+            ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_005: [The function shall throw ProvisioningServiceClientPreconditionFailedException if the response status equal 412]
     // Assert
-    @Test (expected = ProvisioningServiceClientPreconditionFailedException.class)
-    public void httpResponseVerification412() throws ProvisioningServiceClientServiceException
-    {
-        // Arrange
-        final int status = 412;
-        final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
+    @Test
+    public void httpResponseVerification412() throws ProvisioningServiceClientServiceException {
+        assertThrows(ProvisioningServiceClientPreconditionFailedException.class, () -> {
+            // Arrange
+            final int status = 412;
+            final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
 
-        // Act
-        ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+            // Act
+            ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_006: [The function shall throw ProvisioningServiceClientTooManyRequestsException if the response status equal 429]
     // Assert
-    @Test (expected = ProvisioningServiceClientTooManyRequestsException.class)
-    public void httpResponseVerification429() throws ProvisioningServiceClientServiceException
-    {
-        // Arrange
-        final int status = 429;
-        final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
+    @Test
+    public void httpResponseVerification429() throws ProvisioningServiceClientServiceException {
+        assertThrows(ProvisioningServiceClientTooManyRequestsException.class, () -> {
+            // Arrange
+            final int status = 429;
+            final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
 
-        // Act
-        ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+            // Act
+            ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_007: [The function shall throw ProvisioningServiceClientInternalServerErrorException if the response status equal 500]
     // Assert
-    @Test (expected = ProvisioningServiceClientInternalServerErrorException.class)
-    public void httpResponseVerification500() throws ProvisioningServiceClientServiceException
-    {
-        // Arrange
-        final int status = 500;
-        final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
+    @Test
+    public void httpResponseVerification500() throws ProvisioningServiceClientServiceException {
+        assertThrows(ProvisioningServiceClientInternalServerErrorException.class, () -> {
+            // Arrange
+            final int status = 500;
+            final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
 
-        // Act
-        ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+            // Act
+            ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_011: [The function shall throw ProvisioningServiceClientUnknownException if the response status none of them above and greater than 300 copying the error reason to the exception]
     // Assert
-    @Test (expected = ProvisioningServiceClientServiceException.class)
-    public void httpResponseVerification301ErrorReasonOk() throws ProvisioningServiceClientServiceException
-    {
-        // Arrange
-        final int status = 301;
-        final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
+    @Test
+    public void httpResponseVerification301ErrorReasonOk() throws ProvisioningServiceClientServiceException {
+        assertThrows(ProvisioningServiceClientServiceException.class, () -> {
+            // Arrange
+            final int status = 301;
+            final String errorReason = "{\"ExceptionMessage\":\"This is a valid message\"}";
 
-        // Act
-        ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+            // Act
+            ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_011: [The function shall throw ProvisioningServiceClientUnknownException if the response status none of them above and greater than 300 copying the error reason to the exception]
     // Assert
-    @Test (expected = ProvisioningServiceClientServiceException.class)
-    public void httpResponseVerification301ErrorReasonNull() throws ProvisioningServiceClientServiceException
-    {
-        // Arrange
-        final int status = 301;
-        final String errorReason = null;
+    @Test
+    public void httpResponseVerification301ErrorReasonNull() throws ProvisioningServiceClientServiceException {
+        assertThrows(ProvisioningServiceClientServiceException.class, () -> {
+            // Arrange
+            final int status = 301;
+            final String errorReason = null;
 
-        // Act
-        ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+            // Act
+            ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_011: [The function shall throw ProvisioningServiceClientUnknownException if the response status none of them above and greater than 300 copying the error reason to the exception]
     // Assert
-    @Test (expected = ProvisioningServiceClientServiceException.class)
-    public void httpResponseVerification301ErrorInvalidEmptyReason() throws ProvisioningServiceClientServiceException
-    {
-        // Arrange
-        final int status = 301;
-        final String errorReason = "";
+    @Test
+    public void httpResponseVerification301ErrorInvalidEmptyReason() throws ProvisioningServiceClientServiceException {
+        assertThrows(ProvisioningServiceClientServiceException.class, () -> {
+            // Arrange
+            final int status = 301;
+            final String errorReason = "";
 
-        // Act
-        ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+            // Act
+            ProvisioningServiceClientExceptionManager.httpResponseVerification(status, errorReason);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_PROVISIONINGSERVICECLIENTEXCEPTIONMANAGER_21_012: [The function shall return without exception if the response status equal or less than 300]

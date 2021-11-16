@@ -6,11 +6,11 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.device.internal.parser;
 
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.parser.DeviceRegistrationParser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  *  Unit tests for  DeviceRegistration
@@ -34,17 +34,19 @@ public class DeviceRegistrationParserTest
     }
 
     //SRS_DeviceRegistration_25_001: [ The constructor shall throw IllegalArgumentException if Registration Id is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithoutTPMOnNullRegistrationIdThrows() throws Exception
-    {
-        DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser(null, "");
+    @Test
+    public void constructorWithoutTPMOnNullRegistrationIdThrows() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser(null, "");
+        });
     }
 
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithoutTPMOnEmptyRegistrationIdThrows() throws Exception
-    {
-        DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser("", "");
+    @Test
+    public void constructorWithoutTPMOnEmptyRegistrationIdThrows() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser("", "");
+        });
     }
 
     //SRS_DeviceRegistration_25_006: [ The constructor shall save the provided Registration Id, EndorsementKey and StorageRootKey. ]
@@ -67,36 +69,40 @@ public class DeviceRegistrationParserTest
     }
 
     //SRS_DeviceRegistration_25_003: [ The constructor shall throw IllegalArgumentException if Registration Id is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithTPMOnNullRegistrationIdThrows() throws Exception
-    {
-        final String eKey = "testEndorsementKey";
-        final String sRKey = "testStorageRootKey";
-        DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser(null, "", eKey, sRKey);
+    @Test
+    public void constructorWithTPMOnNullRegistrationIdThrows() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String eKey = "testEndorsementKey";
+            final String sRKey = "testStorageRootKey";
+            DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser(null, "", eKey, sRKey);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithTPMOnEmptyRegistrationIdThrows() throws Exception
-    {
-        final String eKey = "testEndorsementKey";
-        final String sRKey = "testStorageRootKey";
-        DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser("", "", eKey, sRKey);
+    @Test
+    public void constructorWithTPMOnEmptyRegistrationIdThrows() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String eKey = "testEndorsementKey";
+            final String sRKey = "testStorageRootKey";
+            DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser("", "", eKey, sRKey);
+        });
     }
 
     //SRS_DeviceRegistration_25_004: [ The constructor shall throw IllegalArgumentException if EndorsementKey is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithTPMOnNullEkThrows() throws Exception
-    {
-        final String eKey = "testEndorsementKey";
-        final String sRKey = "testStorageRootKey";
-        DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser(TEST_REGISTRATION_ID, "", null, sRKey);
+    @Test
+    public void constructorWithTPMOnNullEkThrows() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String eKey = "testEndorsementKey";
+            final String sRKey = "testStorageRootKey";
+            DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser(TEST_REGISTRATION_ID, "", null, sRKey);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithTPMOnEmptyEkThrows() throws Exception
-    {
-        final String eKey = "testEndorsementKey";
-        final String sRKey = "testStorageRootKey";
-        DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser(TEST_REGISTRATION_ID, "", "", sRKey);
+    @Test
+    public void constructorWithTPMOnEmptyEkThrows() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String eKey = "testEndorsementKey";
+            final String sRKey = "testStorageRootKey";
+            DeviceRegistrationParser deviceRegistrationParser = new DeviceRegistrationParser(TEST_REGISTRATION_ID, "", "", sRKey);
+        });
     }
 }

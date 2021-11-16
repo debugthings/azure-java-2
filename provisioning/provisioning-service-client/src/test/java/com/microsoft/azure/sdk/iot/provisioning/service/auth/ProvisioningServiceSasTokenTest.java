@@ -5,12 +5,9 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service.auth;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningConnectionString;
-import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningConnectionStringBuilder;
-import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningSasToken;
 import mockit.Deencapsulation;
 import mockit.Expectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import static org.apache.commons.codec.binary.Base64.decodeBase64;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for Provisioning Service SasToken
@@ -28,13 +26,14 @@ import static org.junit.Assert.assertTrue;
 public class ProvisioningServiceSasTokenTest
 {
     // Tests_SRS_PROVISIONING_SERVICE_SASTOKEN_12_001: [The constructor shall throw IllegalArgumentException if the input object is null]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullConnectionString() throws IllegalArgumentException
-    {
-        // Arrange
-        ProvisioningConnectionString provisioningConnectionString = null;
-        // Act
-        ProvisioningSasToken provisioningServiceSasToken = new ProvisioningSasToken(provisioningConnectionString);
+    @Test
+    public void constructorThrowsOnNullConnectionString() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            ProvisioningConnectionString provisioningConnectionString = null;
+            // Act
+            ProvisioningSasToken provisioningServiceSasToken = new ProvisioningSasToken(provisioningConnectionString);
+        });
     }
 
     // Tests_SRS_PROVISIONING_SERVICE_SASTOKEN_12_002: [The constructor shall create a target uri from the url encoded host name)]
@@ -109,20 +108,21 @@ public class ProvisioningServiceSasTokenTest
     }
 
     // Tests_SRS_PROVISIONING_SERVICE_SASTOKEN_12_007: [The constructor shall throw Exception if building the token failed]
-    @Test (expected = Exception.class)
-    public void constructorThrowsOnBuildToken() throws Exception
-    {
-        // Arrange
-        String deviceProvisioningServiceName = "b.c.d";
-        String hostName = "HOSTNAME." + deviceProvisioningServiceName;
-        String sharedAccessKeyName = "ACCESSKEYNAME";
-        String policyName = "SharedAccessKey";
-        String sharedAccessKey = encodeBase64String("key".getBytes(StandardCharsets.UTF_8));
-        String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+    @Test
+    public void constructorThrowsOnBuildToken() throws Exception {
+        assertThrows(Exception.class, () -> {
+            // Arrange
+            String deviceProvisioningServiceName = "b.c.d";
+            String hostName = "HOSTNAME." + deviceProvisioningServiceName;
+            String sharedAccessKeyName = "ACCESSKEYNAME";
+            String policyName = "SharedAccessKey";
+            String sharedAccessKey = encodeBase64String("key".getBytes(StandardCharsets.UTF_8));
+            String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
 
-        // Act
-        ProvisioningConnectionString provisioningConnectionString = ProvisioningConnectionStringBuilder.createConnectionString(connectionString);
-        Deencapsulation.setField(provisioningConnectionString, "hostName", null);
-        ProvisioningSasToken provisioningServiceSasToken = new ProvisioningSasToken(provisioningConnectionString);
+            // Act
+            ProvisioningConnectionString provisioningConnectionString = ProvisioningConnectionStringBuilder.createConnectionString(connectionString);
+            Deencapsulation.setField(provisioningConnectionString, "hostName", null);
+            ProvisioningSasToken provisioningServiceSasToken = new ProvisioningSasToken(provisioningConnectionString);
+        });
     }
 }

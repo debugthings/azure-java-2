@@ -18,10 +18,10 @@ import com.microsoft.azure.sdk.iot.service.RegistryManager;
 import com.microsoft.azure.sdk.iot.service.RegistryManagerOptions;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.AfterClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runners.Parameterized;
 import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
@@ -188,7 +188,7 @@ public class SendMessagesCommon extends IntegrationTest
         this.testInstance = new SendMessagesTestInstance(protocol, authenticationType, clientType, withProxy);
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void classSetup()
     {
         try
@@ -202,7 +202,7 @@ public class SendMessagesCommon extends IntegrationTest
         }
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void startProxy()
     {
         proxyServer = DefaultHttpProxyServer.bootstrap()
@@ -211,7 +211,7 @@ public class SendMessagesCommon extends IntegrationTest
                 .start();
     }
 
-    @AfterClass
+    @AfterAll
     public static void stopProxy()
     {
         proxyServer.stop();
@@ -508,7 +508,7 @@ public class SendMessagesCommon extends IntegrationTest
         }
     }
 
-    @After
+    @AfterEach
     public void tearDownTest()
     {
         this.testInstance.dispose();

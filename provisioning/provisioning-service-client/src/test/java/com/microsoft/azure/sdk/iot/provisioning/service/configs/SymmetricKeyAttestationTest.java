@@ -3,9 +3,8 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service.configs;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.configs.SymmetricKeyAttestation;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 

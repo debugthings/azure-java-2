@@ -10,10 +10,9 @@ import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.device.net.*;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubListener;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
-import com.microsoft.azure.sdk.iot.device.transport.https.*;
 import mockit.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -25,6 +24,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for HttpsIotHubConnection.
@@ -62,7 +62,7 @@ public class HttpsIotHubConnectionTest
 
     private static final char[] testSasToken = "SharedAccessSignature sr=test&sig=test&se=0".toCharArray();
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException, TransportException
     {
         new NonStrictExpectations()
@@ -479,22 +479,23 @@ public class HttpsIotHubConnectionTest
     }
 
     // Tests_SRS_HTTPSIOTHUBCONNECTION_11_012: [If the IoT Hub could not be reached, the function shall throw a TransportException.]
-    @Test(expected = TransportException.class)
-    public void sendEventThrowsProtocolConnectionExceptionIfRequestFails(@Mocked final IotHubEventUri mockUri) throws TransportException
-    {
-        final ProtocolException exception = new ProtocolException();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void sendEventThrowsProtocolConnectionExceptionIfRequestFails(@Mocked final IotHubEventUri mockUri) throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            final ProtocolException exception = new ProtocolException();
+            new NonStrictExpectations()
             {
-                new HttpsRequest((URL) any, (HttpsMethod) any, (byte[]) any, anyString, null);
-                result = mockRequest;
-                mockRequest.send();
-                result = exception;
-            }
-        };
+                {
+                    new HttpsRequest((URL) any, (HttpsMethod) any, (byte[]) any, anyString, null);
+                    result = mockRequest;
+                    mockRequest.send();
+                    result = exception;
+                }
+            };
 
-        HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
-        conn.sendMessage(mockedMessage);
+            HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
+            conn.sendMessage(mockedMessage);
+        });
     }
 
     // Tests_SRS_HTTPSIOTHUBCONNECTION_21_041: [The function shall send a request to the URL https://[iotHubHostname]/[httpsPath]?api-version=2016-02-03.]
@@ -1186,19 +1187,20 @@ public class HttpsIotHubConnectionTest
     }
 
     // Tests_SRS_HTTPSIOTHUBCONNECTION_11_023: [If the IoT Hub could not be reached, the function shall throw a TransportException.]
-    @Test(expected = TransportException.class)
-    public void receiveMessageThrowsProtocolConnectionExceptionIfRequestFails(@Mocked final IotHubMessageUri mockUri) throws TransportException
-    {
-        new NonStrictExpectations()
-        {
+    @Test
+    public void receiveMessageThrowsProtocolConnectionExceptionIfRequestFails(@Mocked final IotHubMessageUri mockUri) throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            new NonStrictExpectations()
             {
-                mockRequest.send();
-                result = new TransportException();
-            }
-        };
+                {
+                    mockRequest.send();
+                    result = new TransportException();
+                }
+            };
 
-        HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
-        conn.receiveMessage();
+            HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
+            conn.receiveMessage();
+        });
     }
 
     // Tests_SRS_HTTPSIOTHUBCONNECTION_11_024: [If the result is COMPLETE, the function shall send a request to the URL 'https://[iotHubHostname]/devices/[deviceId]/messages/devicebound/[eTag]?api-version=2016-02-03'.]
@@ -1770,75 +1772,79 @@ public class HttpsIotHubConnectionTest
     }
 
     // Tests_SRS_HTTPSIOTHUBCONNECTION_11_037: [If the IoT Hub could not be reached, the function shall throw a ProtocolException.]
-    @Test(expected = ProtocolException.class)
-    public void sendMessageResultThrowsProtocolExceptionIfRequestFails(@Mocked final IotHubRejectUri mockUri, final @Mocked IotHubStatusCode mockStatusCode) throws TransportException
-    {
-        final ProtocolException protocolException = new ProtocolException();
-        final String eTag = "test-etag";
-        new NonStrictExpectations()
-        {
+    @Test
+    public void sendMessageResultThrowsProtocolExceptionIfRequestFails(@Mocked final IotHubRejectUri mockUri, final @Mocked IotHubStatusCode mockStatusCode) throws TransportException {
+        assertThrows(ProtocolException.class, () -> {
+            final ProtocolException protocolException = new ProtocolException();
+            final String eTag = "test-etag";
+            new NonStrictExpectations()
             {
-                mockResponse.getStatus();
-                returns(200, 204);
-                IotHubStatusCode.getIotHubStatusCode(200);
-                result = IotHubStatusCode.OK;
-                IotHubStatusCode.getIotHubStatusCode(204);
-                result = IotHubStatusCode.OK_EMPTY;
-                mockResponse.getHeaderField(withMatch("(?i)etag"));
-                result = eTag;
-                mockRequest.send();
-                result = protocolException;
-            }
-        };
+                {
+                    mockResponse.getStatus();
+                    returns(200, 204);
+                    IotHubStatusCode.getIotHubStatusCode(200);
+                    result = IotHubStatusCode.OK;
+                    IotHubStatusCode.getIotHubStatusCode(204);
+                    result = IotHubStatusCode.OK_EMPTY;
+                    mockResponse.getHeaderField(withMatch("(?i)etag"));
+                    result = eTag;
+                    mockRequest.send();
+                    result = protocolException;
+                }
+            };
 
-        HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
-        Map<Message, String> eTagMap = Deencapsulation.getField(conn, "messageToETagMap");
-        eTagMap.put(mockedTransportMessage, eTag);
-        conn.sendMessageResult(mockedTransportMessage, IotHubMessageResult.REJECT);
+            HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
+            Map<Message, String> eTagMap = Deencapsulation.getField(conn, "messageToETagMap");
+            eTagMap.put(mockedTransportMessage, eTag);
+            conn.sendMessageResult(mockedTransportMessage, IotHubMessageResult.REJECT);
+        });
     }
 
     // Tests_SRS_HTTPSIOTHUBCONNECTION_11_038: [If the IoT Hub status code in the response is not OK_EMPTY, the function shall throw an IotHubServiceException.]
-    @Test(expected = IotHubServiceException.class)
-    public void sendMessageResultThrowsProtocolConnectionExceptionIfBadResponseStatus(@Mocked final IotHubRejectUri mockUri, final @Mocked IotHubStatusCode mockStatusCode) throws TransportException
-    {
-        final String eTag = "test-etag";
-        new NonStrictExpectations()
-        {
+    @Test
+    public void sendMessageResultThrowsProtocolConnectionExceptionIfBadResponseStatus(@Mocked final IotHubRejectUri mockUri, final @Mocked IotHubStatusCode mockStatusCode) throws TransportException {
+        assertThrows(IotHubServiceException.class, () -> {
+            final String eTag = "test-etag";
+            new NonStrictExpectations()
             {
-                mockResponse.getStatus();
-                result = 404;
-                IotHubStatusCode.getIotHubStatusCode(404);
-                result = IotHubStatusCode.HUB_OR_DEVICE_ID_NOT_FOUND;
-                mockResponse.getHeaderField(withMatch("(?i)etag"));
-                result = eTag;
-            }
-        };
+                {
+                    mockResponse.getStatus();
+                    result = 404;
+                    IotHubStatusCode.getIotHubStatusCode(404);
+                    result = IotHubStatusCode.HUB_OR_DEVICE_ID_NOT_FOUND;
+                    mockResponse.getHeaderField(withMatch("(?i)etag"));
+                    result = eTag;
+                }
+            };
 
-        HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
-        Map<Message, String> eTagMap = Deencapsulation.getField(conn, "messageToETagMap");
-        eTagMap.put(mockedTransportMessage, eTag);
+            HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
+            Map<Message, String> eTagMap = Deencapsulation.getField(conn, "messageToETagMap");
+            eTagMap.put(mockedTransportMessage, eTag);
 
-        //act
-        conn.sendMessageResult(mockedTransportMessage, IotHubMessageResult.REJECT);
+            //act
+            conn.sendMessageResult(mockedTransportMessage, IotHubMessageResult.REJECT);
+        });
     }
 
     // Tests_SRS_HTTPSIOTHUBCONNECTION_11_039: [If the function is called before receiveMessage() returns a message, the function shall throw an IllegalStateException.]
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void sendMessageResultFailsIfReceiveNotCalled(
-            @Mocked final IotHubRejectUri mockUri) throws TransportException
-    {
-        HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
-        conn.sendMessageResult(mockedMessage, IotHubMessageResult.REJECT);
+            @Mocked final IotHubRejectUri mockUri) throws TransportException {
+        assertThrows(IllegalStateException.class, () -> {
+            HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
+            conn.sendMessageResult(mockedMessage, IotHubMessageResult.REJECT);
+        });
     }
 
     // Tests_SRS_HTTPSIOTHUBCONNECTION_11_039: [If the function is called before receiveMessage() returns a message, the function shall throw an IllegalStateException.]
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void sendMessageResultFailsIfNoMessageReceived(
-            @Mocked final IotHubRejectUri mockUri) throws TransportException
-    {
-        HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
-        conn.receiveMessage();
-        conn.sendMessageResult(mockedMessage, IotHubMessageResult.REJECT);
+            @Mocked final IotHubRejectUri mockUri) throws TransportException {
+        assertThrows(IllegalStateException.class, () -> {
+            HttpsIotHubConnection conn = new HttpsIotHubConnection(mockConfig);
+            conn.receiveMessage();
+            conn.sendMessageResult(mockedMessage, IotHubMessageResult.REJECT);
+        });
     }
 
     //Tests_SRS_HTTPSIOTHUBCONNECTION_34_056: [This function shall retrieve a sas token from its config to use in the https request header.]
@@ -2018,14 +2024,15 @@ public class HttpsIotHubConnectionTest
     }
 
     //Tests_SRS_HTTPSIOTHUBCONNECTION_34_065: [If the provided listener object is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void addListenerThrowsForNullListener()
-    {
-        //arrange
-        HttpsIotHubConnection connection = new HttpsIotHubConnection(mockConfig);
+    @Test
+    public void addListenerThrowsForNullListener() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            HttpsIotHubConnection connection = new HttpsIotHubConnection(mockConfig);
 
-        //act
-        connection.setListener(null);
+            //act
+            connection.setListener(null);
+        });
     }
 
     //Tests_SRS_HTTPSIOTHUBCONNECTION_34_066: [This function shall save the provided listener object.]

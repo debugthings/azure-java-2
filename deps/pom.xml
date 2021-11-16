@@ -37,7 +37,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit-version>4.12</junit-version>
         <mockito-version>1.10.19</mockito-version>
     </properties>
 
@@ -100,12 +99,6 @@
             <groupId>org.jmockit</groupId>
             <artifactId>jmockit</artifactId>
             <version>1.24</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-            <version>4.11</version>
             <scope>test</scope>
         </dependency>
         <dependency>

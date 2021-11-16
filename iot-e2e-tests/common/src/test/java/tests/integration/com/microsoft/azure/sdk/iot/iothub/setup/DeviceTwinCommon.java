@@ -6,7 +6,6 @@
 package tests.integration.com.microsoft.azure.sdk.iot.iothub.setup;
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.google.gson.JsonParser;
 import com.microsoft.azure.sdk.iot.deps.twin.TwinConnectionState;
 import com.microsoft.azure.sdk.iot.device.DeviceClient;
@@ -34,7 +33,7 @@ import com.microsoft.azure.sdk.iot.service.devicetwin.Pair;
 import com.microsoft.azure.sdk.iot.service.devicetwin.RawTwinQuery;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.runners.Parameterized;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.ClientType;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.IntegrationTest;
@@ -418,7 +417,7 @@ public class DeviceTwinCommon extends IntegrationTest
         setUpTwin(testInstance.deviceUnderTest, openDeviceClient, testInstance.testIdentity.getClient());
     }
 
-    @After
+    @AfterEach
     public void cleanup()
     {
         if (testInstance != null)

@@ -3,13 +3,13 @@
 
 package com.microsoft.azure.sdk.iot.device.DeviceTwin;
 
-import com.microsoft.azure.sdk.iot.device.DeviceTwin.Property;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the Property
@@ -49,66 +49,73 @@ public class PropertyTest
     /*
     **Tests_SRS_Property_25_002: [**If the key is null, the constructor shall throw an IllegalArgumentException.**]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullKey()
-    {
-        //act
-        Property testProp = new Property(null, 1);
+    @Test
+    public void constructorThrowsOnNullKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Property testProp = new Property(null, 1);
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithMetadataThrowsOnNullKey()
-    {
-        //act
-        Property testProp = Deencapsulation.newInstance(Property.class,
-                new Class[]{String.class, Object.class, Integer.class, boolean.class},
-                null, 1, 1, false);
+    @Test
+    public void constructorWithMetadataThrowsOnNullKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Property testProp = Deencapsulation.newInstance(Property.class,
+                    new Class[]{String.class, Object.class, Integer.class, boolean.class},
+                    null, 1, 1, false);
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnInvalidKey_4()
-    {
-        //act
-        Property testProp = new Property("", 1);
+    @Test
+    public void constructorThrowsOnInvalidKey_4() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Property testProp = new Property("", 1);
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithMetadataThrowsOnInvalidKey()
-    {
-        //act
-        Property testProp = Deencapsulation.newInstance(Property.class,
-                new Class[]{String.class, Object.class, Integer.class, boolean.class},
-                "Key with space", 1, 1, true);
+    @Test
+    public void constructorWithMetadataThrowsOnInvalidKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Property testProp = Deencapsulation.newInstance(Property.class,
+                    new Class[]{String.class, Object.class, Integer.class, boolean.class},
+                    "Key with space", 1, 1, true);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithMetadataThrowsOnInvalidKey_2()
-    {
-        //act
-        Property testProp = Deencapsulation.newInstance(Property.class,
-                new Class[]{String.class, Object.class, Integer.class, boolean.class},
-                "KeyWith$", 1, 1, true);
+    @Test
+    public void constructorWithMetadataThrowsOnInvalidKey_2() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Property testProp = Deencapsulation.newInstance(Property.class,
+                    new Class[]{String.class, Object.class, Integer.class, boolean.class},
+                    "KeyWith$", 1, 1, true);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithMetadataThrowsOnInvalidKey_3()
-    {
-        //act
-        Property testProp = Deencapsulation.newInstance(Property.class,
-                new Class[]{String.class, Object.class, Integer.class, boolean.class},
-                "KeyWith.", 1, 1, true);
+    @Test
+    public void constructorWithMetadataThrowsOnInvalidKey_3() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Property testProp = Deencapsulation.newInstance(Property.class,
+                    new Class[]{String.class, Object.class, Integer.class, boolean.class},
+                    "KeyWith.", 1, 1, true);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithMetadataThrowsOnInvalidKey_4()
-    {
-        //act
-        Property testProp = Deencapsulation.newInstance(Property.class,
-                new Class[]{String.class, Object.class, Integer.class, boolean.class},
-                "", 1, 1, true);
+    @Test
+    public void constructorWithMetadataThrowsOnInvalidKey_4() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Property testProp = Deencapsulation.newInstance(Property.class,
+                    new Class[]{String.class, Object.class, Integer.class, boolean.class},
+                    "", 1, 1, true);
+        });
     }
 
     /*

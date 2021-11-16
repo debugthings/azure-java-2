@@ -5,12 +5,13 @@ package com.microsoft.azure.sdk.iot.deps.twin;
 
 import com.microsoft.azure.sdk.iot.deps.Helpers;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the TwinMetadata
@@ -67,17 +68,18 @@ public class TwinMetadataTest
     }
 
     /* SRS_TWIN_METADATA_21_002: [The constructor shall throw IllegalArgumentException if it cannot convert the provided `lastUpdated` String to Date.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorLastUpdatedInvalidSucceed()
-    {
-        // arrange
-        String lastUpdated = "This is a invalid date";
+    @Test
+    public void constructorLastUpdatedInvalidSucceed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String lastUpdated = "This is a invalid date";
 
-        // act
-        Deencapsulation.newInstance(TwinMetadata.class, new Class[] {String.class, Integer.class, String.class, String.class},
-                lastUpdated, 5, null, null);
+            // act
+            Deencapsulation.newInstance(TwinMetadata.class, new Class[] {String.class, Integer.class, String.class, String.class},
+                    lastUpdated, 5, null, null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_METADATA_21_003: [The constructor shall store the provided lastUpdatedVersion as is.] */
@@ -129,14 +131,15 @@ public class TwinMetadataTest
     }
 
     /* SRS_TWIN_METADATA_21_010: [The constructor shall throw IllegalArgumentException if the provided metadata is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorCopyThrowsOnNull()
-    {
-        // arrange
-        TwinMetadata originalTwinMetadata = null;
+    @Test
+    public void constructorCopyThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinMetadata originalTwinMetadata = null;
 
-        // act - assert
-        Deencapsulation.newInstance(TwinMetadata.class, new Class[] {TwinMetadata.class}, originalTwinMetadata);
+            // act - assert
+            Deencapsulation.newInstance(TwinMetadata.class, new Class[] {TwinMetadata.class}, originalTwinMetadata);
+        });
     }
 
     /* SRS_TWIN_METADATA_21_011: [The constructor shall copy the content of the provided metadata.] */
@@ -163,14 +166,15 @@ public class TwinMetadataTest
     }
 
     /* SRS_TWIN_METADATA_21_012: [The constructor shall throw IllegalArgumentException if both lastUpdated and lastUpdatedVersion are null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnDateAndVersionNull()
-    {
-        // act - assert
-        Deencapsulation.newInstance(
-                TwinMetadata.class,
-                new Class[] {String.class, Integer.class, String.class, String.class},
-                null, null, null, null);
+    @Test
+    public void constructorThrowsOnDateAndVersionNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // act - assert
+            Deencapsulation.newInstance(
+                    TwinMetadata.class,
+                    new Class[] {String.class, Integer.class, String.class, String.class},
+                    null, null, null, null);
+        });
     }
 
 
@@ -360,75 +364,78 @@ public class TwinMetadataTest
     }
 
     /* SRS_TWIN_METADATA_21_006: [The tryExtractFromMap shall throw IllegalArgumentException if it cannot convert the provided `lastUpdated` String to Date or the version in a Number.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void tryExtractFromMapValidDateAndInvalidVersionSucceed()
-    {
-        // arrange
-        final String lastUpdated = "2017-09-21T02:07:44.238Z";
-        final String lastUpdatedVersion = "This is not a Number";
-        Object metadata = new HashMap<String, Object>()
-        {
+    @Test
+    public void tryExtractFromMapValidDateAndInvalidVersionSucceed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String lastUpdated = "2017-09-21T02:07:44.238Z";
+            final String lastUpdatedVersion = "This is not a Number";
+            Object metadata = new HashMap<String, Object>()
             {
-                put("key1", "value1");
-                put("$lastUpdated", lastUpdated);
-                put("key2", "value2");
-                put("$lastUpdatedVersion", lastUpdatedVersion);
-            }
-        };
+                {
+                    put("key1", "value1");
+                    put("$lastUpdated", lastUpdated);
+                    put("key2", "value2");
+                    put("$lastUpdatedVersion", lastUpdatedVersion);
+                }
+            };
 
-        // act
-        TwinMetadata twinMetadata = Deencapsulation.invoke(TwinMetadata.class, "tryExtractFromMap", new Class[] {Object.class}, metadata);
+            // act
+            TwinMetadata twinMetadata = Deencapsulation.invoke(TwinMetadata.class, "tryExtractFromMap", new Class[] {Object.class}, metadata);
 
-        // assert
-        assertNotNull(twinMetadata);
-        Helpers.assertDateWithError((Date)Deencapsulation.getField(twinMetadata, "lastUpdated"), lastUpdated);
-        assertNull(Deencapsulation.getField(twinMetadata, "lastUpdatedVersion"));
+            // assert
+            assertNotNull(twinMetadata);
+            Helpers.assertDateWithError((Date)Deencapsulation.getField(twinMetadata, "lastUpdated"), lastUpdated);
+            assertNull(Deencapsulation.getField(twinMetadata, "lastUpdatedVersion"));
+        });
     }
 
     /* SRS_TWIN_METADATA_21_006: [The tryExtractFromMap shall throw IllegalArgumentException if it cannot convert the provided `lastUpdated` String to Date or the version in a Number.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void tryExtractFromMapThrowsOnInvalidDateAndValidVersion()
-    {
-        // arrange
-        final String lastUpdated = "This is not a valid date";
-        final Integer lastUpdatedVersion = 10;
-        Object metadata = new HashMap<String, Object>()
-        {
+    @Test
+    public void tryExtractFromMapThrowsOnInvalidDateAndValidVersion() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String lastUpdated = "This is not a valid date";
+            final Integer lastUpdatedVersion = 10;
+            Object metadata = new HashMap<String, Object>()
             {
-                put("key1", "value1");
-                put("$lastUpdated", lastUpdated);
-                put("key2", "value2");
-                put("$lastUpdatedVersion", lastUpdatedVersion);
-            }
-        };
+                {
+                    put("key1", "value1");
+                    put("$lastUpdated", lastUpdated);
+                    put("key2", "value2");
+                    put("$lastUpdatedVersion", lastUpdatedVersion);
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(TwinMetadata.class, "tryExtractFromMap", new Class[] {Object.class}, metadata);
+            // act
+            Deencapsulation.invoke(TwinMetadata.class, "tryExtractFromMap", new Class[] {Object.class}, metadata);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_METADATA_21_006: [The tryExtractFromMap shall throw IllegalArgumentException if it cannot convert the provided `lastUpdated` String to Date or the version in a Number.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void tryExtractFromMapInvalidDateAndInvalidVersionSucceed()
-    {
-        // arrange
-        final String lastUpdated = "This is not a date";
-        final String lastUpdatedVersion = "This is not a Number";
-        Object metadata = new HashMap<String, Object>()
-        {
+    @Test
+    public void tryExtractFromMapInvalidDateAndInvalidVersionSucceed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String lastUpdated = "This is not a date";
+            final String lastUpdatedVersion = "This is not a Number";
+            Object metadata = new HashMap<String, Object>()
             {
-                put("key1", "value1");
-                put("$lastUpdated", lastUpdated);
-                put("key2", "value2");
-                put("$lastUpdatedVersion", lastUpdatedVersion);
-            }
-        };
+                {
+                    put("key1", "value1");
+                    put("$lastUpdated", lastUpdated);
+                    put("key2", "value2");
+                    put("$lastUpdatedVersion", lastUpdatedVersion);
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(TwinMetadata.class, "tryExtractFromMap", new Class[] {Object.class}, metadata);
+            // act
+            Deencapsulation.invoke(TwinMetadata.class, "tryExtractFromMap", new Class[] {Object.class}, metadata);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_METADATA_21_007: [The getLastUpdatedVersion shall return the stored lastUpdatedVersion.] */

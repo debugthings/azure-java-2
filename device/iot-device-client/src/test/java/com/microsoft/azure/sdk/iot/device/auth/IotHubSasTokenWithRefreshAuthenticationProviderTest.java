@@ -5,17 +5,16 @@
 
 package com.microsoft.azure.sdk.iot.device.auth;
 
-import com.microsoft.azure.sdk.iot.device.auth.IotHubSasToken;
-import com.microsoft.azure.sdk.iot.device.auth.IotHubSasTokenWithRefreshAuthenticationProvider;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import mockit.Deencapsulation;
 import mockit.Mocked;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class IotHubSasTokenWithRefreshAuthenticationProviderTest
 {
@@ -62,29 +61,32 @@ public class IotHubSasTokenWithRefreshAuthenticationProviderTest
 
     // Tests_SRS_MODULEAUTHENTICATIONWITHTOKENREFRESH_34_001: [If any of the provided arguments are null or empty, this
     // function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void buildAudienceRequiresHostname()
-    {
-        //act
-        Deencapsulation.invoke(IotHubSasTokenWithRefreshAuthenticationProvider.class, "buildAudience", new Class[] {String.class, String.class, String.class}, null, "1", "2");
+    @Test
+    public void buildAudienceRequiresHostname() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.invoke(IotHubSasTokenWithRefreshAuthenticationProvider.class, "buildAudience", new Class[] {String.class, String.class, String.class}, null, "1", "2");
+        });
     }
 
     // Tests_SRS_MODULEAUTHENTICATIONWITHTOKENREFRESH_34_001: [If any of the provided arguments are null or empty, this
     // function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void buildAudienceRequiresDeviceId()
-    {
-        //act
-        Deencapsulation.invoke(IotHubSasTokenWithRefreshAuthenticationProvider.class, "buildAudience", new Class[] {String.class, String.class, String.class}, "1", null, "2");
+    @Test
+    public void buildAudienceRequiresDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.invoke(IotHubSasTokenWithRefreshAuthenticationProvider.class, "buildAudience", new Class[] {String.class, String.class, String.class}, "1", null, "2");
+        });
     }
 
     // Tests_SRS_MODULEAUTHENTICATIONWITHTOKENREFRESH_34_001: [If any of the provided arguments are null or empty, this
     // function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void buildAudienceRequiresModuleId()
-    {
-        //act
-        Deencapsulation.invoke(IotHubSasTokenWithRefreshAuthenticationProvider.class, "buildAudience", new Class[] {String.class, String.class, String.class}, "1", "2", null);
+    @Test
+    public void buildAudienceRequiresModuleId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.invoke(IotHubSasTokenWithRefreshAuthenticationProvider.class, "buildAudience", new Class[] {String.class, String.class, String.class}, "1", "2", null);
+        });
     }
 
     // Tests_SRS_MODULEAUTHENTICATIONWITHTOKENREFRESH_34_002: [This function shall return the path

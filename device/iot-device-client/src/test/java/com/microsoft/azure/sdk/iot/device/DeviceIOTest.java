@@ -3,14 +3,13 @@
 
 package com.microsoft.azure.sdk.iot.device;
 
-import com.microsoft.azure.sdk.iot.device.*;
 import com.microsoft.azure.sdk.iot.device.exceptions.DeviceClientException;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubConnectionStatus;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubReceiveTask;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubSendTask;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransport;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -22,6 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for DeviceIO.
@@ -176,26 +176,27 @@ public class DeviceIOTest
     }
 
     /* Tests_SRS_DEVICE_IO_21_015: [If an error occurs in opening the transport, the open shall throw an IOException.] */
-    @Test (expected = IOException.class)
-    public void openThrowsIOExceptionIfTransportOpenThrows() throws DeviceClientException
-    {
-        // arrange
-        final Object deviceIO = newDeviceIO();
+    @Test
+    public void openThrowsIOExceptionIfTransportOpenThrows() throws DeviceClientException {
+        assertThrows(IOException.class, () -> {
+            // arrange
+            final Object deviceIO = newDeviceIO();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedTransport.open(false);
-                result = new DeviceClientException();
-                times = 1;
-            }
-        };
+                {
+                    mockedTransport.open(false);
+                    result = new DeviceClientException();
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(deviceIO, "open", false);
+            // act
+            Deencapsulation.invoke(deviceIO, "open", false);
 
-        // assert
-        assertEquals("DISCONNECTED", Deencapsulation.getField(deviceIO, "state").toString());
+            // assert
+            assertEquals("DISCONNECTED", Deencapsulation.getField(deviceIO, "state").toString());
+        });
     }
 
     /* Tests_SRS_DEVICE_IO_21_019: [The close shall close the transport.] */
@@ -308,54 +309,57 @@ public class DeviceIOTest
     }
 
     /* Tests_SRS_DEVICE_IO_21_023: [If the message given is null, the sendEventAsync shall throw an IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void sendEventAsyncRejectsNullMessageThrows(
             @Mocked final IotHubEventCallback mockCallback)
-            throws IOException
-    {
-        // arrange
-        final Map<String, Object> context = new HashMap<>();
-        final Object deviceIO = newDeviceIO();
-        openDeviceIO(deviceIO, mockedTransport, mockExecutors, mockScheduler);
+            throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final Map<String, Object> context = new HashMap<>();
+            final Object deviceIO = newDeviceIO();
+            openDeviceIO(deviceIO, mockedTransport, mockExecutors, mockScheduler);
 
-        // act
-        Deencapsulation.invoke(deviceIO, "sendEventAsync",
-                new Class[] {Message.class, IotHubEventCallback.class, Object.class, IotHubConnectionString.class},
-                null, mockCallback, context, mockConfig.getDeviceId());
+            // act
+            Deencapsulation.invoke(deviceIO, "sendEventAsync",
+                    new Class[] {Message.class, IotHubEventCallback.class, Object.class, IotHubConnectionString.class},
+                    null, mockCallback, context, mockConfig.getDeviceId());
+        });
     }
 
     /* Tests_SRS_DEVICE_IO_21_024: [If the client is closed, the sendEventAsync shall throw an IllegalStateException.] */
-    @Test (expected = IllegalStateException.class)
+    @Test
     public void sendEventAsyncClientNotOpenedThrows(
             @Mocked final Message mockMsg,
-            @Mocked final IotHubEventCallback mockCallback)
-    {
-        // arrange
-        final Map<String, Object> context = new HashMap<>();
-        final Object deviceIO = newDeviceIO();
+            @Mocked final IotHubEventCallback mockCallback) {
+        assertThrows(IllegalStateException.class, () -> {
+            // arrange
+            final Map<String, Object> context = new HashMap<>();
+            final Object deviceIO = newDeviceIO();
 
-        // act
-        Deencapsulation.invoke(deviceIO, "sendEventAsync",
-                new Class[] {Message.class, IotHubEventCallback.class, Object.class, String.class},
-                mockMsg, mockCallback, context, mockConfig.getDeviceId());
+            // act
+            Deencapsulation.invoke(deviceIO, "sendEventAsync",
+                    new Class[] {Message.class, IotHubEventCallback.class, Object.class, String.class},
+                    mockMsg, mockCallback, context, mockConfig.getDeviceId());
+        });
     }
 
     /* Tests_SRS_DEVICE_IO_21_024: [If the client is closed, the sendEventAsync shall throw an IllegalStateException.] */
-    @Test (expected = IllegalStateException.class)
+    @Test
     public void sendEventAsyncClientAlreadyClosedThrows(
             @Mocked final Message mockMsg,
             @Mocked final IotHubEventCallback mockCallback)
-            throws IOException
-    {
-        // arrange
-        final Map<String, Object> context = new HashMap<>();
-        final Object deviceIO = newDeviceIO();
-        openDeviceIO(deviceIO, mockedTransport, mockExecutors, mockScheduler);
-        Deencapsulation.invoke(deviceIO, "close");
-        assertEquals("DISCONNECTED", Deencapsulation.getField(deviceIO, "state").toString());
+            throws IOException {
+        assertThrows(IllegalStateException.class, () -> {
+            // arrange
+            final Map<String, Object> context = new HashMap<>();
+            final Object deviceIO = newDeviceIO();
+            openDeviceIO(deviceIO, mockedTransport, mockExecutors, mockScheduler);
+            Deencapsulation.invoke(deviceIO, "close");
+            assertEquals("DISCONNECTED", Deencapsulation.getField(deviceIO, "state").toString());
 
-        // act
-        Deencapsulation.invoke(deviceIO, "sendEventAsync", new Class[] {Message.class, IotHubEventCallback.class, Object.class, String.class}, mockMsg, mockCallback, context, mockConfig.getDeviceId());
+            // act
+            Deencapsulation.invoke(deviceIO, "sendEventAsync", new Class[] {Message.class, IotHubEventCallback.class, Object.class, String.class}, mockMsg, mockCallback, context, mockConfig.getDeviceId());
+        });
     }
 
     @Test
@@ -428,29 +432,31 @@ public class DeviceIOTest
     }
 
     /* Tests_SRS_DEVICE_IO_21_030: [If the the provided interval is zero or negative, the setReceivePeriodInMilliseconds shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void setReceivePeriodInMillisecondsZeroIntervalThrows()
-            throws URISyntaxException, IOException, InterruptedException
-    {
-        // arrange
-        final Object deviceIO = newDeviceIO();
+            throws URISyntaxException, IOException, InterruptedException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final Object deviceIO = newDeviceIO();
 
-        // act
-        Deencapsulation.invoke(deviceIO, "setReceivePeriodInMilliseconds",  0L);
+            // act
+            Deencapsulation.invoke(deviceIO, "setReceivePeriodInMilliseconds",  0L);
+        });
     }
 
     /* Tests_SRS_DEVICE_IO_21_030: [If the the provided interval is zero or negative, the setReceivePeriodInMilliseconds shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void setReceivePeriodInMillisecondsNegativeIntervalThrows(
             @Mocked final IotHubTransport mockedTransport,
             @Mocked final DeviceClientConfig mockConfig)
-            throws URISyntaxException, IOException, InterruptedException
-    {
-        // arrange
-        final Object deviceIO = newDeviceIO();
+            throws URISyntaxException, IOException, InterruptedException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final Object deviceIO = newDeviceIO();
 
-        // act
-        Deencapsulation.invoke(deviceIO, "setReceivePeriodInMilliseconds",  -10L);
+            // act
+            Deencapsulation.invoke(deviceIO, "setReceivePeriodInMilliseconds",  -10L);
+        });
     }
 
     /* Tests_SRS_DEVICE_IO_21_032: [The getSendPeriodInMilliseconds shall return the programed send period in milliseconds.] */
@@ -507,27 +513,29 @@ public class DeviceIOTest
     }
 
     /* Tests_SRS_DEVICE_IO_21_036: [If the the provided interval is zero or negative, the setSendPeriodInMilliseconds shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void setSendPeriodInMillisecondsZeroIntervalThrows()
-            throws URISyntaxException, IOException, InterruptedException
-    {
-        // arrange
-        final Object deviceIO = newDeviceIO();
+            throws URISyntaxException, IOException, InterruptedException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final Object deviceIO = newDeviceIO();
 
-        // act
-        Deencapsulation.invoke(deviceIO, "setSendPeriodInMilliseconds",  0L);
+            // act
+            Deencapsulation.invoke(deviceIO, "setSendPeriodInMilliseconds",  0L);
+        });
     }
 
     /* Tests_SRS_DEVICE_IO_21_036: [If the the provided interval is zero or negative, the setSendPeriodInMilliseconds shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void setSendPeriodInMillisecondsNegativeIntervalThrows()
-            throws URISyntaxException, IOException, InterruptedException
-    {
-        // arrange
-        final Object deviceIO = newDeviceIO();
+            throws URISyntaxException, IOException, InterruptedException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final Object deviceIO = newDeviceIO();
 
-        // act
-        Deencapsulation.invoke(deviceIO, "setSendPeriodInMilliseconds",  -10L);
+            // act
+            Deencapsulation.invoke(deviceIO, "setSendPeriodInMilliseconds",  -10L);
+        });
     }
 
     /* Tests_SRS_DEVICE_IO_21_031: [The isOpen shall return the connection state, true if connection is open, false if it is closed.] */

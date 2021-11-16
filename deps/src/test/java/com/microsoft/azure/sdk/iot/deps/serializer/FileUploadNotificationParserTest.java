@@ -3,14 +3,14 @@
 
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.FileUploadNotificationParser;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for File Upload Notification deserializer
@@ -188,27 +188,30 @@ public class FileUploadNotificationParserTest
     }
 
     /* Tests_SRS_FILE_UPLOAD_NOTIFICATION_21_003: [If the provided json is null, empty, or not valid, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_null_json_failed()
-    {
-        // act
-        new FileUploadNotificationParser(null);
+    @Test
+    public void constructor_null_json_failed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // act
+            new FileUploadNotificationParser(null);
+        });
     }
 
     /* Tests_SRS_FILE_UPLOAD_NOTIFICATION_21_003: [If the provided json is null, empty, or not valid, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_empty_json_failed()
-    {
-        // act
-        new FileUploadNotificationParser("");
+    @Test
+    public void constructor_empty_json_failed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // act
+            new FileUploadNotificationParser("");
+        });
     }
 
     /* Tests_SRS_FILE_UPLOAD_NOTIFICATION_21_003: [If the provided json is null, empty, or not valid, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_invalid_json_failed()
-    {
-        // act
-        new FileUploadNotificationParser("{&*");
+    @Test
+    public void constructor_invalid_json_failed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // act
+            new FileUploadNotificationParser("{&*");
+        });
     }
 
     /* Tests_SRS_FILE_UPLOAD_NOTIFICATION_21_004: [If the provided json do not contains a valid `deviceId`, `blobUri`, `blobName`, `lastUpdatedTime`, `enqueuedTimeUtc`, and `blobSizeInBytes`, the constructor shall throws IllegalArgumentException.] */
@@ -238,88 +241,93 @@ public class FileUploadNotificationParserTest
     }
 
     /* Tests_SRS_FILE_UPLOAD_NOTIFICATION_21_005: [If the provided json do not contains one of the keys `deviceId`, `blobUri`, `blobName`, `lastUpdatedTime`, and `enqueuedTimeUtc`, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_json_missing_deviceId_failed()
-    {
-        // arrange
-        String validJson = "{\n" +
-                "    \"blobUri\": \"" + VALID_BLOB_UTI + "\",\n" +
-                "    \"blobName\": \"" + VALID_BLOB_NAME + "\",\n" +
-                "    \"lastUpdatedTime\": \"" + VALID_LAST_UPDATE_TIME + "\",\n" +
-                "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + ",\n" +
-                "    \"enqueuedTimeUtc\": \"" + VALID_ENQUEUED_TIME_UTC + "\"\n" +
-                "}";
+    @Test
+    public void constructor_json_missing_deviceId_failed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String validJson = "{\n" +
+                    "    \"blobUri\": \"" + VALID_BLOB_UTI + "\",\n" +
+                    "    \"blobName\": \"" + VALID_BLOB_NAME + "\",\n" +
+                    "    \"lastUpdatedTime\": \"" + VALID_LAST_UPDATE_TIME + "\",\n" +
+                    "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + ",\n" +
+                    "    \"enqueuedTimeUtc\": \"" + VALID_ENQUEUED_TIME_UTC + "\"\n" +
+                    "}";
 
-        // act
-        new FileUploadNotificationParser(validJson);
+            // act
+            new FileUploadNotificationParser(validJson);
+        });
     }
 
     /* Tests_SRS_FILE_UPLOAD_NOTIFICATION_21_005: [If the provided json do not contains one of the keys `deviceId`, `blobUri`, `blobName`, `lastUpdatedTime`, and `enqueuedTimeUtc`, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_json_missing_BlobUri_failed()
-    {
-        // arrange
-        String validJson = "{\n" +
-                "    \"deviceId\": \"" + VALID_DEVICEID + "\",\n" +
-                "    \"blobName\": \"" + VALID_BLOB_NAME + "\",\n" +
-                "    \"lastUpdatedTime\": \"" + VALID_LAST_UPDATE_TIME + "\",\n" +
-                "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + ",\n" +
-                "    \"enqueuedTimeUtc\": \"" + VALID_ENQUEUED_TIME_UTC + "\"\n" +
-                "}";
+    @Test
+    public void constructor_json_missing_BlobUri_failed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String validJson = "{\n" +
+                    "    \"deviceId\": \"" + VALID_DEVICEID + "\",\n" +
+                    "    \"blobName\": \"" + VALID_BLOB_NAME + "\",\n" +
+                    "    \"lastUpdatedTime\": \"" + VALID_LAST_UPDATE_TIME + "\",\n" +
+                    "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + ",\n" +
+                    "    \"enqueuedTimeUtc\": \"" + VALID_ENQUEUED_TIME_UTC + "\"\n" +
+                    "}";
 
-        // act
-        new FileUploadNotificationParser(validJson);
+            // act
+            new FileUploadNotificationParser(validJson);
+        });
     }
 
     /* Tests_SRS_FILE_UPLOAD_NOTIFICATION_21_005: [If the provided json do not contains one of the keys `deviceId`, `blobUri`, `blobName`, `lastUpdatedTime`, and `enqueuedTimeUtc`, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_json_missing_BlobName_failed()
-    {
-        // arrange
-        String validJson = "{\n" +
-                "    \"deviceId\": \"" + VALID_DEVICEID + "\",\n" +
-                "    \"blobUri\": \"" + VALID_BLOB_UTI + "\",\n" +
-                "    \"lastUpdatedTime\": \"" + VALID_LAST_UPDATE_TIME + "\",\n" +
-                "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + ",\n" +
-                "    \"enqueuedTimeUtc\": \"" + VALID_ENQUEUED_TIME_UTC + "\"\n" +
-                "}";
+    @Test
+    public void constructor_json_missing_BlobName_failed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String validJson = "{\n" +
+                    "    \"deviceId\": \"" + VALID_DEVICEID + "\",\n" +
+                    "    \"blobUri\": \"" + VALID_BLOB_UTI + "\",\n" +
+                    "    \"lastUpdatedTime\": \"" + VALID_LAST_UPDATE_TIME + "\",\n" +
+                    "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + ",\n" +
+                    "    \"enqueuedTimeUtc\": \"" + VALID_ENQUEUED_TIME_UTC + "\"\n" +
+                    "}";
 
-        // act
-        new FileUploadNotificationParser(validJson);
+            // act
+            new FileUploadNotificationParser(validJson);
+        });
     }
 
     /* Tests_SRS_FILE_UPLOAD_NOTIFICATION_21_005: [If the provided json do not contains one of the keys `deviceId`, `blobUri`, `blobName`, `lastUpdatedTime`, and `enqueuedTimeUtc`, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_json_missing_lastUpdateTime_failed()
-    {
-        // arrange
-        String validJson = "{\n" +
-                "    \"deviceId\": \"" + VALID_DEVICEID + "\",\n" +
-                "    \"blobUri\": \"" + VALID_BLOB_UTI + "\",\n" +
-                "    \"blobName\": \"" + VALID_BLOB_NAME + "\",\n" +
-                "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + ",\n" +
-                "    \"enqueuedTimeUtc\": \"" + VALID_ENQUEUED_TIME_UTC + "\"\n" +
-                "}";
+    @Test
+    public void constructor_json_missing_lastUpdateTime_failed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String validJson = "{\n" +
+                    "    \"deviceId\": \"" + VALID_DEVICEID + "\",\n" +
+                    "    \"blobUri\": \"" + VALID_BLOB_UTI + "\",\n" +
+                    "    \"blobName\": \"" + VALID_BLOB_NAME + "\",\n" +
+                    "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + ",\n" +
+                    "    \"enqueuedTimeUtc\": \"" + VALID_ENQUEUED_TIME_UTC + "\"\n" +
+                    "}";
 
-        // act
-        new FileUploadNotificationParser(validJson);
+            // act
+            new FileUploadNotificationParser(validJson);
+        });
     }
 
     /* Tests_SRS_FILE_UPLOAD_NOTIFICATION_21_005: [If the provided json do not contains one of the keys `deviceId`, `blobUri`, `blobName`, `lastUpdatedTime`, and `enqueuedTimeUtc`, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_json_missing_enqueuedTimeUtc_failed()
-    {
-        // arrange
-        String validJson = "{\n" +
-                "    \"deviceId\": \"" + VALID_DEVICEID + "\",\n" +
-                "    \"blobUri\": \"" + VALID_BLOB_UTI + "\",\n" +
-                "    \"blobName\": \"" + VALID_BLOB_NAME + "\",\n" +
-                "    \"lastUpdatedTime\": \"" + VALID_LAST_UPDATE_TIME + "\",\n" +
-                "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + "\n" +
-                "}";
+    @Test
+    public void constructor_json_missing_enqueuedTimeUtc_failed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String validJson = "{\n" +
+                    "    \"deviceId\": \"" + VALID_DEVICEID + "\",\n" +
+                    "    \"blobUri\": \"" + VALID_BLOB_UTI + "\",\n" +
+                    "    \"blobName\": \"" + VALID_BLOB_NAME + "\",\n" +
+                    "    \"lastUpdatedTime\": \"" + VALID_LAST_UPDATE_TIME + "\",\n" +
+                    "    \"blobSizeInBytes\": " + VALID_BLOB_SIZE_IN_BYTES + "\n" +
+                    "}";
 
-        // act
-        new FileUploadNotificationParser(validJson);
+            // act
+            new FileUploadNotificationParser(validJson);
+        });
     }
 
 

@@ -3,15 +3,14 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service.configs;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.configs.X509CertificateWithInfo;
-import com.microsoft.azure.sdk.iot.provisioning.service.configs.X509Certificates;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service X509 certificates
@@ -35,13 +34,14 @@ public class X509CertificatesTest
             "-----END CERTIFICATE-----\n";
 
     /* SRS_X509_CERTIFICATES_21_001: [The constructor shall throw IllegalArgumentException if the primary certificate is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnPrimaryNull()
-    {
-        // arrange
-        // act
-        Deencapsulation.newInstance(X509Certificates.class, new Class[] {String.class, String.class},null, null);
-        // assert
+    @Test
+    public void constructorThrowsOnPrimaryNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            Deencapsulation.newInstance(X509Certificates.class, new Class[] {String.class, String.class},null, null);
+            // assert
+        });
     }
 
     /* SRS_X509_CERTIFICATES_21_002: [The constructor shall create a new instance of the X509CertificateWithInfo using the provided primary certificate, and store is as the primary Certificate.] */
@@ -94,29 +94,31 @@ public class X509CertificatesTest
     }
 
     /* SRS_X509_CERTIFICATES_21_004: [The constructor shall throw IllegalArgumentException if the provide X509Certificates is null or if its primary certificate is null.] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void constructorCopyThrowsOnNull()
-            throws IllegalArgumentException
-    {
-        // arrange
-        // act
-        new X509Certificates(null);
+            throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new X509Certificates(null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_X509_CERTIFICATES_21_004: [The constructor shall throw IllegalArgumentException if the provide X509Certificates is null or if its primary certificate is null.] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void constructorCopyThrowsOnPrimaryCertNull()
-            throws IllegalArgumentException
-    {
-        // arrange
-        X509Certificates x509Certificates = Deencapsulation.newInstance(X509Certificates.class);
+            throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            X509Certificates x509Certificates = Deencapsulation.newInstance(X509Certificates.class);
 
-        // act
-        new X509Certificates(x509Certificates);
+            // act
+            new X509Certificates(x509Certificates);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_X509_CERTIFICATES_21_005: [The constructor shall create a new instance of X509CertificateWithInfo using the primary certificate on the provided x509Certificates.] */

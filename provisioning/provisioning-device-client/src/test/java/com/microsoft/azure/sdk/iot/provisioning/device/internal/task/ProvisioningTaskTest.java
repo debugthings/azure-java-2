@@ -17,12 +17,11 @@ import com.microsoft.azure.sdk.iot.provisioning.security.SecurityProvider;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.ProvisioningDeviceClientContract;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.ProvisioningDeviceClientException;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.parser.DeviceRegistrationResultParser;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.task.*;
 import com.microsoft.azure.sdk.iot.provisioning.security.SecurityProviderTpm;
 import com.microsoft.azure.sdk.iot.provisioning.security.exceptions.SecurityProviderException;
 import mockit.*;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.nio.charset.StandardCharsets;
@@ -32,6 +31,7 @@ import static com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDevice
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
   Unit test for ProvisioningTask
@@ -809,22 +809,23 @@ public class ProvisioningTaskTest
         };
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void registrationCallbackThrowsIfNoneProvided() throws Exception
-    {
-        // arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void registrationCallbackThrowsIfNoneProvided() throws Exception {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            // arrange
+            new NonStrictExpectations()
             {
-                mockedProvisioningDeviceClientConfig.getRegistrationCallback();
-                result = null;
-                mockedProvisioningDeviceClientConfig.getRegistrationCallbackContext();
-                result = null;
-            }
-        };
-        //act
-        ProvisioningTask testProvisioningTask = new ProvisioningTask(mockedProvisioningDeviceClientConfig,
-                mockedProvisioningDeviceClientContract);
+                {
+                    mockedProvisioningDeviceClientConfig.getRegistrationCallback();
+                    result = null;
+                    mockedProvisioningDeviceClientConfig.getRegistrationCallbackContext();
+                    result = null;
+                }
+            };
+            //act
+            ProvisioningTask testProvisioningTask = new ProvisioningTask(mockedProvisioningDeviceClientConfig,
+                    mockedProvisioningDeviceClientContract);
+        });
     }
 
     @Test
@@ -1290,39 +1291,42 @@ public class ProvisioningTaskTest
     }
 
     //SRS_provisioningtask_25_002: [ Constructor throw ProvisioningDeviceClientException if provisioningDeviceClientConfig , securityProvider or provisioningDeviceClientContract is null.]
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void constructorThrowsOnNullConfig() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        //act
-        ProvisioningTask testProvisioningTask = new ProvisioningTask(null, mockedProvisioningDeviceClientContract);
-        //assert
+    @Test
+    public void constructorThrowsOnNullConfig() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            //act
+            ProvisioningTask testProvisioningTask = new ProvisioningTask(null, mockedProvisioningDeviceClientContract);
+            //assert
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void constructorThrowsOnNullSecurityProvider() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsOnNullSecurityProvider() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockedProvisioningDeviceClientConfig.getSecurityProvider();
-                result = null;
-            }
-        };
+                {
+                    mockedProvisioningDeviceClientConfig.getSecurityProvider();
+                    result = null;
+                }
+            };
 
-        //act
-        ProvisioningTask testProvisioningTask = new ProvisioningTask(mockedProvisioningDeviceClientConfig, mockedProvisioningDeviceClientContract);
-        //assert
+            //act
+            ProvisioningTask testProvisioningTask = new ProvisioningTask(mockedProvisioningDeviceClientConfig, mockedProvisioningDeviceClientContract);
+            //assert
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void constructorThrowsOnNullContract() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        //act
-        ProvisioningTask testProvisioningTask = new ProvisioningTask(mockedProvisioningDeviceClientConfig, null);
-        //assert
+    @Test
+    public void constructorThrowsOnNullContract() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            //act
+            ProvisioningTask testProvisioningTask = new ProvisioningTask(mockedProvisioningDeviceClientConfig, null);
+            //assert
+        });
     }
 
     //SRS_provisioningtask_25_007: [ This method shall invoke Register task and status task to execute the state machine of the service as per below rules.]

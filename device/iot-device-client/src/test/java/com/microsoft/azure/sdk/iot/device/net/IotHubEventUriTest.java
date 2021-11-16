@@ -3,12 +3,10 @@
 
 package com.microsoft.azure.sdk.iot.device.net;
 
-import com.microsoft.azure.sdk.iot.device.net.IotHubEventUri;
-import com.microsoft.azure.sdk.iot.device.net.IotHubUri;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
 

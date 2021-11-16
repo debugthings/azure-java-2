@@ -4,7 +4,6 @@
 package tests.integration.com.microsoft.azure.sdk.iot.digitaltwin;
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.microsoft.azure.sdk.iot.device.ClientOptions;
 import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceMethodCallback;
@@ -37,13 +36,12 @@ import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -78,6 +76,7 @@ import static com.microsoft.azure.sdk.iot.device.IotHubClientProtocol.*;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DigitalTwinTest
 @Slf4j
@@ -110,7 +109,7 @@ public class DigitalTwinClientTests extends IntegrationTest
         }));
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
         registryManager =
             new RegistryManager(
@@ -120,7 +119,7 @@ public class DigitalTwinClientTests extends IntegrationTest
                     .build());
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws URISyntaxException, IOException, IotHubException {
         this.deviceClient = createDeviceClient(protocol);
         deviceClient.open();
@@ -132,7 +131,7 @@ public class DigitalTwinClientTests extends IntegrationTest
                     .build());
     }
 
-    @After
+    @AfterEach
     public void cleanUp() {
         try {
             deviceClient.closeNow();
@@ -157,13 +156,13 @@ public class DigitalTwinClientTests extends IntegrationTest
         return new DeviceClient(deviceConnectionString, protocol, options);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanUpAfterClass()
     {
         registryManager.close();
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void startProxy()
     {
         proxyServer = DefaultHttpProxyServer.bootstrap()
@@ -171,7 +170,7 @@ public class DigitalTwinClientTests extends IntegrationTest
             .start();
     }
 
-    @AfterClass
+    @AfterAll
     public static void stopProxy()
     {
         proxyServer.stop();
@@ -288,28 +287,36 @@ public class DigitalTwinClientTests extends IntegrationTest
         assertEquals(responseWithHeaders.body().getMetadata().getModelId(), E2ETestConstants.THERMOSTAT_MODEL_ID);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     @StandardTierHubOnlyTest
-    public void digitalTwinConstructorThrowsForNegativeConnectTimeout() {
-        // arrange
-        DigitalTwinClientOptions clientOptions =
-            DigitalTwinClientOptions.builder()
-                .httpConnectTimeout(-1)
-                .build();
+    public void digitalTwinConstructorThrowsForNegativeConnectTimeout()
+    {
+        assertThrows(IllegalArgumentException.class, () ->
+        {
+            // arrange
+            DigitalTwinClientOptions clientOptions =
+                DigitalTwinClientOptions.builder()
+                    .httpConnectTimeout(-1)
+                    .build();
 
-        digitalTwinClient = new DigitalTwinClient(IOTHUB_CONNECTION_STRING, clientOptions);
+            digitalTwinClient = new DigitalTwinClient(IOTHUB_CONNECTION_STRING, clientOptions);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     @StandardTierHubOnlyTest
-    public void digitalTwinConstructorThrowsForNegativeReadTimeout() {
-        // arrange
-        DigitalTwinClientOptions clientOptions =
-            DigitalTwinClientOptions.builder()
-                .httpReadTimeout(-1)
-                .build();
+    public void digitalTwinConstructorThrowsForNegativeReadTimeout()
+    {
+        assertThrows(IllegalArgumentException.class, () ->
+        {
+            // arrange
+            DigitalTwinClientOptions clientOptions =
+                DigitalTwinClientOptions.builder()
+                    .httpReadTimeout(-1)
+                    .build();
 
-        digitalTwinClient = new DigitalTwinClient(IOTHUB_CONNECTION_STRING, clientOptions);
+            digitalTwinClient = new DigitalTwinClient(IOTHUB_CONNECTION_STRING, clientOptions);
+        });
     }
 
     @Test

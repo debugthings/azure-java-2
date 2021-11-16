@@ -3,12 +3,11 @@
 
 package com.microsoft.azure.sdk.iot.device;
 
-import com.microsoft.azure.sdk.iot.device.IotHubStatusCode;
-import com.microsoft.azure.sdk.iot.device.ResponseMessage;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for Response Message class.
@@ -33,27 +32,29 @@ public class ResponseMessageTest
     }
 
     /* Tests_SRS_RESPONSEMESSAGE_21_002: [If the message body is null, the constructor shall throw an IllegalArgumentException thrown by base constructor.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullBodyThrows()
-    {
-        // arrange
-        final byte[] body = null;
-        final IotHubStatusCode status = IotHubStatusCode.OK;
+    @Test
+    public void constructorNullBodyThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final byte[] body = null;
+            final IotHubStatusCode status = IotHubStatusCode.OK;
 
-        // act
-        ResponseMessage msg = new ResponseMessage(body, status);
+            // act
+            ResponseMessage msg = new ResponseMessage(body, status);
+        });
     }
 
     /* Tests_SRS_RESPONSEMESSAGE_21_004: [If the message status is null, the constructor shall throw an IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullStatusThrows()
-    {
-        // arrange
-        final byte[] body = {'A', 'B', 'C', '\0'};
-        final IotHubStatusCode status = null;
+    @Test
+    public void constructorNullStatusThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final byte[] body = {'A', 'B', 'C', '\0'};
+            final IotHubStatusCode status = null;
 
-        // act
-        ResponseMessage msg = new ResponseMessage(body, status);
+            // act
+            ResponseMessage msg = new ResponseMessage(body, status);
+        });
     }
 
     /* Tests_SRS_RESPONSEMESSAGE_21_005: [The getStatus shall return the stored status.] */

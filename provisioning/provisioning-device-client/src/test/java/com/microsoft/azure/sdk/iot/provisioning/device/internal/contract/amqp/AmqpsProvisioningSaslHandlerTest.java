@@ -7,7 +7,6 @@ package com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.amqp;
 
 import com.microsoft.azure.sdk.iot.deps.transport.amqp.SaslHandler;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.ResponseCallback;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.amqp.AmqpsProvisioningSaslHandler;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.ProvisioningDeviceClientException;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.ProvisioningDeviceSecurityException;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.task.ContractState;
@@ -17,12 +16,13 @@ import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
 import mockit.integration.junit4.JMockit;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for AmqpsProvisioningSaslHandler.java
@@ -51,7 +51,7 @@ public class AmqpsProvisioningSaslHandlerTest
     @Mocked
     ResponseData mockedResponseData;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass()
     {
         validSecondChallenge[0] = Deencapsulation.getField(AmqpsProvisioningSaslHandler.class, "INTERMEDIATE_SEGMENT_CONTROL_BYTE");
@@ -82,70 +82,78 @@ public class AmqpsProvisioningSaslHandlerTest
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty other than the autorizationCallbackContext, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullIdScope()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, null, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+    @Test
+    public void constructorThrowsForNullIdScope() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, null, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty other than the autorizationCallbackContext, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyIdScope()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, "", registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+    @Test
+    public void constructorThrowsForEmptyIdScope() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, "", registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty other than the autorizationCallbackContext, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullRegistrationId()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, null, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+    @Test
+    public void constructorThrowsForNullRegistrationId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, null, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty other than the autorizationCallbackContext, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyRegistrationId()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, "", endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+    @Test
+    public void constructorThrowsForEmptyRegistrationId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, "", endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty other than the autorizationCallbackContext, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullEndorsementKey()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, registrationId, null, storageRootKey, mockedResponseCallback, new Object());
+    @Test
+    public void constructorThrowsForNullEndorsementKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, registrationId, null, storageRootKey, mockedResponseCallback, new Object());
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty other than the autorizationCallbackContext, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullStorageRootKey()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, registrationId, endorsementKey, null, mockedResponseCallback, new Object());
+    @Test
+    public void constructorThrowsForNullStorageRootKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, registrationId, endorsementKey, null, mockedResponseCallback, new Object());
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty other than the autorizationCallbackContext, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullNonceCallback()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, registrationId, endorsementKey, storageRootKey, null);
+    @Test
+    public void constructorThrowsForNullNonceCallback() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, new Class[]{String.class, String.class, byte[].class, byte[].class, ResponseCallback.class, Object.class}, idScope, registrationId, endorsementKey, storageRootKey, null);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_004: [If the provided mechanisms array does not contain "TPM" then this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void choseSaslMechanismThrowsIfTPMNotPresent() throws ProvisioningDeviceSecurityException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+    @Test
+    public void choseSaslMechanismThrowsIfTPMNotPresent() throws ProvisioningDeviceSecurityException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
 
-        //act
-        handler.chooseSaslMechanism(new String[]{"NotTPM"});
+            //act
+            handler.chooseSaslMechanism(new String[]{"NotTPM"});
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_005: [This function shall return "TPM".]
@@ -164,15 +172,16 @@ public class AmqpsProvisioningSaslHandlerTest
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_003: [If this handler is not in the state where it is expecting to choose a sasl mechanism, this function shall throw in IllegalStateException.]
-    @Test (expected = IllegalStateException.class)
-    public void choseSaslMechanismThrowsIfNotWaitingToChooseMechanism() throws ProvisioningDeviceSecurityException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"NotTPM", "TPM"});
+    @Test
+    public void choseSaslMechanismThrowsIfNotWaitingToChooseMechanism() throws ProvisioningDeviceSecurityException {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"NotTPM", "TPM"});
 
-        //act
-        handler.chooseSaslMechanism(new String[]{"NotTPM", "TPM"});
+            //act
+            handler.chooseSaslMechanism(new String[]{"NotTPM", "TPM"});
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_007: [This function shall return the init payload bytes in the format "control byte + scopeId + null byte + registration id + null byte + base64 decoded endorsement key".]
@@ -191,14 +200,15 @@ public class AmqpsProvisioningSaslHandlerTest
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_006: [If this handler is not in the state where it is expecting to build the init payload, this function shall throw in IllegalStateException.]
-    @Test (expected = IllegalStateException.class)
-    public void buildInitThrowsIfNotWaitingToBuildInit()
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+    @Test
+    public void buildInitThrowsIfNotWaitingToBuildInit() {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
 
-        //act
-        handler.getInitPayload("TPM");
+            //act
+            handler.getInitPayload("TPM");
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_011: [If this object is waiting for the first challenge, this function shall return a payload in the format "control byte + base64 decoded storage root key".]
@@ -272,178 +282,190 @@ public class AmqpsProvisioningSaslHandlerTest
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_009: [If the provided saslChallenge is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void handleChallengeThrowsForNullChallengeData() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
-        handler.getInitPayload("TPM");
+    @Test
+    public void handleChallengeThrowsForNullChallengeData() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+            handler.getInitPayload("TPM");
 
-        //act
-        handler.handleChallenge(null);
+            //act
+            handler.handleChallenge(null);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_010: [If this object is waiting for the first challenge, this function shall validate that this challenge payload contains only a null byte and shall throw an IllegalStateException if it is not.]
-    @Test (expected = IllegalStateException.class)
-    public void handleFirstChallengeThrowsForChallengeDataWithIncorrectControlByte() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
-        handler.getInitPayload("TPM");
+    @Test
+    public void handleFirstChallengeThrowsForChallengeDataWithIncorrectControlByte() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+            handler.getInitPayload("TPM");
 
-        //act
-        handler.handleChallenge(validSecondChallenge);
+            //act
+            handler.handleChallenge(validSecondChallenge);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_012: [If this object is waiting for the second challenge, this function shall validate that this challenge payload contains a control byte with the mask 0x80 and shall throw an IllegalStateException if it is not.]
-    @Test (expected = IllegalStateException.class)
-    public void handleSecondChallengeThrowsForChallengeDataWithIncorrectControlByte() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
-        handler.getInitPayload("TPM");
-        handler.handleChallenge(validFirstChallenge);
+    @Test
+    public void handleSecondChallengeThrowsForChallengeDataWithIncorrectControlByte() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+            handler.getInitPayload("TPM");
+            handler.handleChallenge(validFirstChallenge);
 
-        //act
-        handler.handleChallenge(validFirstChallenge);
+            //act
+            handler.handleChallenge(validFirstChallenge);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_015: [If this object is waiting for the third challenge, this function shall validate that this challenge payload contains a control byte with the mask 0xC1 and shall throw an IllegalStateException if it is not.]
-    @Test (expected = IllegalStateException.class)
-    public void handleThirdChallengeThrowsForChallengeDataWithIncorrectControlByte() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
-        handler.getInitPayload("TPM");
-        handler.handleChallenge(validFirstChallenge);
-        handler.handleChallenge(validSecondChallenge);
-        Deencapsulation.setField(handler, "sasToken", sasToken);
+    @Test
+    public void handleThirdChallengeThrowsForChallengeDataWithIncorrectControlByte() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+            handler.getInitPayload("TPM");
+            handler.handleChallenge(validFirstChallenge);
+            handler.handleChallenge(validSecondChallenge);
+            Deencapsulation.setField(handler, "sasToken", sasToken);
 
-        //act
-        handler.handleChallenge(validFirstChallenge);
+            //act
+            handler.handleChallenge(validFirstChallenge);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_020: [If this object is not waiting for a first, second or third challenge, this function shall throw an IllegalStateException.]
-    @Test (expected = IllegalStateException.class)
-    public void handleChallengeThrowsIfWaitingToChooseMechanism() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+    @Test
+    public void handleChallengeThrowsIfWaitingToChooseMechanism() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
 
-        //act
-        handler.handleChallenge(validThirdChallenge);
+            //act
+            handler.handleChallenge(validThirdChallenge);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_020: [If this object is not waiting for a first, second or third challenge, this function shall throw an IllegalStateException.]
-    @Test (expected = IllegalStateException.class)
-    public void handleChallengeThrowsIfWaitingToBuildInitPayload() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+    @Test
+    public void handleChallengeThrowsIfWaitingToBuildInitPayload() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
 
-        //act
-        handler.handleChallenge(validThirdChallenge);
+            //act
+            handler.handleChallenge(validThirdChallenge);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_020: [If this object is not waiting for a first, second or third challenge, this function shall throw an IllegalStateException.]
-    @Test (expected = IllegalStateException.class)
-    public void handleChallengeThrowsIfWaitingForSaslOutcome() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
-        handler.getInitPayload("TPM");
-        handler.handleChallenge(validFirstChallenge);
-        handler.handleChallenge(validSecondChallenge);
-        Deencapsulation.setField(handler, "sasToken", sasToken);
-        handler.handleChallenge(validThirdChallenge);
+    @Test
+    public void handleChallengeThrowsIfWaitingForSaslOutcome() throws ProvisioningDeviceClientException {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+            handler.getInitPayload("TPM");
+            handler.handleChallenge(validFirstChallenge);
+            handler.handleChallenge(validSecondChallenge);
+            Deencapsulation.setField(handler, "sasToken", sasToken);
+            handler.handleChallenge(validThirdChallenge);
 
-        //act
-        handler.handleChallenge(validThirdChallenge);
+            //act
+            handler.handleChallenge(validThirdChallenge);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_022: [If the sasl outcome is not OK, this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void handleOutcomeAuthThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
-        handler.getInitPayload("TPM");
-        handler.handleChallenge(validFirstChallenge);
-        handler.handleChallenge(validSecondChallenge);
-        Deencapsulation.setField(handler, "sasToken", sasToken);
-        handler.handleChallenge(validThirdChallenge);
+    @Test
+    public void handleOutcomeAuthThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+            handler.getInitPayload("TPM");
+            handler.handleChallenge(validFirstChallenge);
+            handler.handleChallenge(validSecondChallenge);
+            Deencapsulation.setField(handler, "sasToken", sasToken);
+            handler.handleChallenge(validThirdChallenge);
 
-        //act
-        handler.handleOutcome(SaslHandler.SaslOutcome.AUTH);
+            //act
+            handler.handleOutcome(SaslHandler.SaslOutcome.AUTH);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_022: [If the sasl outcome is not OK, this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void handleOutcomeSysTempThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
-        handler.getInitPayload("TPM");
-        handler.handleChallenge(validFirstChallenge);
-        handler.handleChallenge(validSecondChallenge);
-        Deencapsulation.setField(handler, "sasToken", sasToken);
-        handler.handleChallenge(validThirdChallenge);
+    @Test
+    public void handleOutcomeSysTempThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+            handler.getInitPayload("TPM");
+            handler.handleChallenge(validFirstChallenge);
+            handler.handleChallenge(validSecondChallenge);
+            Deencapsulation.setField(handler, "sasToken", sasToken);
+            handler.handleChallenge(validThirdChallenge);
 
-        //act
-        handler.handleOutcome(SaslHandler.SaslOutcome.SYS_TEMP);
+            //act
+            handler.handleOutcome(SaslHandler.SaslOutcome.SYS_TEMP);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_022: [If the sasl outcome is not OK, this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void handleOutcomeSysThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
-        handler.getInitPayload("TPM");
-        handler.handleChallenge(validFirstChallenge);
-        handler.handleChallenge(validSecondChallenge);
-        Deencapsulation.setField(handler, "sasToken", sasToken);
-        handler.handleChallenge(validThirdChallenge);
+    @Test
+    public void handleOutcomeSysThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+            handler.getInitPayload("TPM");
+            handler.handleChallenge(validFirstChallenge);
+            handler.handleChallenge(validSecondChallenge);
+            Deencapsulation.setField(handler, "sasToken", sasToken);
+            handler.handleChallenge(validThirdChallenge);
 
-        //act
-        handler.handleOutcome(SaslHandler.SaslOutcome.SYS);
+            //act
+            handler.handleOutcome(SaslHandler.SaslOutcome.SYS);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_022: [If the sasl outcome is not OK, this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void handleOutcomeSysPermThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
-        handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
-        handler.getInitPayload("TPM");
-        handler.handleChallenge(validFirstChallenge);
-        handler.handleChallenge(validSecondChallenge);
-        Deencapsulation.setField(handler, "sasToken", sasToken);
-        handler.handleChallenge(validThirdChallenge);
+    @Test
+    public void handleOutcomeSysPermThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+            handler.chooseSaslMechanism(new String[]{"TPM", "notTPM"});
+            handler.getInitPayload("TPM");
+            handler.handleChallenge(validFirstChallenge);
+            handler.handleChallenge(validSecondChallenge);
+            Deencapsulation.setField(handler, "sasToken", sasToken);
+            handler.handleChallenge(validThirdChallenge);
 
-        //act
-        handler.handleOutcome(SaslHandler.SaslOutcome.SYS_PERM);
+            //act
+            handler.handleOutcome(SaslHandler.SaslOutcome.SYS_PERM);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_021: [If this object is not waiting for the sasl outcome, this function shall throw an IllegalStateException.]
-    @Test (expected = IllegalStateException.class)
-    public void handleOutcomeThrowsIfNotWaitingOnOutcome() throws ProvisioningDeviceSecurityException
-    {
-        //arrange
-        AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
+    @Test
+    public void handleOutcomeThrowsIfNotWaitingOnOutcome() throws ProvisioningDeviceSecurityException {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            AmqpsProvisioningSaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSaslHandler.class, idScope, registrationId, endorsementKey, storageRootKey, mockedResponseCallback, new Object());
 
-        //act
-        handler.handleOutcome(SaslHandler.SaslOutcome.SYS_PERM);
+            //act
+            handler.handleOutcome(SaslHandler.SaslOutcome.SYS_PERM);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_008: [This function shall save the provided sas token.]

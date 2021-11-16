@@ -5,12 +5,11 @@
 
 package com.microsoft.azure.sdk.iot.deps.transport.amqp;
 
-import com.microsoft.azure.sdk.iot.deps.transport.amqp.ErrorLoggingBaseHandlerWithCleanup;
 import mockit.Expectations;
 import mockit.Mocked;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.Reactor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ErrorLoggingBaseHandlerWithCleanupTest
 {

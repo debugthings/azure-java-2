@@ -8,7 +8,7 @@ import com.microsoft.azure.sdk.iot.deps.serializer.ParserUtility;
 import com.microsoft.azure.sdk.iot.deps.twin.DeviceCapabilities;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientException;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.provisioning.service.Helpers;
 
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service IndividualEnrollment serializer
@@ -142,42 +143,45 @@ public class IndividualEnrollmentTest
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_002: [The constructor shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithJsonThrowsOnNullJson()
-    {
-        // arrange
-        final String json = null;
+    @Test
+    public void constructorWithJsonThrowsOnNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = null;
 
-        // act
-        new MockIndividualEnrollment(json);
+            // act
+            new MockIndividualEnrollment(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_002: [The constructor shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithJsonThrowsOnEmptyJson()
-    {
-        // arrange
-        final String json = "";
+    @Test
+    public void constructorWithJsonThrowsOnEmptyJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = "";
 
-        // act
-        new MockIndividualEnrollment(json);
+            // act
+            new MockIndividualEnrollment(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_003: [The constructor shall throw JsonSyntaxException if the JSON is invalid.] */
-    @Test (expected = JsonSyntaxException.class)
-    public void constructorWithJsonThrowsOnInvalidJson()
-    {
-        // arrange
-        final String jsonWithExtraComma = "{\"a\":\"b\",}";
+    @Test
+    public void constructorWithJsonThrowsOnInvalidJson() {
+        assertThrows(JsonSyntaxException.class, () -> {
+            // arrange
+            final String jsonWithExtraComma = "{\"a\":\"b\",}";
 
-        // act
-        new MockIndividualEnrollment(jsonWithExtraComma);
+            // act
+            new MockIndividualEnrollment(jsonWithExtraComma);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_004: [The constructor shall deserialize the provided JSON for the enrollment class and subclasses.] */
@@ -844,16 +848,17 @@ public class IndividualEnrollmentTest
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_050: [The setAttestation shall throw IllegalArgumentException if the attestation is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setAttestationThrowsOnNull()
-    {
-        // arrange
-        IndividualEnrollment individualEnrollment = makeStandardEnrollment();
+    @Test
+    public void setAttestationThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IndividualEnrollment individualEnrollment = makeStandardEnrollment();
 
-        // act
-        individualEnrollment.setAttestation((Attestation) null);
+            // act
+            individualEnrollment.setAttestation((Attestation) null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_051: [The setAttestation shall store the provided attestation using the AttestationMechanism object.] */
@@ -940,42 +945,45 @@ public class IndividualEnrollmentTest
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_039: [The setCreatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided createdDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setCreatedDateTimeUtcThrowsOnNull()
-    {
-        // arrange
-        IndividualEnrollment individualEnrollment = makeStandardEnrollment();
+    @Test
+    public void setCreatedDateTimeUtcThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IndividualEnrollment individualEnrollment = makeStandardEnrollment();
 
-        // act
-        Deencapsulation.invoke(individualEnrollment,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)null);
+            // act
+            Deencapsulation.invoke(individualEnrollment,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_039: [The setCreatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided createdDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setCreatedDateTimeUtcThrowsOnEmpty()
-    {
-        // arrange
-        IndividualEnrollment individualEnrollment = makeStandardEnrollment();
+    @Test
+    public void setCreatedDateTimeUtcThrowsOnEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IndividualEnrollment individualEnrollment = makeStandardEnrollment();
 
-        // act
-        Deencapsulation.invoke(individualEnrollment,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)"");
+            // act
+            Deencapsulation.invoke(individualEnrollment,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)"");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_039: [The setCreatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided createdDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setCreatedDateTimeUtcThrowsOnInvalid()
-    {
-        // arrange
-        IndividualEnrollment individualEnrollment = makeStandardEnrollment();
+    @Test
+    public void setCreatedDateTimeUtcThrowsOnInvalid() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IndividualEnrollment individualEnrollment = makeStandardEnrollment();
 
-        // act
-        Deencapsulation.invoke(individualEnrollment,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)"0000-00-00 00:00:00");
+            // act
+            Deencapsulation.invoke(individualEnrollment,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)"0000-00-00 00:00:00");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_041: [The setLastUpdatedDateTimeUtc shall parse the provided String as a Data and Time UTC.] */
@@ -994,42 +1002,45 @@ public class IndividualEnrollmentTest
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_042: [The setLastUpdatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided lastUpdatedDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setLastUpdatedDateTimeUtcThrowsOnNull()
-    {
-        // arrange
-        IndividualEnrollment individualEnrollment = makeStandardEnrollment();
+    @Test
+    public void setLastUpdatedDateTimeUtcThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IndividualEnrollment individualEnrollment = makeStandardEnrollment();
 
-        // act
-        Deencapsulation.invoke(individualEnrollment,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)null);
+            // act
+            Deencapsulation.invoke(individualEnrollment,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_042: [The setLastUpdatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided lastUpdatedDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setLastUpdatedDateTimeUtcThrowsOnEmpty()
-    {
-        // arrange
-        IndividualEnrollment individualEnrollment = makeStandardEnrollment();
+    @Test
+    public void setLastUpdatedDateTimeUtcThrowsOnEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IndividualEnrollment individualEnrollment = makeStandardEnrollment();
 
-        // act
-        Deencapsulation.invoke(individualEnrollment,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)"");
+            // act
+            Deencapsulation.invoke(individualEnrollment,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)"");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_042: [The setLastUpdatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided lastUpdatedDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setLastUpdatedDateTimeUtcThrowsOnInvalid()
-    {
-        // arrange
-        IndividualEnrollment individualEnrollment = makeStandardEnrollment();
+    @Test
+    public void setLastUpdatedDateTimeUtcThrowsOnInvalid() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            IndividualEnrollment individualEnrollment = makeStandardEnrollment();
 
-        // act
-        Deencapsulation.invoke(individualEnrollment,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)"0000-00-00 00:00:00");
+            // act
+            Deencapsulation.invoke(individualEnrollment,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)"0000-00-00 00:00:00");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_INDIVIDUAL_ENROLLMENT_21_048: [The setEtag shall store the provided etag.] */

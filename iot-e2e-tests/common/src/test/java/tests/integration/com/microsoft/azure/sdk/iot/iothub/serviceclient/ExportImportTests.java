@@ -26,11 +26,10 @@ import com.microsoft.azure.sdk.iot.service.RegistryManagerOptions;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationMechanism;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubTooManyDevicesException;
 import mockit.Deencapsulation;
-import org.junit.AfterClass;
+import org.junit.jupiter.api.*;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeAll;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.IntegrationTest;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.TestConstants;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.Tools;
@@ -70,7 +69,7 @@ public class ExportImportTests extends IntegrationTest
 
     private static RegistryManager registryManager;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws IOException
     {
         iotHubConnectionString = Tools.retrieveEnvironmentVariableValue(TestConstants.IOT_HUB_CONNECTION_STRING_ENV_VAR_NAME);
@@ -95,7 +94,7 @@ public class ExportImportTests extends IntegrationTest
         importContainer.create();
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws Exception
     {
         //Deleting all devices created as a part of the bulk import-export test
@@ -123,9 +122,9 @@ public class ExportImportTests extends IntegrationTest
         }
     }
 
-    @Test (timeout = IMPORT_EXPORT_TEST_TIMEOUT_MILLISECONDS)
+    @Test(timeout = IMPORT_EXPORT_TEST_TIMEOUT_MILLISECONDS)
     @ContinuousIntegrationTest
-    @Ignore
+    @Disabled
     public void export_import_e2e() throws Exception
     {
 
@@ -158,17 +157,17 @@ public class ExportImportTests extends IntegrationTest
         }
     }
 
-    @Test (timeout = IMPORT_EXPORT_TEST_TIMEOUT_MILLISECONDS)
+    @Test(timeout = IMPORT_EXPORT_TEST_TIMEOUT_MILLISECONDS)
     @ContinuousIntegrationTest
-    @Ignore
+    @Disabled
     public void export_import_key_based_storage_auth_e2e() throws Exception
     {
         export_import_storage_auth_e2e(StorageAuthenticationType.KEY);
     }
 
-    @Test (timeout = IMPORT_EXPORT_TEST_TIMEOUT_MILLISECONDS)
+    @Test(timeout = IMPORT_EXPORT_TEST_TIMEOUT_MILLISECONDS)
     @ContinuousIntegrationTest
-    @Ignore
+    @Disabled
     public void export_import_identity_based_storage_auth_e2e() throws Exception
     {
         export_import_storage_auth_e2e(StorageAuthenticationType.IDENTITY);

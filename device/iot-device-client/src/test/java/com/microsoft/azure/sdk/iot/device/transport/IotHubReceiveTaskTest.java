@@ -5,13 +5,11 @@ package com.microsoft.azure.sdk.iot.device.transport;
 
 import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
 import com.microsoft.azure.sdk.iot.device.exceptions.DeviceClientException;
-import com.microsoft.azure.sdk.iot.device.transport.IotHubReceiveTask;
-import com.microsoft.azure.sdk.iot.device.transport.IotHubTransport;
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

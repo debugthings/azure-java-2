@@ -7,11 +7,9 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.device.internal.task;
 
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.task.ContractState;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.task.ResponseData;
 import mockit.Mocked;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.nio.charset.StandardCharsets;

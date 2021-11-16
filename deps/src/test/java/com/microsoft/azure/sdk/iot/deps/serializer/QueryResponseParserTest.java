@@ -9,10 +9,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.microsoft.azure.sdk.iot.deps.Helpers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
     Unit tests for QueryResponseParser
@@ -98,26 +100,28 @@ public class QueryResponseParserTest
     }
 
     //Tests_SRS_QUERY_RESPONSE_PARSER_25_003: [If the provided json is null, empty, or not valid, the constructor shall throws IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnMalformedJson() throws IllegalArgumentException
-    {
-        //arrange
-        final String testJson = buildJsonInputArrayFromJson(MALFORMED_JSON);
+    @Test
+    public void constructorThrowsOnMalformedJson() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String testJson = buildJsonInputArrayFromJson(MALFORMED_JSON);
 
-        //act
-        QueryResponseParser testParser = new QueryResponseParser(testJson);
+            //act
+            QueryResponseParser testParser = new QueryResponseParser(testJson);
 
-        //assert
-        Helpers.assertListEquals(buildListFromJsonArray(testJson), testParser.getJsonItems());
+            //assert
+            Helpers.assertListEquals(buildListFromJsonArray(testJson), testParser.getJsonItems());
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnInvalidUTF8Json() throws IllegalArgumentException
-    {
-        //arrange
-        final String testJson = buildJsonInputArrayFromJson(INVALID_JSON);
-        //act
-        QueryResponseParser testParser = new QueryResponseParser(testJson);
+    @Test
+    public void constructorThrowsOnInvalidUTF8Json() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String testJson = buildJsonInputArrayFromJson(INVALID_JSON);
+            //act
+            QueryResponseParser testParser = new QueryResponseParser(testJson);
+        });
     }
 
     //Tests_SRS_QUERY_RESPONSE_PARSER_25_008: [The getJsonItems shall return the list of json items as strings .]

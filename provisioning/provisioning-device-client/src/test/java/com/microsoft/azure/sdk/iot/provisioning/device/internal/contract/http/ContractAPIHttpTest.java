@@ -13,7 +13,6 @@ import com.microsoft.azure.sdk.iot.deps.transport.http.HttpResponse;
 import com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClientTransportProtocol;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.ProvisioningDeviceClientConfig;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.UrlPathBuilder;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.http.ContractAPIHttp;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.*;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.ResponseCallback;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.parser.DeviceRegistrationParser;
@@ -22,7 +21,7 @@ import com.microsoft.azure.sdk.iot.provisioning.device.internal.task.RequestData
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.task.ResponseData;
 import mockit.*;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import javax.net.ssl.SSLContext;
@@ -33,6 +32,7 @@ import java.util.Map;
 
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * Unit tests for ContractAPIHttp
@@ -144,81 +144,85 @@ public class ContractAPIHttpTest
     }
 
     //SRS_ContractAPIHttp_25_002: [The constructor shall throw ProvisioningDeviceClientException if either idScope and hostName are null or empty.]
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void constructorThrowsOnNullScopeID() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsOnNullScopeID() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockedProvisioningDeviceClientConfig.getIdScope();
-                result = null;
-            }
-        };
+                {
+                    mockedProvisioningDeviceClientConfig.getIdScope();
+                    result = null;
+                }
+            };
 
-        //act
-        ContractAPIHttp contractAPIHttp = new ContractAPIHttp(mockedProvisioningDeviceClientConfig);
+            //act
+            ContractAPIHttp contractAPIHttp = new ContractAPIHttp(mockedProvisioningDeviceClientConfig);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void constructorThrowsOnEmptyScopeID() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsOnEmptyScopeID() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockedProvisioningDeviceClientConfig.getIdScope();
-                result = "";
-            }
-        };
+                {
+                    mockedProvisioningDeviceClientConfig.getIdScope();
+                    result = "";
+                }
+            };
 
-        //act
-        ContractAPIHttp contractAPIHttp = new ContractAPIHttp(mockedProvisioningDeviceClientConfig);
+            //act
+            ContractAPIHttp contractAPIHttp = new ContractAPIHttp(mockedProvisioningDeviceClientConfig);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void constructorThrowsOnNullHostName() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsOnNullHostName() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockedProvisioningDeviceClientConfig.getIdScope();
-                result = TEST_SCOPE_ID;
-                mockedProvisioningDeviceClientConfig.getProvisioningServiceGlobalEndpoint();
-                result = null;
-            }
-        };
+                {
+                    mockedProvisioningDeviceClientConfig.getIdScope();
+                    result = TEST_SCOPE_ID;
+                    mockedProvisioningDeviceClientConfig.getProvisioningServiceGlobalEndpoint();
+                    result = null;
+                }
+            };
 
-        //act
-        ContractAPIHttp contractAPIHttp = new ContractAPIHttp(mockedProvisioningDeviceClientConfig);
+            //act
+            ContractAPIHttp contractAPIHttp = new ContractAPIHttp(mockedProvisioningDeviceClientConfig);
 
-        //assert
+            //assert
 
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void constructorThrowsOnEmptyHostName() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsOnEmptyHostName() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockedProvisioningDeviceClientConfig.getIdScope();
-                result = TEST_SCOPE_ID;
-                mockedProvisioningDeviceClientConfig.getProvisioningServiceGlobalEndpoint();
-                result = "";
-            }
-        };
+                {
+                    mockedProvisioningDeviceClientConfig.getIdScope();
+                    result = TEST_SCOPE_ID;
+                    mockedProvisioningDeviceClientConfig.getProvisioningServiceGlobalEndpoint();
+                    result = "";
+                }
+            };
 
-        //act
-        ContractAPIHttp contractAPIHttp = new ContractAPIHttp(mockedProvisioningDeviceClientConfig);
+            //act
+            ContractAPIHttp contractAPIHttp = new ContractAPIHttp(mockedProvisioningDeviceClientConfig);
 
-        //assert
+            //assert
+        });
     }
 
     //SRS_ContractAPIHttp_25_004: [This method shall retrieve the Url by calling 'generateRegisterUrl' on an object for UrlPathBuilder.]
@@ -283,278 +287,287 @@ public class ContractAPIHttpTest
     }
 
     //SRS_ContractAPIHttp_25_003: [If either registrationId, sslcontext or restResponseCallback is null or if registrationId is empty then this method shall throw ProvisioningDeviceClientException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceWithDPSTPMThrowsOnNullRegistrationId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void requestNonceWithDPSTPMThrowsOnNullRegistrationId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = null;
-                mockedRequestData.getEndorsementKey();
-                result = TEST_EK;
-                mockedRequestData.getStorageRootKey();
-                result = TEST_SRK;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-            }
-        };
-        //act
-        contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = null;
+                    mockedRequestData.getEndorsementKey();
+                    result = TEST_EK;
+                    mockedRequestData.getStorageRootKey();
+                    result = TEST_SRK;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                }
+            };
+            //act
+            contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceWithDPSTPMThrowsOnEmptyRegistrationId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void requestNonceWithDPSTPMThrowsOnEmptyRegistrationId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = "";
-                mockedRequestData.getEndorsementKey();
-                result = TEST_EK;
-                mockedRequestData.getStorageRootKey();
-                result = TEST_SRK;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-            }
-        };
-        //act
-        contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = "";
+                    mockedRequestData.getEndorsementKey();
+                    result = TEST_EK;
+                    mockedRequestData.getStorageRootKey();
+                    result = TEST_SRK;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                }
+            };
+            //act
+            contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceWithDPSTPMThrowsOnNullEk() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void requestNonceWithDPSTPMThrowsOnNullEk() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = null;
-                mockedRequestData.getStorageRootKey();
-                result = TEST_SRK;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-            }
-        };
-        //act
-        contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = null;
+                    mockedRequestData.getStorageRootKey();
+                    result = TEST_SRK;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                }
+            };
+            //act
+            contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceWithDPSTPMThrowsOnNullSRk() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void requestNonceWithDPSTPMThrowsOnNullSRk() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = TEST_EK;
-                mockedRequestData.getStorageRootKey();
-                result = null;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-            }
-        };
-        //act
-        contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = TEST_EK;
+                    mockedRequestData.getStorageRootKey();
+                    result = null;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                }
+            };
+            //act
+            contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceWithDPSTPMThrowsOnNullSSLContext() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void requestNonceWithDPSTPMThrowsOnNullSSLContext() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = TEST_EK;
-                mockedRequestData.getStorageRootKey();
-                result = TEST_SRK;
-                mockedRequestData.getSslContext();
-                result = null;
-            }
-        };
-        //act
-        contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = TEST_EK;
+                    mockedRequestData.getStorageRootKey();
+                    result = TEST_SRK;
+                    mockedRequestData.getSslContext();
+                    result = null;
+                }
+            };
+            //act
+            contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceWithDPSTPMThrowsOnNullResponseCallback() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void requestNonceWithDPSTPMThrowsOnNullResponseCallback() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = TEST_EK;
-                mockedRequestData.getStorageRootKey();
-                result = TEST_SRK;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-            }
-        };
-        //act
-        contractAPIHttp.requestNonceForTPM(mockedRequestData, null, null);
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = TEST_EK;
+                    mockedRequestData.getStorageRootKey();
+                    result = TEST_SRK;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                }
+            };
+            //act
+            contractAPIHttp.requestNonceForTPM(mockedRequestData, null, null);
+        });
     }
 
     //SRS_ContractAPIHttp_25_009: [If service return any other status other than 404 then this method shall throw ProvisioningDeviceTransportException in case of 202 or ProvisioningDeviceHubException on any other status.]
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void requestNonceWithDPSTPMThrowsHubExceptionWithStatusOtherThan404Throws() throws IOException, ProvisioningDeviceClientException
-    {
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        prepareRequestExpectations();
+    @Test
+    public void requestNonceWithDPSTPMThrowsHubExceptionWithStatusOtherThan404Throws() throws IOException, ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            prepareRequestExpectations();
 
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = TEST_EK;
-                mockedRequestData.getStorageRootKey();
-                result = TEST_SRK;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedHttpRequest.send();
-                result = mockedHttpResponse;
-                ProvisioningDeviceClientExceptionManager.verifyHttpResponse(mockedHttpResponse);
-                result = new ProvisioningDeviceHubException("test Exception");
-                mockedHttpResponse.getStatus();
-                new DeviceRegistrationParser(anyString, anyString, anyString, anyString);
-                result = mockedDeviceRegistrationParser;
-                mockedDeviceRegistrationParser.toJson();
-                result = "some json";
-            }
-        };
-
-        //act
-        try
-        {
-            contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
-        }
-        finally
-        {
-            //assert
-            new Verifications()
+            new NonStrictExpectations()
             {
                 {
-                    mockedResponseCallback.run((ResponseData) any, any);
-                    times = 0;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = TEST_EK;
+                    mockedRequestData.getStorageRootKey();
+                    result = TEST_SRK;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedHttpRequest.send();
+                    result = mockedHttpResponse;
+                    ProvisioningDeviceClientExceptionManager.verifyHttpResponse(mockedHttpResponse);
+                    result = new ProvisioningDeviceHubException("test Exception");
+                    mockedHttpResponse.getStatus();
+                    new DeviceRegistrationParser(anyString, anyString, anyString, anyString);
+                    result = mockedDeviceRegistrationParser;
+                    mockedDeviceRegistrationParser.toJson();
+                    result = "some json";
                 }
             };
-        }
+
+            //act
+            try
+            {
+                contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            }
+            finally
+            {
+                //assert
+                new Verifications()
+                {
+                    {
+                        mockedResponseCallback.run((ResponseData) any, any);
+                        times = 0;
+                    }
+                };
+            }
+        });
     }
 
     //SRS_ContractAPIHttp_25_009: [If service return any other status other than 404 then this method shall throw ProvisioningDeviceTransportException in case of < 300 or ProvisioningDeviceHubException on any other status.]
-    @Test (expected = ProvisioningDeviceTransportException.class)
-    public void requestNonceWithDPSTPMThrowsHubExceptionWithStatusLessThan300Throws() throws IOException, ProvisioningDeviceClientException
-    {
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        prepareRequestExpectations();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = TEST_EK;
-                mockedRequestData.getStorageRootKey();
-                result = TEST_SRK;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedHttpRequest.send();
-                result = mockedHttpResponse;
-                ProvisioningDeviceClientExceptionManager.verifyHttpResponse(mockedHttpResponse);
-                mockedHttpResponse.getStatus();
-                result = 200;
-                new DeviceRegistrationParser(anyString, anyString, anyString, anyString);
-                result = mockedDeviceRegistrationParser;
-                mockedDeviceRegistrationParser.toJson();
-                result = "some json";
-            }
-        };
-
-        //act
-        try
-        {
-            contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
-        }
-        finally
-        {
-            //assert
-            new Verifications()
+    @Test
+    public void requestNonceWithDPSTPMThrowsHubExceptionWithStatusLessThan300Throws() throws IOException, ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceTransportException.class, () -> {
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            prepareRequestExpectations();
+            new NonStrictExpectations()
             {
                 {
-                    mockedResponseCallback.run((ResponseData) any, any);
-                    times = 0;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = TEST_EK;
+                    mockedRequestData.getStorageRootKey();
+                    result = TEST_SRK;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedHttpRequest.send();
+                    result = mockedHttpResponse;
+                    ProvisioningDeviceClientExceptionManager.verifyHttpResponse(mockedHttpResponse);
+                    mockedHttpResponse.getStatus();
+                    result = 200;
+                    new DeviceRegistrationParser(anyString, anyString, anyString, anyString);
+                    result = mockedDeviceRegistrationParser;
+                    mockedDeviceRegistrationParser.toJson();
+                    result = "some json";
                 }
             };
-        }
+
+            //act
+            try
+            {
+                contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            }
+            finally
+            {
+                //assert
+                new Verifications()
+                {
+                    {
+                        mockedResponseCallback.run((ResponseData) any, any);
+                        times = 0;
+                    }
+                };
+            }
+        });
     }
 
-    @Test (expected = ProvisioningDeviceTransportException.class)
-    public void requestNonceWithDPSTPMThrowsTransportExceptionIfAnyOfTheTransportCallsFails() throws IOException, ProvisioningDeviceClientException
-    {
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = TEST_EK;
-                mockedRequestData.getStorageRootKey();
-                result = TEST_SRK;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
-                result = new IOException("test IOException");
-            }
-        };
-
-        //act
-        try
-        {
-            contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
-        }
-        finally
-        {
-            //assert
-            new Verifications()
+    @Test
+    public void requestNonceWithDPSTPMThrowsTransportExceptionIfAnyOfTheTransportCallsFails() throws IOException, ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceTransportException.class, () -> {
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
                 {
-                    mockedResponseCallback.run((ResponseData) any, any);
-                    times = 0;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = TEST_EK;
+                    mockedRequestData.getStorageRootKey();
+                    result = TEST_SRK;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
+                    result = new IOException("test IOException");
                 }
             };
-        }
+
+            //act
+            try
+            {
+                contractAPIHttp.requestNonceForTPM(mockedRequestData, mockedResponseCallback, null);
+            }
+            finally
+            {
+                //assert
+                new Verifications()
+                {
+                    {
+                        mockedResponseCallback.run((ResponseData) any, any);
+                        times = 0;
+                    }
+                };
+            }
+        });
     }
 
     //SRS_ContractAPIHttp_25_012: [This method shall retrieve the Url by calling 'generateRegisterUrl' on an object for UrlPathBuilder.]
@@ -666,55 +679,56 @@ public class ContractAPIHttpTest
         };
     }
 
-    @Test (expected = ProvisioningDeviceHubException.class)
-    public void authenticateWithDPSThrowsOnSendFailure() throws IOException, ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        prepareRequestExpectations();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void authenticateWithDPSThrowsOnSendFailure() throws IOException, ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceHubException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            prepareRequestExpectations();
+            new NonStrictExpectations()
             {
-                mockedHttpRequest.send();
-                result = mockedHttpResponse;
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getEndorsementKey();
-                result = null;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-                ProvisioningDeviceClientExceptionManager.verifyHttpResponse(mockedHttpResponse);
-                result = new ProvisioningDeviceHubException("test Exception");
-                new DeviceRegistrationParser(anyString, anyString);
-                result = mockedDeviceRegistrationParser;
-                mockedDeviceRegistrationParser.toJson();
-                result = "some json";
-            }
-        };
+                {
+                    mockedHttpRequest.send();
+                    result = mockedHttpResponse;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getEndorsementKey();
+                    result = null;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                    ProvisioningDeviceClientExceptionManager.verifyHttpResponse(mockedHttpResponse);
+                    result = new ProvisioningDeviceHubException("test Exception");
+                    new DeviceRegistrationParser(anyString, anyString);
+                    result = mockedDeviceRegistrationParser;
+                    mockedDeviceRegistrationParser.toJson();
+                    result = "some json";
+                }
+            };
 
-        //act
-        contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
+            //act
+            contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
 
-        //assert
-        prepareRequestVerifications(HttpMethod.PUT, 0);
+            //assert
+            prepareRequestVerifications(HttpMethod.PUT, 0);
 
-        new Verifications()
-        {
+            new Verifications()
             {
-                new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
-                times = 1;
-                mockedUrlPathBuilder.generateRegisterUrl(TEST_REGISTRATION_ID);
-                times = 1;
-                mockedHttpRequest.setSSLContext(mockedSslContext);
-                times = 1;
-                mockedResponseCallback.run((ResponseData) any, null);
-                times = 0;
+                {
+                    new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
+                    times = 1;
+                    mockedUrlPathBuilder.generateRegisterUrl(TEST_REGISTRATION_ID);
+                    times = 1;
+                    mockedHttpRequest.setSSLContext(mockedSslContext);
+                    times = 1;
+                    mockedResponseCallback.run((ResponseData) any, null);
+                    times = 0;
 
-            }
-        };
+                }
+            };
+        });
     }
 
     @Test
@@ -830,127 +844,132 @@ public class ContractAPIHttpTest
     }
 
     //SRS_ContractAPIHttp_25_011: [If either registrationId, sslcontext or restResponseCallback is null or if registrationId is empty then this method shall throw ProvisioningDeviceClientException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void authenticateWithDPSThrowsOnNullRegistrationId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getRegistrationId();
-                result = null;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-        //act
-        contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
-
-    }
-
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void authenticateWithDPSThrowsOnEmptyRegistrationId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getRegistrationId();
-                result = "";
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-        //act
-        contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
-    }
-
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void authenticateWithDPSThrowsOnNullSSLContext() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = null;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-        //act
-        contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
-    }
-
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void authenticateWithDPSThrowsOnNullResponseCallback() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-        //act
-        contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, null, null);
-
-    }
-
-    @Test (expected = ProvisioningDeviceTransportException.class)
-    public void authenticateWithDPSThrowsTransportExceptionIfAnyOfTheTransportCallsFails() throws ProvisioningDeviceClientException
-    {
-        final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-                new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
-                result = new IOException("test IOException");
-            }
-        };
-
-        //act
-        try
-        {
-            contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
-        }
-        finally
-        {
-            //assert
-            new Verifications()
+    @Test
+    public void authenticateWithDPSThrowsOnNullRegistrationId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
                 {
-                    mockedResponseCallback.run((ResponseData) any, any);
-                    times = 0;
+                    mockedRequestData.getRegistrationId();
+                    result = null;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
                 }
             };
-        }
+            //act
+            contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
+
+        });
+    }
+
+    @Test
+    public void authenticateWithDPSThrowsOnEmptyRegistrationId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
+            {
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = "";
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                }
+            };
+            //act
+            contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
+        });
+    }
+
+    @Test
+    public void authenticateWithDPSThrowsOnNullSSLContext() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
+            {
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = null;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                }
+            };
+            //act
+            contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
+        });
+    }
+
+    @Test
+    public void authenticateWithDPSThrowsOnNullResponseCallback() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
+            {
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                }
+            };
+            //act
+            contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, null, null);
+
+        });
+    }
+
+    @Test
+    public void authenticateWithDPSThrowsTransportExceptionIfAnyOfTheTransportCallsFails() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceTransportException.class, () -> {
+            final byte[] expectedPayload = "testByte".getBytes(StandardCharsets.UTF_8);
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
+            {
+                {
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                    new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
+                    result = new IOException("test IOException");
+                }
+            };
+
+            //act
+            try
+            {
+                contractAPIHttp.authenticateWithProvisioningService(mockedRequestData, mockedResponseCallback, null);
+            }
+            finally
+            {
+                //assert
+                new Verifications()
+                {
+                    {
+                        mockedResponseCallback.run((ResponseData) any, any);
+                        times = 0;
+                    }
+                };
+            }
+        });
     }
 
     //SRS_ContractAPIHttp_25_019: [This method shall retrieve the Url by calling generateRequestUrl on an object for UrlPathBuilder.]
@@ -1045,302 +1064,315 @@ public class ContractAPIHttpTest
     }
 
     //SRS_ContractAPIHttp_25_024: [If service return any other status other than < 300 then this method shall throw ProvisioningDeviceHubException.]
-    @Test (expected = ProvisioningDeviceHubException.class)
-    public void getRegistrationStatusThrowsOnFailureStatus() throws IOException, ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        prepareRequestExpectations();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getOperationId();
-                result = TEST_OPERATION_ID;
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-                mockedHttpRequest.send();
-                result = mockedHttpResponse;
-                ProvisioningDeviceClientExceptionManager.verifyHttpResponse(mockedHttpResponse);
-                result = new ProvisioningDeviceHubException("test Exception");
-            }
-        };
-
-        //act
-        try
-        {
-            contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
-        }
-        finally
-        {
-            //assert
-            prepareRequestVerifications(HttpMethod.GET, 0);
-
-            new Verifications()
+    @Test
+    public void getRegistrationStatusThrowsOnFailureStatus() throws IOException, ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceHubException.class, () -> {
+            //arrange
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            prepareRequestExpectations();
+            new NonStrictExpectations()
             {
                 {
-                    new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
-                    times = 1;
-                    mockedUrlPathBuilder.generateRequestUrl(TEST_REGISTRATION_ID, TEST_OPERATION_ID);
-                    times = 1;
-                    mockedHttpRequest.setSSLContext(mockedSslContext);
-                    times = 1;
-                    mockedResponseCallback.run((ResponseData) any, null);
-                    times = 0;
+                    mockedRequestData.getOperationId();
+                    result = TEST_OPERATION_ID;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                    mockedHttpRequest.send();
+                    result = mockedHttpResponse;
+                    ProvisioningDeviceClientExceptionManager.verifyHttpResponse(mockedHttpResponse);
+                    result = new ProvisioningDeviceHubException("test Exception");
                 }
             };
-        }
+
+            //act
+            try
+            {
+                contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+            }
+            finally
+            {
+                //assert
+                prepareRequestVerifications(HttpMethod.GET, 0);
+
+                new Verifications()
+                {
+                    {
+                        new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
+                        times = 1;
+                        mockedUrlPathBuilder.generateRequestUrl(TEST_REGISTRATION_ID, TEST_OPERATION_ID);
+                        times = 1;
+                        mockedHttpRequest.setSSLContext(mockedSslContext);
+                        times = 1;
+                        mockedResponseCallback.run((ResponseData) any, null);
+                        times = 0;
+                    }
+                };
+            }
+        });
     }
 
     //SRS_ContractAPIHttp_25_018: [If either operationId, registrationId, sslcontext or restResponseCallback is null or if operationId, registrationId is empty then this method shall throw ProvisioningDeviceClientException.]
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void getRegistrationStatusThrowsOnNullOperationId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getOperationId();
-                result = null;
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-
-        //act
-        contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
-    }
-
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void getRegistrationStatusThrowsOnEmptyOperationId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getOperationId();
-                result = "";
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-
-        //act
-        contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
-    }
-
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void getRegistrationStatusThrowsOnNullRegistrationId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIHttp contractAPIHttp = createContractClass();
-
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getOperationId();
-                result = TEST_OPERATION_ID;
-                mockedRequestData.getRegistrationId();
-                result = null;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-        //act
-        contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
-
-    }
-
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void getRegistrationStatusThrowsOnEmptyRegistrationId() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIHttp contractAPIHttp = createContractClass();
-
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getOperationId();
-                result = TEST_OPERATION_ID;
-                mockedRequestData.getRegistrationId();
-                result = "";
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-
-        //act
-        contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
-    }
-
-
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void getRegistrationStatusThrowsOnNullSSLContext() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIHttp contractAPIHttp = createContractClass();
-
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getOperationId();
-                result = TEST_OPERATION_ID;
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = null;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-        //act
-        contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
-    }
-
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void getRegistrationStatusThrowsOnNullResponseCallback() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getOperationId();
-                result = TEST_OPERATION_ID;
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = null;
-            }
-        };
-
-        //act
-        contractAPIHttp.getRegistrationStatus(mockedRequestData, null, null);
-    }
-
-    @Test (expected = ProvisioningDeviceTransportException.class)
-    public void getRegistrationStatusThrowsTransportExceptionIfAnyOfTheTransportCallsFails() throws ProvisioningDeviceClientException
-    {
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
-            {
-                mockedRequestData.getOperationId();
-                result = TEST_OPERATION_ID;
-                mockedRequestData.getRegistrationId();
-                result = TEST_REGISTRATION_ID;
-                mockedRequestData.getSslContext();
-                result = mockedSslContext;
-                mockedRequestData.getSasToken();
-                result = TEST_SAS_TOKEN;
-                new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
-                result = new IOException("test IOException");
-            }
-        };
-
-        //act
-        try
-        {
-            contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
-        }
-        finally
-        {
-            //assert
-            new Verifications()
+    @Test
+    public void getRegistrationStatusThrowsOnNullOperationId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
                 {
-                    mockedResponseCallback.run((ResponseData) any, any);
-                    times = 0;
+                    mockedRequestData.getOperationId();
+                    result = null;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
                 }
             };
-        }
+
+            //act
+            contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void prepareRequestThrowsOnNullUrl() throws Exception
-    {
-        //arrange
-        final byte[] expectedPayload = "TestBytes".getBytes(StandardCharsets.UTF_8);
-        final String expectedUserAgentValue = "TestUserAgent";
-        ContractAPIHttp contractAPIHttp = createContractClass();
-
-        //act
-        Deencapsulation.invoke(contractAPIHttp, "prepareRequest", new Class[] {URL.class, HttpMethod.class, byte[].class, Integer.class, Map.class, String.class}, null, HttpMethod.PUT, expectedPayload, 0, null, expectedUserAgentValue);
-        //assert
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void prepareRequestThrowsOnNullMethod() throws Exception
-    {
-        //arrange
-        final byte[] expectedPayload = "TestBytes".getBytes(StandardCharsets.UTF_8);
-        final String expectedUserAgentValue = "TestUserAgent";
-        ContractAPIHttp contractAPIHttp = createContractClass();
-
-        //act
-        Deencapsulation.invoke(contractAPIHttp, "prepareRequest", new Class[] {URL.class, HttpMethod.class, byte[].class, Integer.class, Map.class, String.class}, mockedUrl, null, expectedPayload, 0, null, expectedUserAgentValue);
-        //assert
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void prepareRequestThrowsOnNullPayload() throws Exception
-    {
-        //arrange
-        final byte[] expectedPayload = null;
-        final String expectedUserAgentValue = "TestUserAgent";
-        ContractAPIHttp contractAPIHttp = createContractClass();
-
-        //act
-        Deencapsulation.invoke(contractAPIHttp, "prepareRequest", new Class[] {URL.class, HttpMethod.class, byte[].class, Integer.class, Map.class, String.class}, mockedUrl, HttpMethod.PUT, expectedPayload, 0, null, expectedUserAgentValue);
-        //assert
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void prepareRequestThrowsOnInvalidTimeout() throws Exception
-    {
-        //arrange
-        final byte[] expectedPayload = "TestBytes".getBytes(StandardCharsets.UTF_8);
-        final String expectedUserAgentValue = "TestUserAgent";
-        ContractAPIHttp contractAPIHttp = createContractClass();
-
-        //act
-        Deencapsulation.invoke(contractAPIHttp, "prepareRequest", new Class[] {URL.class, HttpMethod.class, byte[].class, Integer.class, Map.class, String.class}, mockedUrl, HttpMethod.PUT, expectedPayload, -2, null, expectedUserAgentValue);
-        //assert
-    }
-
-    @Test (expected = IOException.class)
-    public void sendRequestThrowsOnSendFailure() throws Exception
-    {
-        ContractAPIHttp contractAPIHttp = createContractClass();
-        new NonStrictExpectations()
-        {
+    @Test
+    public void getRegistrationStatusThrowsOnEmptyOperationId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
             {
-                mockedHttpRequest.send();
-                result = new IOException("Send failure");
-            }
-        };
+                {
+                    mockedRequestData.getOperationId();
+                    result = "";
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                }
+            };
 
-        //act
-        Deencapsulation.invoke(contractAPIHttp, "sendRequest", mockedHttpRequest);
-        //assert
+            //act
+            contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+        });
+    }
+
+    @Test
+    public void getRegistrationStatusThrowsOnNullRegistrationId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIHttp contractAPIHttp = createContractClass();
+
+            new NonStrictExpectations()
+            {
+                {
+                    mockedRequestData.getOperationId();
+                    result = TEST_OPERATION_ID;
+                    mockedRequestData.getRegistrationId();
+                    result = null;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                }
+            };
+            //act
+            contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+
+        });
+    }
+
+    @Test
+    public void getRegistrationStatusThrowsOnEmptyRegistrationId() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIHttp contractAPIHttp = createContractClass();
+
+            new NonStrictExpectations()
+            {
+                {
+                    mockedRequestData.getOperationId();
+                    result = TEST_OPERATION_ID;
+                    mockedRequestData.getRegistrationId();
+                    result = "";
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                }
+            };
+
+            //act
+            contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+        });
+    }
+
+
+    @Test
+    public void getRegistrationStatusThrowsOnNullSSLContext() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIHttp contractAPIHttp = createContractClass();
+
+            new NonStrictExpectations()
+            {
+                {
+                    mockedRequestData.getOperationId();
+                    result = TEST_OPERATION_ID;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = null;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                }
+            };
+            //act
+            contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+        });
+    }
+
+    @Test
+    public void getRegistrationStatusThrowsOnNullResponseCallback() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
+            {
+                {
+                    mockedRequestData.getOperationId();
+                    result = TEST_OPERATION_ID;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = null;
+                }
+            };
+
+            //act
+            contractAPIHttp.getRegistrationStatus(mockedRequestData, null, null);
+        });
+    }
+
+    @Test
+    public void getRegistrationStatusThrowsTransportExceptionIfAnyOfTheTransportCallsFails() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceTransportException.class, () -> {
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
+            {
+                {
+                    mockedRequestData.getOperationId();
+                    result = TEST_OPERATION_ID;
+                    mockedRequestData.getRegistrationId();
+                    result = TEST_REGISTRATION_ID;
+                    mockedRequestData.getSslContext();
+                    result = mockedSslContext;
+                    mockedRequestData.getSasToken();
+                    result = TEST_SAS_TOKEN;
+                    new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE_ID, ProvisioningDeviceClientTransportProtocol.HTTPS);
+                    result = new IOException("test IOException");
+                }
+            };
+
+            //act
+            try
+            {
+                contractAPIHttp.getRegistrationStatus(mockedRequestData, mockedResponseCallback, null);
+            }
+            finally
+            {
+                //assert
+                new Verifications()
+                {
+                    {
+                        mockedResponseCallback.run((ResponseData) any, any);
+                        times = 0;
+                    }
+                };
+            }
+        });
+    }
+
+    @Test
+    public void prepareRequestThrowsOnNullUrl() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "TestBytes".getBytes(StandardCharsets.UTF_8);
+            final String expectedUserAgentValue = "TestUserAgent";
+            ContractAPIHttp contractAPIHttp = createContractClass();
+
+            //act
+            Deencapsulation.invoke(contractAPIHttp, "prepareRequest", new Class[] {URL.class, HttpMethod.class, byte[].class, Integer.class, Map.class, String.class}, null, HttpMethod.PUT, expectedPayload, 0, null, expectedUserAgentValue);
+            //assert
+        });
+    }
+
+    @Test
+    public void prepareRequestThrowsOnNullMethod() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "TestBytes".getBytes(StandardCharsets.UTF_8);
+            final String expectedUserAgentValue = "TestUserAgent";
+            ContractAPIHttp contractAPIHttp = createContractClass();
+
+            //act
+            Deencapsulation.invoke(contractAPIHttp, "prepareRequest", new Class[] {URL.class, HttpMethod.class, byte[].class, Integer.class, Map.class, String.class}, mockedUrl, null, expectedPayload, 0, null, expectedUserAgentValue);
+            //assert
+        });
+    }
+
+    @Test
+    public void prepareRequestThrowsOnNullPayload() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = null;
+            final String expectedUserAgentValue = "TestUserAgent";
+            ContractAPIHttp contractAPIHttp = createContractClass();
+
+            //act
+            Deencapsulation.invoke(contractAPIHttp, "prepareRequest", new Class[] {URL.class, HttpMethod.class, byte[].class, Integer.class, Map.class, String.class}, mockedUrl, HttpMethod.PUT, expectedPayload, 0, null, expectedUserAgentValue);
+            //assert
+        });
+    }
+
+    @Test
+    public void prepareRequestThrowsOnInvalidTimeout() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final byte[] expectedPayload = "TestBytes".getBytes(StandardCharsets.UTF_8);
+            final String expectedUserAgentValue = "TestUserAgent";
+            ContractAPIHttp contractAPIHttp = createContractClass();
+
+            //act
+            Deencapsulation.invoke(contractAPIHttp, "prepareRequest", new Class[] {URL.class, HttpMethod.class, byte[].class, Integer.class, Map.class, String.class}, mockedUrl, HttpMethod.PUT, expectedPayload, -2, null, expectedUserAgentValue);
+            //assert
+        });
+    }
+
+    @Test
+    public void sendRequestThrowsOnSendFailure() throws Exception {
+        assertThrows(IOException.class, () -> {
+            ContractAPIHttp contractAPIHttp = createContractClass();
+            new NonStrictExpectations()
+            {
+                {
+                    mockedHttpRequest.send();
+                    result = new IOException("Send failure");
+                }
+            };
+
+            //act
+            Deencapsulation.invoke(contractAPIHttp, "sendRequest", mockedHttpRequest);
+            //assert
+        });
     }
 }

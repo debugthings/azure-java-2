@@ -6,8 +6,7 @@
 package com.microsoft.azure.sdk.iot.deps.util;
 
 
-import com.microsoft.azure.sdk.iot.deps.util.Tools;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 

@@ -8,11 +8,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.microsoft.azure.sdk.iot.deps.Helpers;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the TwinProperties
@@ -104,17 +105,18 @@ public class TwinPropertiesTest
             "    }\n";
 
     /* SRS_TWIN_PROPERTIES_21_001: [The constructor shall throw IllegalArgumentException if the provided desired and reported properties is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullDesiredProperty()
-    {
-        // arrange
-        // act
-        Deencapsulation.newInstance(
-                TwinProperties.class,
-                new Class[]{TwinCollection.class, TwinCollection.class},
-                (TwinCollection)null, (TwinCollection)null);
+    @Test
+    public void constructorThrowsOnNullDesiredProperty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            Deencapsulation.newInstance(
+                    TwinProperties.class,
+                    new Class[]{TwinCollection.class, TwinCollection.class},
+                    (TwinCollection)null, (TwinCollection)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_PROPERTIES_21_002: [The constructor shall store the provided desired and reported properties converting from the row collection.] */

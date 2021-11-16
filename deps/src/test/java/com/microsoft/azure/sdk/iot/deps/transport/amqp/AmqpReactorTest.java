@@ -5,13 +5,11 @@
 
 package com.microsoft.azure.sdk.iot.deps.transport.amqp;
 
-import com.microsoft.azure.sdk.iot.deps.transport.amqp.AmqpReactor;
-
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.integration.junit4.JMockit;
 import org.apache.qpid.proton.reactor.Reactor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 /** Unit tests for AmqpConnection.

@@ -5,12 +5,12 @@
 
 package com.microsoft.azure.sdk.iot.device.edge;
 
-import com.microsoft.azure.sdk.iot.device.edge.MethodRequest;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MethodRequestTest
 {
@@ -30,19 +30,21 @@ public class MethodRequestTest
     }
 
     // Tests_SRS_DIRECTMETHODREQUEST_34_002: [If the provided methodName is null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyMethodName()
-    {
-        //act
-        MethodRequest request = new MethodRequest("", expectedPayload);
+    @Test
+    public void constructorThrowsForEmptyMethodName() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            MethodRequest request = new MethodRequest("", expectedPayload);
+        });
     }
 
     // Tests_SRS_DIRECTMETHODREQUEST_34_002: [If the provided methodName is null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullMethodName()
-    {
-        //act
-        MethodRequest request = new MethodRequest(null, expectedPayload);
+    @Test
+    public void constructorThrowsForNullMethodName() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            MethodRequest request = new MethodRequest(null, expectedPayload);
+        });
     }
 
     // Tests_SRS_DIRECTMETHODREQUEST_34_003: [This constructor shall save the provided payload, methodname, and timeouts.]

@@ -6,12 +6,10 @@
 package com.microsoft.azure.sdk.iot.service.devicetwin;
 
 import com.microsoft.azure.sdk.iot.deps.twin.*;
-import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceTwinDevice;
-import com.microsoft.azure.sdk.iot.service.devicetwin.Pair;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for device twin device
@@ -71,24 +70,26 @@ public class DeviceTwinDeviceTest
     /*
      **Tests_SRS_DEVICETWINDEVICE_25_002: [** The constructor shall throw IllegalArgumentException if the input string is empty or null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorCreatesNewDeviceEmptyDeviceId()
-    {
-        //arrange
-        final String deviceId = "";
+    @Test
+    public void constructorCreatesNewDeviceEmptyDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String deviceId = "";
 
-        //act
-        new DeviceTwinDevice(deviceId);
+            //act
+            new DeviceTwinDevice(deviceId);
+        });
     }
 
     /*
      **Tests_SRS_DEVICETWINDEVICE_25_002: [** The constructor shall throw IllegalArgumentException if the input string is empty or null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorCreatesNewDeviceNullDeviceId()
-    {
-        //act
-        new DeviceTwinDevice(null);
+    @Test
+    public void constructorCreatesNewDeviceNullDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new DeviceTwinDevice(null);
+        });
     }
 
     /*
@@ -119,55 +120,59 @@ public class DeviceTwinDeviceTest
     /*
      **Tests_SRS_DEVICETWINDEVICE_28__005: [** The constructor shall throw IllegalArgumentException if the deviceId is empty or null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorCreatesNewDeviceForModuleEmptyDeviceId()
-    {
-        //arrange
-        final String deviceId = "";
-        final String moduleId = "somemodule";
+    @Test
+    public void constructorCreatesNewDeviceForModuleEmptyDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String deviceId = "";
+            final String moduleId = "somemodule";
 
-        //act
-        new DeviceTwinDevice(deviceId, moduleId);
+            //act
+            new DeviceTwinDevice(deviceId, moduleId);
+        });
     }
 
     /*
      **Tests_SRS_DEVICETWINDEVICE_28_005: [** The constructor shall throw IllegalArgumentException if the deviceId is empty or null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorCreatesNewDeviceForModuleNullDeviceId()
-    {
-        //arrange
-        final String moduleId = "somemodule";
+    @Test
+    public void constructorCreatesNewDeviceForModuleNullDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String moduleId = "somemodule";
 
-        //act
-        new DeviceTwinDevice(null, moduleId);
+            //act
+            new DeviceTwinDevice(null, moduleId);
+        });
     }
 
     /*
      **Tests_SRS_DEVICETWINDEVICE_28__006: [** The constructor shall throw IllegalArgumentException if the moduleId is empty or null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorCreatesNewDeviceForModuleEmptyModuleId()
-    {
-        //arrange
-        final String deviceId = "somedevice";
-        final String moduleId = "";
+    @Test
+    public void constructorCreatesNewDeviceForModuleEmptyModuleId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String deviceId = "somedevice";
+            final String moduleId = "";
 
-        //act
-        new DeviceTwinDevice(deviceId, moduleId);
+            //act
+            new DeviceTwinDevice(deviceId, moduleId);
+        });
     }
 
     /*
      **Tests_SRS_DEVICETWINDEVICE_28_006: [** The constructor shall throw IllegalArgumentException if the moduleId is empty or null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorCreatesNewDeviceForModuleNullModuleId()
-    {
-        //arrange
-        final String deviceId = "somedevice";
+    @Test
+    public void constructorCreatesNewDeviceForModuleNullModuleId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String deviceId = "somedevice";
 
-        //act
-        new DeviceTwinDevice(deviceId, null);
+            //act
+            new DeviceTwinDevice(deviceId, null);
+        });
     }
 
     /*
@@ -237,24 +242,26 @@ public class DeviceTwinDeviceTest
     /*
     **Tests_SRS_DEVICETWINDEVICE_21_029: [** The seteTag shall throw IllegalArgumentException if the input string is empty or null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void setETagNullThrows()
-    {
-        //arrange
-        DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
+    @Test
+    public void setETagNullThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
 
-        //act
-        testDevice.setETag(null);
+            //act
+            testDevice.setETag(null);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void setETagEmptyThrows()
-    {
-        //arrange
-        DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
+    @Test
+    public void setETagEmptyThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
 
-        //act
-        testDevice.setETag("");
+            //act
+            testDevice.setETag("");
+        });
     }
 
     /*
@@ -406,16 +413,17 @@ public class DeviceTwinDeviceTest
     /*
      **Codes_SRS_DEVICETWINDEVICE_21_034: [** If the tags map is null then this method shall throw IllegalArgumentException.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void getTagsVersionReturnsNullIfNoTags()
-    {
-        //arrange
-        DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
+    @Test
+    public void getTagsVersionReturnsNullIfNoTags() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
 
-        //act
-        Integer version = testDevice.getTagsVersion();
+            //act
+            Integer version = testDevice.getTagsVersion();
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -545,16 +553,17 @@ public class DeviceTwinDeviceTest
     /*
      **Codes_SRS_DEVICETWINDEVICE_21_038: [** If the reported properties is null then this method shall throw IllegalArgumentException.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void getReportedPropertiesVersionReturnsNullIfNoReportedProperties()
-    {
-        //arrange
-        DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
+    @Test
+    public void getReportedPropertiesVersionReturnsNullIfNoReportedProperties() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
 
-        //act
-        Integer version = testDevice.getReportedPropertiesVersion();
+            //act
+            Integer version = testDevice.getReportedPropertiesVersion();
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -633,15 +642,16 @@ public class DeviceTwinDeviceTest
     /*
     **Tests_SRS_DEVICETWINDEVICE_25_008: [** If the tags Set is null then this method shall throw IllegalArgumentException.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void setTagsThrowsIsNullInput()
-    {
-        //arrange
-        DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
-        Set<Pair> testTags = null;
+    @Test
+    public void setTagsThrowsIsNullInput() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
+            Set<Pair> testTags = null;
 
-        //act
-        testDevice.setTags(testTags);
+            //act
+            testDevice.setTags(testTags);
+        });
     }
 
     /*
@@ -672,32 +682,34 @@ public class DeviceTwinDeviceTest
     /*
     **Tests_SRS_DEVICETWINDEVICE_25_012: [** If the desiredProperties Set is null then this method shall throw IllegalArgumentException.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void setDesiredThrowsIfNullInput()
-    {
-        //arrange
-        DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
-        Set<Pair> testDesProp = null;
+    @Test
+    public void setDesiredThrowsIfNullInput() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
+            Set<Pair> testDesProp = null;
 
 
-        //act
-        testDevice.setDesiredProperties(testDesProp);
+            //act
+            testDevice.setDesiredProperties(testDesProp);
 
+        });
     }
 
     /*
      **Codes_SRS_DEVICETWINDEVICE_21_036: [** If the desired properties is null then this method shall throw IllegalArgumentException.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void getDesiredPropertiesVersionReturnsNullIfNoDesiredProperties()
-    {
-        //arrange
-        DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
+    @Test
+    public void getDesiredPropertiesVersionReturnsNullIfNoDesiredProperties() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceTwinDevice testDevice = new DeviceTwinDevice("testDevice");
 
-        //act
-        Integer version = testDevice.getDesiredPropertiesVersion();
+            //act
+            Integer version = testDevice.getDesiredPropertiesVersion();
 
-        //assert
+            //assert
+        });
     }
 
     @Test

@@ -5,11 +5,10 @@
 
 package com.microsoft.azure.sdk.iot.device.hsm.parser;
 
-import com.microsoft.azure.sdk.iot.device.hsm.parser.SignRequest;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.crypto.Mac;
 

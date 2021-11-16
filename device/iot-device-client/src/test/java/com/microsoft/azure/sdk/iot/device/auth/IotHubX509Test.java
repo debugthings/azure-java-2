@@ -5,11 +5,10 @@
 
 package com.microsoft.azure.sdk.iot.device.auth;
 
-import com.microsoft.azure.sdk.iot.device.auth.IotHubX509;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests IotHubX509
@@ -52,35 +52,39 @@ public class IotHubX509Test
     private static final String someKeyPath = "someKeyPath";
 
     //Tests_SRS_IOTHUBX509_34_001: [If the provided public key certificate or private key is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyPublicKey() throws IOException
-    {
-        //act
-        Deencapsulation.newInstance(IotHubX509.class, new Class[] {String.class, boolean.class, String.class, boolean.class}, "", false, someKey, false);
+    @Test
+    public void constructorThrowsForEmptyPublicKey() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(IotHubX509.class, new Class[] {String.class, boolean.class, String.class, boolean.class}, "", false, someKey, false);
+        });
     }
 
     //Tests_SRS_IOTHUBX509_34_001: [If the provided public key certificate or private key is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyPrivateKey() throws IOException
-    {
-        //act
-        Deencapsulation.newInstance(IotHubX509.class, new Class[] {String.class, boolean.class, String.class, boolean.class},someCert, false, "", false);
+    @Test
+    public void constructorThrowsForEmptyPrivateKey() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(IotHubX509.class, new Class[] {String.class, boolean.class, String.class, boolean.class},someCert, false, "", false);
+        });
     }
 
     //Tests_SRS_IOTHUBX509_34_001: [If the provided public key certificate or private key is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullPublicKey() throws IOException
-    {
-        //act
-        Deencapsulation.newInstance(IotHubX509.class, new Class[] {String.class, boolean.class, String.class, boolean.class}, null, false, someKey, false);
+    @Test
+    public void constructorThrowsForNullPublicKey() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(IotHubX509.class, new Class[] {String.class, boolean.class, String.class, boolean.class}, null, false, someKey, false);
+        });
     }
 
     //Tests_SRS_IOTHUBX509_34_001: [If the provided public key certificate or private key is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullPrivateKey() throws IOException
-    {
-        //act
-        Deencapsulation.newInstance(IotHubX509.class, new Class[] {String.class, boolean.class, String.class, boolean.class}, someCert, false, null, false);
+    @Test
+    public void constructorThrowsForNullPrivateKey() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(IotHubX509.class, new Class[] {String.class, boolean.class, String.class, boolean.class}, someCert, false, null, false);
+        });
     }
 
     //Tests_SRS_IOTHUBX509_34_017: [If the public key certificate was provided as a path in the constructor, this function shall read the public key certificate from its file.]

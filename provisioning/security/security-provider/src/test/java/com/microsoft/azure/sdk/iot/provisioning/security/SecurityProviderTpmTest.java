@@ -7,14 +7,13 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.security;
 
-import com.microsoft.azure.sdk.iot.provisioning.security.SecurityProviderTpm;
 import com.microsoft.azure.sdk.iot.provisioning.security.exceptions.SecurityProviderException;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.Base32;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
@@ -29,6 +28,7 @@ import java.util.UUID;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
      Unit tests for SecurityProviderTpm and SecurityProvider
@@ -124,21 +124,22 @@ public class SecurityProviderTpmTest
     }
 
     //SRS_SecurityClientTpm_25_008: [ This method shall throw SecurityProviderException if any of the underlying API's in generating registration Id. ]
-    @Test (expected = SecurityProviderException.class)
-    public void getRegistrationIdThrowsSecurityClientException() throws SecurityProviderException, NoSuchAlgorithmException
-    {
-        //arrange
-        SecurityProviderTpm securityClientTpm = new SecurityProviderTPMTestImpl(ENROLLMENT_KEY);
-        new NonStrictExpectations()
-        {
+    @Test
+    public void getRegistrationIdThrowsSecurityClientException() throws SecurityProviderException, NoSuchAlgorithmException {
+        assertThrows(SecurityProviderException.class, () -> {
+            //arrange
+            SecurityProviderTpm securityClientTpm = new SecurityProviderTPMTestImpl(ENROLLMENT_KEY);
+            new NonStrictExpectations()
             {
-                MessageDigest.getInstance("SHA-256");
-                result = new NoSuchAlgorithmException();
-            }
-        };
+                {
+                    MessageDigest.getInstance("SHA-256");
+                    result = new NoSuchAlgorithmException();
+                }
+            };
 
-        //act
-        securityClientTpm.getRegistrationId();
+            //act
+            securityClientTpm.getRegistrationId();
+        });
     }
 
     //SRS_SecurityClientTpm_25_004: [ This method shall generate SSLContext for this flow. ]
@@ -168,20 +169,21 @@ public class SecurityProviderTpmTest
     }
 
     //SRS_SecurityClientTpm_25_005: [ This method shall throw SecurityProviderException if any of the underlying API's in generating SSL context fails. ]
-    @Test (expected = SecurityProviderException.class)
-    public void getSSLContextThrowsUnderlyingException() throws SecurityProviderException, KeyStoreException
-    {
-        //arrange
-        SecurityProviderTpm securityClientTpm = new SecurityProviderTPMTestImpl(ENROLLMENT_KEY);
-        new NonStrictExpectations()
-        {
+    @Test
+    public void getSSLContextThrowsUnderlyingException() throws SecurityProviderException, KeyStoreException {
+        assertThrows(SecurityProviderException.class, () -> {
+            //arrange
+            SecurityProviderTpm securityClientTpm = new SecurityProviderTPMTestImpl(ENROLLMENT_KEY);
+            new NonStrictExpectations()
             {
-                mockedKeyStore.setCertificateEntry(anyString, (Certificate) any);
-                result = new KeyStoreException();
-            }
-        };
+                {
+                    mockedKeyStore.setCertificateEntry(anyString, (Certificate) any);
+                    result = new KeyStoreException();
+                }
+            };
 
-        //act
-        securityClientTpm.getSSLContext();
+            //act
+            securityClientTpm.getSSLContext();
+        });
     }
 }

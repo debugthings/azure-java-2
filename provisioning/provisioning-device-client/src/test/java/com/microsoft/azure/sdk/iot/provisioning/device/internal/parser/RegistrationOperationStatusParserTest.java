@@ -7,13 +7,12 @@
 package com.microsoft.azure.sdk.iot.provisioning.device.internal.parser;
 
 import com.google.gson.JsonParseException;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.parser.RegistrationOperationStatusParser;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.parser.TpmRegistrationResultParser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
     Unit tests for  RegistrationOperationStatusParser, DeviceRegistrationResult,
@@ -60,32 +59,35 @@ public class RegistrationOperationStatusParserTest
     }
 
     //SRS_TpmRegistrationResultParser_25_002: [ The constructor shall throw IllegalArgumentException if the provided Json is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorForTPMRegistrationResultCreatesFromJsonThrowsOnNull() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = null;
+    @Test
+    public void constructorForTPMRegistrationResultCreatesFromJsonThrowsOnNull() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = null;
 
-        TpmRegistrationResultParser tpmRegistrationResultParser = TpmRegistrationResultParser.createFromJson(json);
+            TpmRegistrationResultParser tpmRegistrationResultParser = TpmRegistrationResultParser.createFromJson(json);
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorForTPMRegistrationResultCreatesFromJsonThrowsOnEmpty() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "";
+    @Test
+    public void constructorForTPMRegistrationResultCreatesFromJsonThrowsOnEmpty() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "";
 
-        TpmRegistrationResultParser tpmRegistrationResultParser = TpmRegistrationResultParser.createFromJson(json);
+            TpmRegistrationResultParser tpmRegistrationResultParser = TpmRegistrationResultParser.createFromJson(json);
 
+        });
     }
 
     //SRS_TpmRegistrationResultParser_25_004: [ The constructor shall throw IllegalArgumentException if the provided Json could not be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorForTPMRegistrationResultCreatesFromJsonThrowsOnMalformedJson() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{" +
-                "\"authenticationKey\":\"" + TEST_AUTH_KEY + "\"";
+    @Test
+    public void constructorForTPMRegistrationResultCreatesFromJsonThrowsOnMalformedJson() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{" +
+                    "\"authenticationKey\":\"" + TEST_AUTH_KEY + "\"";
 
-        TpmRegistrationResultParser tpmRegistrationResultParser = TpmRegistrationResultParser.createFromJson(json);
+            TpmRegistrationResultParser tpmRegistrationResultParser = TpmRegistrationResultParser.createFromJson(json);
+        });
     }
 
     @Test
@@ -102,31 +104,34 @@ public class RegistrationOperationStatusParserTest
     }
 
     //SRS_RegistrationOperationStatusParser_25_004: [ This method shall throw IllegalArgumentException if operationId cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullOperationId() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{" +
-                "\"status\":\"assigning\"}";
+    @Test
+    public void constructorThrowsOnNullOperationId() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{" +
+                    "\"status\":\"assigning\"}";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
 
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_001: [ This method shall throw IllegalArgumentException if provided Json is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullJson() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = null;
+    @Test
+    public void constructorThrowsOnNullJson() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = null;
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyJson() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "";
+    @Test
+    public void constructorThrowsOnEmptyJson() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_002: [ This method shall parse the provided Json. ]
@@ -180,30 +185,32 @@ public class RegistrationOperationStatusParserTest
     }
 
     //SRS_RegistrationOperationStatusParser_25_005: [ This method shall throw IllegalArgumentException if Registration Id cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullRegistrationId() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigning\"," +
-                "\"registrationState\":" +
-                "{" +
-                "\"status\":\"assigning\"}" +
-                "}";
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+    @Test
+    public void constructorThrowsOnNullRegistrationId() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigning\"," +
+                    "\"registrationState\":" +
+                    "{" +
+                    "\"status\":\"assigning\"}" +
+                    "}";
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
 
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_006: [ This method shall throw IllegalArgumentException if status cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullStatus() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigning\"," +
-                "\"registrationState\":" +
-                "{\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"" +
-                "}" +
-                "}";
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+    @Test
+    public void constructorThrowsOnNullStatus() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigning\"," +
+                    "\"registrationState\":" +
+                    "{\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"" +
+                    "}" +
+                    "}";
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_X509RegistrationResultParser_25_001: [ This method shall return the parsed Subject name. ]
@@ -303,617 +310,633 @@ public class RegistrationOperationStatusParserTest
     }
 
     //SRS_RegistrationOperationStatusParser_25_007: [ This method shall throw IllegalArgumentException if Issuer Name from X509 Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullIssuerName() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullIssuerName() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
 
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_008: [ This method shall throw IllegalArgumentException if Subject Name from X509 Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullSubjectName() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{" +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullSubjectName() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{" +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
 
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_009: [ This method shall throw IllegalArgumentException if Sha1 Thumbprint from X509 Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullSha1Thumbprint() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullSha1Thumbprint() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_010: [ This method shall throw IllegalArgumentException if SHA256 Thumbprint  from X509 Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullSha256Thumbprint() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullSha256Thumbprint() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_011: [ This method shall throw IllegalArgumentException if NotBeforeUtc from X509 Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullNotAfterUtc() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullNotAfterUtc() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_012: [ This method shall throw IllegalArgumentException if NotAfterUtc from X509 Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullNotBeforeUtc() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullNotBeforeUtc() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_013: [ This method shall throw IllegalArgumentException if Serial Number from X509 Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullSerialNumber() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullSerialNumber() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_014: [ This method shall throw IllegalArgumentException if version from X509 Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullVersion() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"" +
-                "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullVersion() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"" +
+                    "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_015: [ This method shall throw IllegalArgumentException if Issuer Name from X509 Signing Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullIssuerNameSigningCert() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullIssuerNameSigningCert() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_016: [ This method shall throw IllegalArgumentException if Subject Name from X509 Signing Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullSubjectNameSigningCert() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{" +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullSubjectNameSigningCert() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{" +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_017: [ This method shall throw IllegalArgumentException if Sha1 Thumbprint from X509 Signing Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullSha1ThumbprintSigningCert() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullSha1ThumbprintSigningCert() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_018: [ This method shall throw IllegalArgumentException if SHA256 Thumbprint from X509 Signing Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullSha256ThumbprintSigningCert() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullSha256ThumbprintSigningCert() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_019: [ This method shall throw IllegalArgumentException if Not before UTC time from X509 Signing Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullNotAfterUtcSigningCert() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullNotAfterUtcSigningCert() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_020: [ This method shall throw IllegalArgumentException if Not After UTC  from X509 Signing Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullNotBeforeUtcSigningCert() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullNotBeforeUtcSigningCert() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_021: [ This method shall throw IllegalArgumentException if Serial Number from X509 Signing Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullSerialNumberSigningCert() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"version\":" + TEST_VERSION + "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullSerialNumberSigningCert() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"version\":" + TEST_VERSION + "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_RegistrationOperationStatusParser_25_022: [ This method shall throw IllegalArgumentException if Version from X509 Signing Certificate Info cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509JsonThrowsOnNullVersionSigningCert() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"registrationState\":" +
-                "{\"x509\":" +
-                "{\"certificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
-                "\"version\":" + TEST_VERSION + "}," +
-                "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
-                "\"signingCertificateInfo\":" +
-                "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
-                "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
-                "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
-                "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
-                "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
-                "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
-                "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"" +
-                "}" +
-                "}," +
-                "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
-                "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
-                "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
-                "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
-                "\"status\":\"assigned\"," +
-                "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
-                "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
+    @Test
+    public void constructorWithX509JsonThrowsOnNullVersionSigningCert() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\"" + TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"registrationState\":" +
+                    "{\"x509\":" +
+                    "{\"certificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"," +
+                    "\"version\":" + TEST_VERSION + "}," +
+                    "\"enrollmentGroupId\":\"" + TEST_ENROLLMENT_GROUP_ID + "\"," +
+                    "\"signingCertificateInfo\":" +
+                    "{\"subjectName\":\"" + TEST_SUBJECT_NAME + "\"," +
+                    "\"sha1Thumbprint\":\"" + TEST_SHA1_THUMBPRINT + "\"," +
+                    "\"sha256Thumbprint\":\""+ TEST_SHA256_THUMBPRINT +"\"," +
+                    "\"issuerName\":\"" + TEST_ISSUER_NAME + "\"," +
+                    "\"notBeforeUtc\":\"2017-01-01T00:00:00Z\"," +
+                    "\"notAfterUtc\":\"2037-01-01T00:00:00Z\"," +
+                    "\"serialNumber\":\"" + TEST_SERIAL_NUMBER + "\"" +
+                    "}" +
+                    "}," +
+                    "\"registrationId\":\"" + TEST_REGISTRATION_ID + "\"," +
+                    "\"createdDateTimeUtc\":\"2017-07-21T20:56:19.3109747Z\"," +
+                    "\"assignedHub\":\"" + TEST_ASSIGNED_HUB + "\"," +
+                    "\"deviceId\":\"" + TEST_DEVICE_ID + "\"," +
+                    "\"status\":\"assigned\"," +
+                    "\"etag\":\"172d963d-ec26-41ba-84c4-afe5f6c93ef4\"," +
+                    "\"lastUpdatedDateTimeUtc\":\"2017-07-21T20:56:19.7978138Z\"}}\n";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 
     //SRS_DeviceRegistrationResultParser_25_008: [ This method shall return the parsed TpmRegistrationResultParser Object. ]
@@ -962,12 +985,13 @@ public class RegistrationOperationStatusParserTest
     }
 
     //SRS_RegistrationOperationStatusParser_25_003: [ This method shall throw IllegalArgumentException if Json cannot be parsed. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnMalformedJson() throws IllegalArgumentException, JsonParseException
-    {
-        final String json = "{\"operationId\":\""+ TEST_OPERATION_ID + "\"," +
-                "\"status\":\"assigning\"";
+    @Test
+    public void constructorThrowsOnMalformedJson() throws IllegalArgumentException, JsonParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String json = "{\"operationId\":\""+ TEST_OPERATION_ID + "\"," +
+                    "\"status\":\"assigning\"";
 
-        RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+            RegistrationOperationStatusParser operationsRegistrationOperationStatusParser = RegistrationOperationStatusParser.createFromJson(json);
+        });
     }
 }

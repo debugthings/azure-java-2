@@ -5,8 +5,6 @@
 
 package com.microsoft.azure.sdk.iot.deps.transport.amqp;
 
-import com.microsoft.azure.sdk.iot.deps.transport.amqp.SaslHandler;
-import com.microsoft.azure.sdk.iot.deps.transport.amqp.SaslListenerImpl;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
@@ -15,7 +13,7 @@ import mockit.integration.junit4.JMockit;
 import org.apache.qpid.proton.engine.Sasl;
 import org.apache.qpid.proton.engine.SaslListener;
 import org.apache.qpid.proton.engine.Transport;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static org.apache.qpid.proton.engine.Sasl.SaslOutcome.*;

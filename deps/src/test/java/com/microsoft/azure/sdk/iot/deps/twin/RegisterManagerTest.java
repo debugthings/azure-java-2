@@ -5,12 +5,11 @@ package com.microsoft.azure.sdk.iot.deps.twin;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.microsoft.azure.sdk.iot.deps.twin.DeviceCapabilities;
-import com.microsoft.azure.sdk.iot.deps.twin.RegisterManager;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the TwinState
@@ -37,15 +36,16 @@ public class RegisterManagerTest
 
 
     /* Tests_SRS_REGISTER_MANAGER_21_001: [The setDeviceId shall throw IllegalArgumentException if the provided deviceId do not fits the criteria.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setDeviceIdThrowsOnNullDeviceId()
-    {
-        // arrange
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().create();
-        RegisterManager result = gson.fromJson(REGISTER_MANAGER_SAMPLE, RegisterManager.class);
+    @Test
+    public void setDeviceIdThrowsOnNullDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().create();
+            RegisterManager result = gson.fromJson(REGISTER_MANAGER_SAMPLE, RegisterManager.class);
 
-        // act - assert
-        result.setDeviceId(null);
+            // act - assert
+            result.setDeviceId(null);
+        });
     }
 
     /* Tests_SRS_REGISTER_MANAGER_21_002: [The setDeviceId shall replace the `deviceId` by the provided one.] */
@@ -64,15 +64,16 @@ public class RegisterManagerTest
     }
 
     /* Tests_SRS_REGISTER_MANAGER_28_001: [The setModuleId shall throw IllegalArgumentException if the provided moduleId do not fits the criteria.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setModuleIdThrowsOnNullModuleId()
-    {
-        // arrange
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().create();
-        RegisterManager result = gson.fromJson(REGISTER_MANAGER_SAMPLE, RegisterManager.class);
+    @Test
+    public void setModuleIdThrowsOnNullModuleId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().create();
+            RegisterManager result = gson.fromJson(REGISTER_MANAGER_SAMPLE, RegisterManager.class);
 
-        // act - assert
-        result.setModuleId(null);
+            // act - assert
+            result.setModuleId(null);
+        });
     }
 
     /* Tests_SRS_REGISTER_MANAGER_28_002: [The setModuleId shall replace the `moduleId` by the provided one.] */

@@ -4,14 +4,13 @@
 package com.microsoft.azure.sdk.iot.device.transport;
 
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
-import com.microsoft.azure.sdk.iot.device.transport.RetryDecision;
-import com.microsoft.azure.sdk.iot.device.transport.NoRetry;
+
 import java.util.Arrays;
 import java.util.Collection;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runners.Parameterized;
 import org.junit.runner.RunWith;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,7 +28,7 @@ public class NoRetryTest
         this.lastException = lastException;
     }
 
-    @Before
+    @BeforeEach
     public void initialize()
     {
         retryNoRetry = new NoRetry();

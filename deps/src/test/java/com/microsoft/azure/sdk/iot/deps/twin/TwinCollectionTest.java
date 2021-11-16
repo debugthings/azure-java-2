@@ -11,12 +11,13 @@ import com.microsoft.azure.sdk.iot.deps.serializer.ParserUtility;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the TwinCollection
@@ -267,29 +268,31 @@ public class TwinCollectionTest
     }
 
     /* SRS_TWIN_COLLECTION_21_004: [The putAll shall throw IllegalArgumentException if the provided Map is null, empty or invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putAllThrowsOnNull()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putAllThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.putAllFinal(null);
+            // act
+            twinCollection.putAllFinal(null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_004: [The putAll shall throw IllegalArgumentException if the provided Map is null, empty or invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putAllThrowsOnEmptyMap()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putAllThrowsOnEmptyMap() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.putAllFinal(new HashMap<String, Object>());
+            // act
+            twinCollection.putAllFinal(new HashMap<String, Object>());
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_005: [The putAll shall copy all entries in the provided Map to the TwinCollection.] */
@@ -477,61 +480,65 @@ public class TwinCollectionTest
     }
 
     /* SRS_TWIN_COLLECTION_21_010: [The put shall throw IllegalArgumentException if the provided key is null, empty, or invalid, or if the value is invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putThrowsOnKeyNull()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putThrowsOnKeyNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.putFinal(null, "NewNiceCar");
+            // act
+            twinCollection.putFinal(null, "NewNiceCar");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_010: [The put shall throw IllegalArgumentException if the provided key is null, empty, or invalid, or if the value is invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putThrowsOnKeyEmpty()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putThrowsOnKeyEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.putFinal("", "NewNiceCar");
+            // act
+            twinCollection.putFinal("", "NewNiceCar");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_010: [The put shall throw IllegalArgumentException if the provided key is null, empty, or invalid, or if the value is invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putThrowsOnValueInvalidArray()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putThrowsOnValueInvalidArray() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.putFinal(VALID_KEY_NAME, new int[]{1,2,3});
+            // act
+            twinCollection.putFinal(VALID_KEY_NAME, new int[]{1,2,3});
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_010: [The put shall throw IllegalArgumentException if the provided key is null, empty, or invalid, or if the value is invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putThrowsOnValueInvalidType()
-    {
-        // arrange
-        final class UserType
-        {
-            private final int a = 10;
-            protected String b = VALID_VALUE_NAME;
-        }
+    @Test
+    public void putThrowsOnValueInvalidType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final class UserType
+            {
+                private final int a = 10;
+                protected String b = VALID_VALUE_NAME;
+            }
 
-        TwinCollection twinCollection = new TwinCollection();
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.putFinal(VALID_KEY_NAME, new UserType());
+            // act
+            twinCollection.putFinal(VALID_KEY_NAME, new UserType());
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_011: [The constructor shall convert the provided rawCollection in a valid TwinCollection.] */
@@ -562,17 +569,18 @@ public class TwinCollectionTest
     }
 
     /* SRS_TWIN_COLLECTION_21_013: [The constructor shall throw IllegalArgumentException if the entity contains the key `$version` and its value is not a integer.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor2LevelsWithInvalidVersionFailed()
-    {
-        // arrange
-        final Map<String, Object> property = new HashMap<>(PROPERTIES_SAMPLE);
-        property.put("$version", "invalidString");
+    @Test
+    public void constructor2LevelsWithInvalidVersionFailed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final Map<String, Object> property = new HashMap<>(PROPERTIES_SAMPLE);
+            property.put("$version", "invalidString");
 
-        // act
-        Deencapsulation.invoke(TwinCollection.class, "createFromRawCollection", property);
+            // act
+            Deencapsulation.invoke(TwinCollection.class, "createFromRawCollection", property);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_014: [If the entity contains the key `$metadata`, the constructor shall create a TwinMetadata with the value of this entity.] */

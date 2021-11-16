@@ -6,9 +6,8 @@
 package com.microsoft.azure.sdk.iot.provisioning.service;
 
 
-import com.microsoft.azure.sdk.iot.provisioning.service.Tools;
 import mockit.Expectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.json.Json;
 import javax.json.JsonObject;

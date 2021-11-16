@@ -7,13 +7,13 @@ import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceOperations;
 import com.microsoft.azure.sdk.iot.device.IotHubMethod;
 import com.microsoft.azure.sdk.iot.device.MessageProperty;
 import com.microsoft.azure.sdk.iot.device.MessageType;
-import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 
 import static com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceOperations.DEVICE_OPERATION_UNKNOWN;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for IotHubTransportMessage
@@ -24,10 +24,11 @@ public class IotHubTransportMessageTest
     /*
     **Tests_SRS_IOTHUBTRANSPORTMESSAGE_12_001: [**If the message body is null, the constructor shall throw an IllegalArgumentException thrown by base constructor.**]**
     */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithByteArrayThrowsIllegalArgumentExceptionIfMessageBodyNull()
-    {
-        IotHubTransportMessage iotHubTransportMessage = new IotHubTransportMessage(null, MessageType.DEVICE_TELEMETRY);
+    @Test
+    public void constructorWithByteArrayThrowsIllegalArgumentExceptionIfMessageBodyNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            IotHubTransportMessage iotHubTransportMessage = new IotHubTransportMessage(null, MessageType.DEVICE_TELEMETRY);
+        });
     }
 
     /*
@@ -242,16 +243,17 @@ public class IotHubTransportMessageTest
     /*
      **Tests_SRS_IOTHUBTRANSPORTMESSAGE_12_012: [**The function shall throw IllegalArgumentException if the methodName is null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void setMethodNameThrowsIllegalArgumentExceptionIfMethodNameIsNull()
-    {
-        // arrange
-        byte[] data = new byte[1];
-        MessageType messageType = MessageType.DEVICE_TWIN;
-        IotHubTransportMessage iotHubTransportMessage = new IotHubTransportMessage(data, messageType);
+    @Test
+    public void setMethodNameThrowsIllegalArgumentExceptionIfMethodNameIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            byte[] data = new byte[1];
+            MessageType messageType = MessageType.DEVICE_TWIN;
+            IotHubTransportMessage iotHubTransportMessage = new IotHubTransportMessage(data, messageType);
 
-        // act
-        iotHubTransportMessage.setMethodName(null);
+            // act
+            iotHubTransportMessage.setMethodName(null);
+        });
     }
 
     /*

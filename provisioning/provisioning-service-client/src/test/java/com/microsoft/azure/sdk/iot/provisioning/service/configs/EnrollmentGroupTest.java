@@ -8,7 +8,7 @@ import com.microsoft.azure.sdk.iot.deps.serializer.ParserUtility;
 import com.microsoft.azure.sdk.iot.deps.twin.DeviceCapabilities;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientException;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.provisioning.service.Helpers;
 
 import java.nio.charset.StandardCharsets;
@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service Enrollment group serializer
@@ -217,42 +218,45 @@ public class EnrollmentGroupTest
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_002: [The constructor shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithJsonThrowsOnNullJson()
-    {
-        // arrange
-        final String json = null;
+    @Test
+    public void constructorWithJsonThrowsOnNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = null;
 
-        // act
-        new MockEnrollmentGroup(json);
+            // act
+            new MockEnrollmentGroup(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_002: [The constructor shall throw IllegalArgumentException if the JSON is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithJsonThrowsOnEmptyJson()
-    {
-        // arrange
-        final String json = "";
+    @Test
+    public void constructorWithJsonThrowsOnEmptyJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String json = "";
 
-        // act
-        new MockEnrollmentGroup(json);
+            // act
+            new MockEnrollmentGroup(json);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_003: [The constructor shall throw JsonSyntaxException if the JSON is invalid.] */
-    @Test (expected = JsonSyntaxException.class)
-    public void constructorWithJsonThrowsOnInvalidJson()
-    {
-        // arrange
-        final String jsonWithExtraComma = "{\"a\":\"b\",}";
+    @Test
+    public void constructorWithJsonThrowsOnInvalidJson() {
+        assertThrows(JsonSyntaxException.class, () -> {
+            // arrange
+            final String jsonWithExtraComma = "{\"a\":\"b\",}";
 
-        // act
-        new MockEnrollmentGroup(jsonWithExtraComma);
+            // act
+            new MockEnrollmentGroup(jsonWithExtraComma);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_004: [The constructor shall deserialize the provided JSON for the enrollmentGroup class and subclasses.] */
@@ -950,39 +954,41 @@ public class EnrollmentGroupTest
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_018: [The setAttestation shall throw IllegalArgumentException if the attestation is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setAttestationMechanismThrowsOnNull()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setAttestationMechanismThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroup, "setAttestation", new Class[]{AttestationMechanism.class}, (AttestationMechanism)null);
+            // act
+            Deencapsulation.invoke(enrollmentGroup, "setAttestation", new Class[]{AttestationMechanism.class}, (AttestationMechanism)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_042: [The setAttestation shall throw IllegalArgumentException if the attestation is not X509 signingCertificate or Symmetric Key] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void setAttestationMechanismThrowsOnTpm(
             @Mocked final TpmAttestation mockedTpmAttestation,
-            @Mocked final AttestationMechanism mockedAttestationMechanism)
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardSymmetricKeyEnrollmentGroup();
+            @Mocked final AttestationMechanism mockedAttestationMechanism) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardSymmetricKeyEnrollmentGroup();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.invoke(mockedAttestationMechanism, "getAttestation");
-                result = mockedTpmAttestation;
-            }
-        };
+                {
+                    Deencapsulation.invoke(mockedAttestationMechanism, "getAttestation");
+                    result = mockedTpmAttestation;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroup, "setAttestation", new Class[]{AttestationMechanism.class}, mockedAttestationMechanism);
+            // act
+            Deencapsulation.invoke(enrollmentGroup, "setAttestation", new Class[]{AttestationMechanism.class}, mockedAttestationMechanism);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_019: [The setAttestation shall store the provided attestation.] */
@@ -1045,31 +1051,33 @@ public class EnrollmentGroupTest
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_039: [The setAttestation shall throw IllegalArgumentException if the attestation is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setAttestationThrowsOnNull()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setAttestationThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        enrollmentGroup.setAttestation((Attestation) null);
+            // act
+            enrollmentGroup.setAttestation((Attestation) null);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_040: [The setAttestation shall throw IllegalArgumentException if the attestation is not X509 signingCertificate or Symmetric Key] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void setAttestationThrowsOnTpm(
             @Mocked final TpmAttestation mockedTpmAttestation,
-            @Mocked final AttestationMechanism mockedAttestationMechanism)
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+            @Mocked final AttestationMechanism mockedAttestationMechanism) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        enrollmentGroup.setAttestation(mockedTpmAttestation);
+            // act
+            enrollmentGroup.setAttestation(mockedTpmAttestation);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_041: [The setAttestation shall store the provided attestation using the AttestationMechanism object.] */
@@ -1142,16 +1150,17 @@ public class EnrollmentGroupTest
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_024: [The setInitialTwin shall throw IllegalArgumentException if the initialTwin is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setInitialTwinThrowsOnNull()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setInitialTwinThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        enrollmentGroup.setInitialTwinFinal(null);
+            // act
+            enrollmentGroup.setInitialTwinFinal(null);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_025: [The setInitialTwin shall store the provided initialTwin.] */
@@ -1170,16 +1179,17 @@ public class EnrollmentGroupTest
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_027: [The setProvisioningStatus shall throw IllegalArgumentException if the provisioningStatus is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setProvisioningStatusThrowsOnNull()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setProvisioningStatusThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        enrollmentGroup.setProvisioningStatusFinal(null);
+            // act
+            enrollmentGroup.setProvisioningStatusFinal(null);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_028: [The setProvisioningStatus shall store the provided provisioningStatus.] */
@@ -1213,42 +1223,45 @@ public class EnrollmentGroupTest
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_031: [The setCreatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided createdDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setCreatedDateTimeUtcThrowsOnNull()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setCreatedDateTimeUtcThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroup,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)null);
+            // act
+            Deencapsulation.invoke(enrollmentGroup,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_031: [The setCreatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided createdDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setCreatedDateTimeUtcThrowsOnEmpty()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setCreatedDateTimeUtcThrowsOnEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroup,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)"");
+            // act
+            Deencapsulation.invoke(enrollmentGroup,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)"");
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_031: [The setCreatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided createdDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setCreatedDateTimeUtcThrowsOnInvalid()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setCreatedDateTimeUtcThrowsOnInvalid() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroup,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)"0000-00-00 00:00:00");
+            // act
+            Deencapsulation.invoke(enrollmentGroup,"setCreatedDateTimeUtc", new Class[] {String.class}, (String)"0000-00-00 00:00:00");
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_033: [The setLastUpdatedDateTimeUtc shall parse the provided String as a Data and Time UTC.] */
@@ -1267,42 +1280,45 @@ public class EnrollmentGroupTest
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_034: [The setLastUpdatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided lastUpdatedDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setLastUpdatedDateTimeUtcThrowsOnNull()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setLastUpdatedDateTimeUtcThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroup,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)null);
+            // act
+            Deencapsulation.invoke(enrollmentGroup,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_034: [The setLastUpdatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided lastUpdatedDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setLastUpdatedDateTimeUtcThrowsOnEmpty()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setLastUpdatedDateTimeUtcThrowsOnEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroup,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)"");
+            // act
+            Deencapsulation.invoke(enrollmentGroup,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)"");
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_034: [The setLastUpdatedDateTimeUtc shall throw IllegalArgumentException if it cannot parse the provided lastUpdatedDateTimeUtc] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setLastUpdatedDateTimeUtcThrowsOnInvalid()
-    {
-        // arrange
-        EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
+    @Test
+    public void setLastUpdatedDateTimeUtcThrowsOnInvalid() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroup enrollmentGroup = makeStandardX509EnrollmentGroup();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroup,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)"0000-00-00 00:00:00");
+            // act
+            Deencapsulation.invoke(enrollmentGroup,"setLastUpdatedDateTimeUtc", new Class[] {String.class}, (String)"0000-00-00 00:00:00");
 
-        // assert
+            // assert
+        });
     }
 
     /* Tests_SRS_ENROLLMENT_GROUP_21_037: [The setEtag shall store the provided etag.] */

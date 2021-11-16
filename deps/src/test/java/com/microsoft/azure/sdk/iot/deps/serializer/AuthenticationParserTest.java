@@ -3,14 +3,11 @@
 
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.AuthenticationParser;
-import com.microsoft.azure.sdk.iot.deps.serializer.AuthenticationTypeParser;
-import com.microsoft.azure.sdk.iot.deps.serializer.SymmetricKeyParser;
-import com.microsoft.azure.sdk.iot.deps.serializer.X509ThumbprintParser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code Coverage:
@@ -84,10 +81,11 @@ public class AuthenticationParserTest
 
 
     //Tests_SRS_AUTHENTICATION_PARSER_34_003: [If the provided type is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void cannotSetTypeToNull()
-    {
-        //act
-        new AuthenticationParser().setType(null);
+    @Test
+    public void cannotSetTypeToNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new AuthenticationParser().setType(null);
+        });
     }
 }

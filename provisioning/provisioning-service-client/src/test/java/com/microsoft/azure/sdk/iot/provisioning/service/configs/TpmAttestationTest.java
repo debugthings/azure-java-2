@@ -3,11 +3,11 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service.configs;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.configs.TpmAttestation;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service TPM attestation
@@ -19,25 +19,27 @@ public class TpmAttestationTest
     private static final String VALID_STORAGE_ROOT_KEY = "validStorageRootKey";
 
     /* SRS_TPM_ATTESTATION_21_001: [The constructor shall throw IllegalArgumentException if the provided endorsementKey is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullEndorsementKey()
-    {
-        // arrange
-        // act
-        new TpmAttestation(null, VALID_STORAGE_ROOT_KEY);
+    @Test
+    public void constructorThrowsOnNullEndorsementKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new TpmAttestation(null, VALID_STORAGE_ROOT_KEY);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TPM_ATTESTATION_21_001: [The constructor shall throw IllegalArgumentException if the provided endorsementKey is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyEndorsementKey()
-    {
-        // arrange
-        // act
-        new TpmAttestation("", VALID_STORAGE_ROOT_KEY);
+    @Test
+    public void constructorThrowsOnEmptyEndorsementKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new TpmAttestation("", VALID_STORAGE_ROOT_KEY);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TPM_ATTESTATION_21_002: [The constructor shall store the provided endorsementKey.] */
@@ -55,25 +57,27 @@ public class TpmAttestationTest
     }
 
     /* SRS_TPM_ATTESTATION_21_004: [The constructor shall throw IllegalArgumentException if the provided endorsementKey is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorOnlyEndorsementKeyThrowsOnNullEndorsementKey()
-    {
-        // arrange
-        // act
-        new TpmAttestation((String)null);
+    @Test
+    public void constructorOnlyEndorsementKeyThrowsOnNullEndorsementKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new TpmAttestation((String)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TPM_ATTESTATION_21_004: [The constructor shall throw IllegalArgumentException if the provided endorsementKey is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorOnlyEndorsementKeyThrowsOnEmptyEndorsementKey()
-    {
-        // arrange
-        // act
-        new TpmAttestation("");
+    @Test
+    public void constructorOnlyEndorsementKeyThrowsOnEmptyEndorsementKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new TpmAttestation("");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TPM_ATTESTATION_21_005: [The constructor shall store the provided endorsementKey.] */
@@ -89,14 +93,15 @@ public class TpmAttestationTest
     }
 
     /* SRS_TPM_ATTESTATION_21_006: [The constructor shall throw IllegalArgumentException if the provided tpm is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorCopyThrowsOnNullTPM()
-    {
-        // arrange
-        // act
-        new TpmAttestation((TpmAttestation) null);
+    @Test
+    public void constructorCopyThrowsOnNullTPM() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new TpmAttestation((TpmAttestation) null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TPM_ATTESTATION_21_007: [The constructor shall store the endorsementKey and storageRootKey provided in the tpm.] */

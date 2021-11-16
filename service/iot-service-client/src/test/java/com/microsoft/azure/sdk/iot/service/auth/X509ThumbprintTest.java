@@ -5,16 +5,16 @@
 
 package com.microsoft.azure.sdk.iot.service.auth;
 
-import com.microsoft.azure.sdk.iot.service.auth.X509Thumbprint;
 import mockit.Deencapsulation;
 import mockit.integration.junit4.JMockit;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code coverage:
@@ -27,7 +27,7 @@ public class X509ThumbprintTest
     String expectedPrimaryThumbprint;
     String expectedSecondaryThumbprint;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         X509Thumbprint thumbprint = Deencapsulation.newInstance(X509Thumbprint.class);
@@ -67,73 +67,81 @@ public class X509ThumbprintTest
     }
 
     //Tests_SRS_X509THUMBPRINT_34_010: [This constructor shall throw an IllegalArgumentException if the provided thumbprints are null, empty, or not a valid format.]
-    @Test (expected = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownByConstructorForEmptyPrimaryThumbprint()
-    {
-        //act
-        createTestThumbprint("", expectedSecondaryThumbprint);
+    @Test
+    public void illegalArgumentExceptionThrownByConstructorForEmptyPrimaryThumbprint() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            createTestThumbprint("", expectedSecondaryThumbprint);
+        });
     }
 
     //Tests_SRS_X509THUMBPRINT_34_010: [This constructor shall throw an IllegalArgumentException if the provided thumbprints are null, empty, or not a valid format.]
-    @Test (expected = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownByConstructorForEmptySecondaryThumbprint()
-    {
-        //act
-        createTestThumbprint(expectedPrimaryThumbprint, "");
+    @Test
+    public void illegalArgumentExceptionThrownByConstructorForEmptySecondaryThumbprint() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            createTestThumbprint(expectedPrimaryThumbprint, "");
+        });
     }
 
     //Tests_SRS_X509THUMBPRINT_34_010: [This constructor shall throw an IllegalArgumentException if the provided thumbprints are null, empty, or not a valid format.]
-    @Test (expected = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownByConstructorForNullPrimaryThumbprint()
-    {
-        //act
-        createTestThumbprint(null, expectedSecondaryThumbprint);
+    @Test
+    public void illegalArgumentExceptionThrownByConstructorForNullPrimaryThumbprint() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            createTestThumbprint(null, expectedSecondaryThumbprint);
+        });
     }
 
     //Tests_SRS_X509THUMBPRINT_34_010: [This constructor shall throw an IllegalArgumentException if the provided thumbprints are null, empty, or not a valid format.]
-    @Test (expected = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownByConstructorForNullSecondaryThumbprint()
-    {
-        //act
-        createTestThumbprint(expectedPrimaryThumbprint, null);
+    @Test
+    public void illegalArgumentExceptionThrownByConstructorForNullSecondaryThumbprint() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            createTestThumbprint(expectedPrimaryThumbprint, null);
+        });
     }
 
     //Tests_SRS_X509THUMBPRINT_34_010: [This constructor shall throw an IllegalArgumentException if the provided thumbprints are null, empty, or not a valid format.]
-    @Test (expected = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownByConstructorForInvalidPrimaryThumbprint()
-    {
-        //act
-        createTestThumbprint("NOT_A_THUMBPRINT", expectedSecondaryThumbprint);
+    @Test
+    public void illegalArgumentExceptionThrownByConstructorForInvalidPrimaryThumbprint() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            createTestThumbprint("NOT_A_THUMBPRINT", expectedSecondaryThumbprint);
+        });
     }
 
     //Tests_SRS_X509THUMBPRINT_34_010: [This constructor shall throw an IllegalArgumentException if the provided thumbprints are null, empty, or not a valid format.]
-    @Test (expected = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownByConstructorForInvalidSecondaryThumbprint()
-    {
-        //act
-        createTestThumbprint(expectedPrimaryThumbprint, "NOT_A_THUMBPRINT");
+    @Test
+    public void illegalArgumentExceptionThrownByConstructorForInvalidSecondaryThumbprint() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            createTestThumbprint(expectedPrimaryThumbprint, "NOT_A_THUMBPRINT");
+        });
     }
 
     //Tests_SRS_X509THUMBPRINT_34_007: [If the provided thumbprint string is not the proper format, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownBySetPrimaryThumbprintForIllegalThumbprint()
-    {
-        //arrange
-        X509Thumbprint thumbprint = createTestThumbprint(null, null);
+    @Test
+    public void illegalArgumentExceptionThrownBySetPrimaryThumbprintForIllegalThumbprint() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            X509Thumbprint thumbprint = createTestThumbprint(null, null);
 
-        //act
-        Deencapsulation.invoke(thumbprint, "setPrimaryThumbprint", new Class[] { String.class }, "");
+            //act
+            Deencapsulation.invoke(thumbprint, "setPrimaryThumbprint", new Class[] { String.class }, "");
+        });
     }
 
     //Tests_SRS_X509THUMBPRINT_34_008: [If the provided thumbprint string is not the proper format, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownBySetSecondaryThumbprintForIllegalThumbprint()
-    {
-        //arrange
-        X509Thumbprint thumbprint = createTestThumbprint(null, null);
+    @Test
+    public void illegalArgumentExceptionThrownBySetSecondaryThumbprintForIllegalThumbprint() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            X509Thumbprint thumbprint = createTestThumbprint(null, null);
 
-        //act
-        Deencapsulation.invoke(thumbprint, "setSecondaryThumbprint", new Class[] { String.class }, "");
+            //act
+            Deencapsulation.invoke(thumbprint, "setSecondaryThumbprint", new Class[] { String.class }, "");
+        });
     }
 
     //Tests_SRS_X509THUMBPRINT_34_011: [This constructor shall generate a random primary and secondary thumbprint.]

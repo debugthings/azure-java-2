@@ -3,8 +3,7 @@
 
 package com.microsoft.azure.sdk.iot.device.transport.https;
 
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsResponse;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,6 +13,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for HttpsResponse. */
 public class HttpsResponseTest
@@ -106,18 +106,19 @@ public class HttpsResponseTest
     }
 
     // Tests_SRS_HTTPSRESPONSE_11_006: [If a value could not be found for the given header field name, the function shall throw an IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
-    public void getHeaderFieldRejectsInvalidFieldName() throws IllegalArgumentException
-    {
-        final int status = 200;
-        final byte[] body = { 1 };
-        final byte[] errorReason = {};
-        final Map<String, List<String>> headerFields = new HashMap<>();
-        final String field = "test-field";
+    @Test
+    public void getHeaderFieldRejectsInvalidFieldName() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final int status = 200;
+            final byte[] body = { 1 };
+            final byte[] errorReason = {};
+            final Map<String, List<String>> headerFields = new HashMap<>();
+            final String field = "test-field";
 
-        HttpsResponse response =
-                new HttpsResponse(status, body, headerFields, errorReason);
-        response.getHeaderField(field);
+            HttpsResponse response =
+                    new HttpsResponse(status, body, headerFields, errorReason);
+            response.getHeaderField(field);
+        });
     }
 
     // Tests_SRS_HTTPSRESPONSE_11_001: [The constructor shall store the input arguments so that the getters can return them later.]

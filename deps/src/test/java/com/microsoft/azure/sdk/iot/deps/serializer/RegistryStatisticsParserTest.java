@@ -3,11 +3,11 @@
 
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.RegistryStatisticsParser;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code coverage:
@@ -37,27 +37,30 @@ public class RegistryStatisticsParserTest
     }
 
     //Tests_SRS_REGISTRY_STATISTICS_PROPERTIES_PARSER_34_003: [If the provided json is null, empty, or cannot be parsed into a RegistryStatisticsParser object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void nullJsonForConstructorThrows()
-    {
-        //act
-        new RegistryStatisticsParser(null);
+    @Test
+    public void nullJsonForConstructorThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new RegistryStatisticsParser(null);
+        });
     }
 
     //Tests_SRS_REGISTRY_STATISTICS_PROPERTIES_PARSER_34_003: [If the provided json is null, empty, or cannot be parsed into a RegistryStatisticsParser object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void emptyJsonForConstructorThrows()
-    {
-        //act
-        new RegistryStatisticsParser("");
+    @Test
+    public void emptyJsonForConstructorThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new RegistryStatisticsParser("");
+        });
     }
 
     //Tests_SRS_REGISTRY_STATISTICS_PROPERTIES_PARSER_34_003: [If the provided json is null, empty, or cannot be parsed into a RegistryStatisticsParser object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void invalidJsonForConstructorThrows()
-    {
-        //act
-        new RegistryStatisticsParser("}");
+    @Test
+    public void invalidJsonForConstructorThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new RegistryStatisticsParser("}");
+        });
     }
 
     //Tests_SRS_JOB_PROPERTIES_PARSER_34_004: [This method shall set the value of this object's totalDeviceCount equal to the provided value.]

@@ -3,17 +3,15 @@
 
 package com.microsoft.azure.sdk.iot.device.transport;
 
-import com.microsoft.azure.sdk.iot.device.transport.ExponentialBackoffWithJitter;
-import com.microsoft.azure.sdk.iot.device.transport.RetryDecision;
-import com.microsoft.azure.sdk.iot.device.transport.RetryPolicy;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.security.SecureRandom;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ExponentialBackoffWithJitterTest
 {
@@ -21,12 +19,13 @@ public class ExponentialBackoffWithJitterTest
     SecureRandom mockedRandom;
 
     // Tests_SRS_EXPONENTIALBACKOFF_28_001: [If the retryCount is less than or equal to 0, the function shall throw an IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsWithZeroRetryCount()
-    {
-        //act
-        final RetryPolicy exp = new ExponentialBackoffWithJitter(
-                0, 100, 10 * 1000, 100, true);
+    @Test
+    public void constructorThrowsWithZeroRetryCount() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            final RetryPolicy exp = new ExponentialBackoffWithJitter(
+                    0, 100, 10 * 1000, 100, true);
+        });
     }
 
     // Tests_SRS_EXPONENTIALBACKOFF_28_002: [Constructor should save retryCount, minBackoff, maxBackoff, deltaBackoff and firstFastRetry]

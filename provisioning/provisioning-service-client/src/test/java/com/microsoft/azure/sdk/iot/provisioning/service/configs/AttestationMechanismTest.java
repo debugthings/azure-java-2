@@ -3,13 +3,13 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service.configs;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.configs.*;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientException;
 import mockit.Deencapsulation;
 import mockit.Mocked;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service IndividualEnrollment serializer
@@ -28,15 +28,16 @@ public class AttestationMechanismTest
     private SymmetricKeyAttestation mockedSymmetricKeyAttestation;
 
     /* SRS_ATTESTATION_MECHANISM_21_001: [The constructor shall throw IllegalArgumentException if the provided tpm is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNull()
-    {
-        // arrange
+    @Test
+    public void constructorThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        Deencapsulation.newInstance(AttestationMechanism.class, new Class[] {Attestation.class}, (Attestation)null);
+            // act
+            Deencapsulation.newInstance(AttestationMechanism.class, new Class[] {Attestation.class}, (Attestation)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ATTESTATION_MECHANISM_21_002: [If the provided attestation is instance of TpmAttestation, the constructor shall store the provided tpm keys.] */
@@ -59,16 +60,17 @@ public class AttestationMechanismTest
     }
 
     /* SRS_ATTESTATION_MECHANISM_21_005: [The constructor shall throw IllegalArgumentException if the provided attestation is unknown.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnUnknownAttestation()
-    {
-        // arrange
-        final class UnknownAttestation extends Attestation {}
+    @Test
+    public void constructorThrowsOnUnknownAttestation() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final class UnknownAttestation extends Attestation {}
 
-        // act
-        Deencapsulation.newInstance(AttestationMechanism.class, new Class[] {Attestation.class}, new UnknownAttestation());
+            // act
+            Deencapsulation.newInstance(AttestationMechanism.class, new Class[] {Attestation.class}, new UnknownAttestation());
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ATTESTATION_MECHANISM_21_006: [If the provided attestation is instance of X509Attestation, the constructor shall store the provided x509 certificates.] */
@@ -154,14 +156,15 @@ public class AttestationMechanismTest
     }
 
     /* SRS_ATTESTATION_MECHANISM_21_012: [If the type is not `x509` or `tpm`, the getAttestation shall throw ProvisioningServiceClientException.] */
-    @Test (expected = ProvisioningServiceClientException.class)
-    public void getAttestationThrowsOnUnknownAttestation()
-    {
-        // arrange
-        AttestationMechanism attestationMechanism = Deencapsulation.newInstance(AttestationMechanism.class);
+    @Test
+    public void getAttestationThrowsOnUnknownAttestation() {
+        assertThrows(ProvisioningServiceClientException.class, () -> {
+            // arrange
+            AttestationMechanism attestationMechanism = Deencapsulation.newInstance(AttestationMechanism.class);
 
-        // act
-        assertEquals(mockedTpmAttestation, Deencapsulation.invoke(attestationMechanism, "getAttestation"));
+            // act
+            assertEquals(mockedTpmAttestation, Deencapsulation.invoke(attestationMechanism, "getAttestation"));
+        });
     }
 
 

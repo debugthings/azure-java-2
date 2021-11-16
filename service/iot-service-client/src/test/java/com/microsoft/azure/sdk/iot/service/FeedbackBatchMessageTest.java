@@ -5,17 +5,15 @@
 
 package com.microsoft.azure.sdk.iot.service;
 
-import com.microsoft.azure.sdk.iot.service.FeedbackBatch;
-import com.microsoft.azure.sdk.iot.service.FeedbackBatchMessage;
-import com.microsoft.azure.sdk.iot.service.FeedbackStatusCode;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import javax.json.stream.JsonParsingException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for FeedbackBatchMessage */
 @RunWith(JMockit.class)
@@ -74,13 +72,14 @@ public class FeedbackBatchMessageTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_FEEDBACKBATCHMESSAGE_12_004: [The function shall throw a JsonParsingException if the parsing failed]
     // Assert
-    @Test (expected = JsonParsingException.class)
-    public void json_data_invalid_format1()
-    {
-        // Arrange
-        String jsonString = "Data}";
-        // Act
-        FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+    @Test
+    public void json_data_invalid_format1() {
+        assertThrows(JsonParsingException.class, () -> {
+            // Arrange
+            String jsonString = "Data}";
+            // Act
+            FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FEEDBACKBATCHMESSAGE_12_002: [The function shall return an empty FeedbackBatch object if the content of the Data input is empty]
@@ -97,46 +96,50 @@ public class FeedbackBatchMessageTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_FEEDBACKBATCHMESSAGE_12_004: [The function shall throw a JsonParsingException if the parsing failed]
     // Assert
-    @Test (expected = JsonParsingException.class)
-    public void json_data_invalid_format3()
-    {
-        // Arrange
-        String jsonString = "Data{[}";
-        // Act
-        FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+    @Test
+    public void json_data_invalid_format3() {
+        assertThrows(JsonParsingException.class, () -> {
+            // Arrange
+            String jsonString = "Data{[}";
+            // Act
+            FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FEEDBACKBATCHMESSAGE_12_004: [The function shall throw a JsonParsingException if the parsing failed]
     // Assert
-    @Test (expected = JsonParsingException.class)
-    public void json_data_invalid_format4()
-    {
-        // Arrange
-        String jsonString = "Data{[]";
-        // Act
-        FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+    @Test
+    public void json_data_invalid_format4() {
+        assertThrows(JsonParsingException.class, () -> {
+            // Arrange
+            String jsonString = "Data{[]";
+            // Act
+            FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FEEDBACKBATCHMESSAGE_12_004: [The function shall throw a JsonParsingException if the parsing failed]
     // Assert
-    @Test (expected = JsonParsingException.class)
-    public void json_data_invalid_format5()
-    {
-        // Arrange
-        String jsonString = "Data{[\"]]";
-        // Act
-        FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+    @Test
+    public void json_data_invalid_format5() {
+        assertThrows(JsonParsingException.class, () -> {
+            // Arrange
+            String jsonString = "Data{[\"]]";
+            // Act
+            FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FEEDBACKBATCHMESSAGE_12_004: [The function shall throw a JsonParsingException if the parsing failed]
     // Assert
-    @Test (expected = JsonParsingException.class)
-    public void json_data_invalid_format6()
-    {
-        // Arrange
-        String jsonString = "[,xxx]";
-        // Act
-        FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+    @Test
+    public void json_data_invalid_format6() {
+        assertThrows(JsonParsingException.class, () -> {
+            // Arrange
+            String jsonString = "[,xxx]";
+            // Act
+            FeedbackBatch feedbackBatch = FeedbackBatchMessage.parse(jsonString);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FEEDBACKBATCHMESSAGE_12_005: [The function shall parse all the Json records to the FeedbackBatch]

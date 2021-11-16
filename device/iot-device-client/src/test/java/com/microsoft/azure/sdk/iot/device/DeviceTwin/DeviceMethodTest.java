@@ -4,13 +4,12 @@
 package com.microsoft.azure.sdk.iot.device.DeviceTwin;
 
 import com.microsoft.azure.sdk.iot.device.*;
-import com.microsoft.azure.sdk.iot.device.DeviceTwin.*;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 
@@ -18,6 +17,7 @@ import static com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceOperations.DEV
 import static com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceOperations.DEVICE_OPERATION_METHOD_SUBSCRIBE_REQUEST;
 import static com.microsoft.azure.sdk.iot.device.MessageType.DEVICE_METHODS;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /* Unit tests for DeviceMethod
 * 100% methods covered
@@ -77,27 +77,30 @@ public class DeviceMethodTest
     /*
     **Tests_SRS_DEVICEMETHOD_25_001: [**The constructor shall throw IllegalArgument Exception if any of the parameters i.e client, config, deviceMethodStatusCallback are null. **]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfClientNull() throws IllegalArgumentException
-    {
-        //act
-        DeviceMethod testMethod = new DeviceMethod(null, mockedConfig, mockedStatusCB, null);
+    @Test
+    public void constructorThrowsIfClientNull() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            DeviceMethod testMethod = new DeviceMethod(null, mockedConfig, mockedStatusCB, null);
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfConfigNull() throws IllegalArgumentException
-    {
-        //act
-        DeviceMethod testMethod = new DeviceMethod(mockedDeviceIO, null, mockedStatusCB, null);
+    @Test
+    public void constructorThrowsIfConfigNull() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            DeviceMethod testMethod = new DeviceMethod(mockedDeviceIO, null, mockedStatusCB, null);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfCallBackNull() throws IllegalArgumentException
-    {
-        //act
-        DeviceMethod testMethod = new DeviceMethod(mockedDeviceIO, mockedConfig, null, null);
+    @Test
+    public void constructorThrowsIfCallBackNull() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            DeviceMethod testMethod = new DeviceMethod(mockedDeviceIO, mockedConfig, null, null);
 
+        });
     }
 
     /*
@@ -140,16 +143,17 @@ public class DeviceMethodTest
     /*
     **Tests_SRS_DEVICEMETHOD_25_004: [**If deviceMethodCallback parameter is null then this method shall throw IllegalArgumentException**]**
      */
-   @Test (expected = IllegalArgumentException.class)
-    public void subscribeToMethodsThrowsIfCallBackNull() throws IllegalArgumentException
-    {
-        //arrange
-        DeviceMethod testMethod = new DeviceMethod(mockedDeviceIO, mockedConfig, mockedStatusCB, null);
+   @Test
+   public void subscribeToMethodsThrowsIfCallBackNull() throws IllegalArgumentException {
+       assertThrows(IllegalArgumentException.class, () -> {
+           //arrange
+           DeviceMethod testMethod = new DeviceMethod(mockedDeviceIO, mockedConfig, mockedStatusCB, null);
 
-        //act
-        testMethod.subscribeToDeviceMethod(null, null);
+           //act
+           testMethod.subscribeToDeviceMethod(null, null);
 
-    }
+       });
+   }
 
     @Test
     public void subscribeToMethodsDoesNotSubscribeIfAlreadySubscribed(@Mocked final IotHubTransportMessage mockedMessage) throws IllegalArgumentException

@@ -7,8 +7,7 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.device;
 
-import com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClientRegistrationResult;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertNull;
 

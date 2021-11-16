@@ -20,9 +20,9 @@ import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceTwinClientOptions;
 import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceTwinDevice;
 import com.microsoft.azure.sdk.iot.service.devicetwin.Pair;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.DeviceConnectionString;
@@ -213,7 +213,7 @@ public class DeviceTwinWithVersionTests extends IntegrationTest
         testInstance.deviceTwinWithVersionTestDevice.deviceClient.startDeviceTwin(new DeviceTwinStatusCallBack(), testInstance.deviceTwinWithVersionTestDevice, new DeviceTwinPropertyCallback(), testInstance.deviceTwinWithVersionTestDevice);
     }
 
-    @Before
+    @BeforeEach
     public void createDevice() throws Exception
     {
         testInstance.deviceTwinWithVersionTestDevice = new DeviceTwinWithVersionTestDevice();
@@ -224,7 +224,7 @@ public class DeviceTwinWithVersionTests extends IntegrationTest
         testInstance.deviceTwinWithVersionTestDevice.deviceId = testInstance.testDeviceIdentity.getDeviceId();
     }
 
-    @After
+    @AfterEach
     public void destroyDevice() throws Exception
     {
         if (testInstance.deviceTwinWithVersionTestDevice.deviceClient != null)

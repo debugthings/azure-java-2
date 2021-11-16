@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.sdk.iot.device;
 
-import com.microsoft.azure.sdk.iot.device.*;
 import com.microsoft.azure.sdk.iot.device.DeviceTwin.Pair;
 import com.microsoft.azure.sdk.iot.device.auth.*;
 import com.microsoft.azure.sdk.iot.device.transport.ExponentialBackoffWithJitter;
@@ -14,7 +13,7 @@ import com.microsoft.azure.sdk.iot.provisioning.security.SecurityProviderTpm;
 import com.microsoft.azure.sdk.iot.provisioning.security.SecurityProviderX509;
 import com.microsoft.azure.sdk.iot.provisioning.security.exceptions.SecurityProviderException;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -24,6 +23,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for deviceClientConfig.
@@ -628,10 +628,11 @@ public class DeviceClientConfigTest
 
     // Tests_SRS_DEVICECLIENTCONFIG_21_034: [If the provided `iotHubConnectionString` is null,
     // the constructor shall throw IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorFailsNullConnectionString()
-    {
-        DeviceClientConfig config = new DeviceClientConfig((IotHubConnectionString) null);
+    @Test
+    public void constructorFailsNullConnectionString() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            DeviceClientConfig config = new DeviceClientConfig((IotHubConnectionString) null);
+        });
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_039: [This function shall return the type of authentication that the config is set up to use.]
@@ -651,28 +652,30 @@ public class DeviceClientConfigTest
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_069: [If the provided connection string is null or does not use x509 auth, and IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithNullConnStringThrows() throws IOException
-    {
-        //act
-        new DeviceClientConfig(null, "", false, "", false);
+    @Test
+    public void constructorWithNullConnStringThrows() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new DeviceClientConfig(null, "", false, "", false);
+        });
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_069: [If the provided connection string is null or does not use x509 auth, and IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithWrongAuthTypeConnStringThrows() throws IOException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorWithWrongAuthTypeConnStringThrows() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockIotHubConnectionString.isUsingX509();
-                result = false;
-            }
-        };
+                {
+                    mockIotHubConnectionString.isUsingX509();
+                    result = false;
+                }
+            };
 
-        //act
-        new DeviceClientConfig(mockIotHubConnectionString, "", false, "", false);
+            //act
+            new DeviceClientConfig(mockIotHubConnectionString, "", false, "", false);
+        });
     }
 
     @Test
@@ -748,28 +751,30 @@ public class DeviceClientConfigTest
     }
 
     // Tests_SRS_DEVICECLIENTCONFIG_12_002: [If the authentication type is X509 the constructor shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithX509AuthThrows(@Mocked final IotHubConnectionString mockIotHubConnectionString) throws IOException
-    {
-        //act
-        new DeviceClientConfig((IotHubConnectionString) null);
+    @Test
+    public void constructorWithX509AuthThrows(@Mocked final IotHubConnectionString mockIotHubConnectionString) throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new DeviceClientConfig((IotHubConnectionString) null);
+        });
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_076: [If the provided `iotHubConnectionString` uses x509 authentication, the constructor shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorForSasTokenRejectsX509ConnectionStrings()
-    {
-        //arrange
-        new StrictExpectations()
-        {
+    @Test
+    public void constructorForSasTokenRejectsX509ConnectionStrings() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            new StrictExpectations()
             {
-                mockIotHubConnectionString.isUsingX509();
-                result = true;
-            }
-        };
+                {
+                    mockIotHubConnectionString.isUsingX509();
+                    result = true;
+                }
+            };
 
-        //act
-        Deencapsulation.newInstance(DeviceClientConfig.class, mockIotHubConnectionString);
+            //act
+            Deencapsulation.newInstance(DeviceClientConfig.class, mockIotHubConnectionString);
+        });
     }
 
     // Tests_SRS_DEVICECLIENTCONFIG_34_078: [This function shall return the saved IotHubSasTokenAuthenticationProvider object.]
@@ -796,19 +801,21 @@ public class DeviceClientConfigTest
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_080: [If the provided connectionString or security provider is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void securityProviderConstructorThrowsForNullConnectionString()
-    {
-        //act
-        Deencapsulation.newInstance(DeviceClientConfig.class, new Class[] {IotHubConnectionString.class, SecurityProvider.class}, null, mockSecurityProvider);
+    @Test
+    public void securityProviderConstructorThrowsForNullConnectionString() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(DeviceClientConfig.class, new Class[] {IotHubConnectionString.class, SecurityProvider.class}, null, mockSecurityProvider);
+        });
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_080: [If the provided connectionString or security provider is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void securityProviderConstructorThrowsForNullSecurityProvider()
-    {
-        //act
-        Deencapsulation.newInstance(DeviceClientConfig.class, new Class[] {IotHubConnectionString.class, SecurityProvider.class}, mockIotHubConnectionString, null);
+    @Test
+    public void securityProviderConstructorThrowsForNullSecurityProvider() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(DeviceClientConfig.class, new Class[] {IotHubConnectionString.class, SecurityProvider.class}, mockIotHubConnectionString, null);
+        });
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_082: [If the provided security provider is a SecurityProviderX509 instance, this function shall set its auth type to X509 and create its IotHubX509AuthenticationProvider instance using the security provider's ssl context.]
@@ -913,23 +920,24 @@ public class DeviceClientConfigTest
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_084: [If the provided security provider is neither a SecurityProviderX509 instance nor a SecurityProviderTpm instance, this function shall throw an UnsupportedOperationException.]
-    @Test (expected = UnsupportedOperationException.class)
-    public void securityProviderConstructorThrowsForUnknownSecurityProviderImplementation() throws SecurityProviderException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void securityProviderConstructorThrowsForUnknownSecurityProviderImplementation() throws SecurityProviderException {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockIotHubConnectionString.getHostName();
-                result = expectedHostname;
+                {
+                    mockIotHubConnectionString.getHostName();
+                    result = expectedHostname;
 
-                mockIotHubConnectionString.getDeviceId();
-                result = expectedDeviceId;
-            }
-        };
+                    mockIotHubConnectionString.getDeviceId();
+                    result = expectedDeviceId;
+                }
+            };
 
-        //act
-        DeviceClientConfig config = Deencapsulation.newInstance(DeviceClientConfig.class, new Class[] {IotHubConnectionString.class, SecurityProvider.class}, mockIotHubConnectionString, mockSecurityProvider);
+            //act
+            DeviceClientConfig config = Deencapsulation.newInstance(DeviceClientConfig.class, new Class[] {IotHubConnectionString.class, SecurityProvider.class}, mockIotHubConnectionString, mockSecurityProvider);
+        });
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_28_001: [The class shall have ExponentialBackOff as the default retryPolicy.]
@@ -944,14 +952,15 @@ public class DeviceClientConfigTest
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_28_002: [This function shall throw IllegalArgumentException retryPolicy is null.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setRetryPolicyThrowsIfNull()
-    {
-        //arrange
-        DeviceClientConfig config = Deencapsulation.newInstance(DeviceClientConfig.class, mockIotHubConnectionString);
+    @Test
+    public void setRetryPolicyThrowsIfNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceClientConfig config = Deencapsulation.newInstance(DeviceClientConfig.class, mockIotHubConnectionString);
 
-        //act
-        config.setRetryPolicy(null);
+            //act
+            config.setRetryPolicy(null);
+        });
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_28_003: [This function shall set retryPolicy.]
@@ -984,25 +993,27 @@ public class DeviceClientConfigTest
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_030: [If the provided timeout is 0 or negative, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setOperationTimeoutThrowsForNegativeTimeout()
-    {
-        //arrange
-        DeviceClientConfig config = Deencapsulation.newInstance(DeviceClientConfig.class, mockIotHubConnectionString);
+    @Test
+    public void setOperationTimeoutThrowsForNegativeTimeout() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceClientConfig config = Deencapsulation.newInstance(DeviceClientConfig.class, mockIotHubConnectionString);
 
-        //act
-        Deencapsulation.invoke(config, "setOperationTimeout", new Class[] {long.class}, -1);
+            //act
+            Deencapsulation.invoke(config, "setOperationTimeout", new Class[] {long.class}, -1);
+        });
     }
 
     //Tests_SRS_DEVICECLIENTCONFIG_34_030: [If the provided timeout is 0 or negative, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setOperationTimeoutThrowsForZeroTimeout()
-    {
-        //arrange
-        DeviceClientConfig config = Deencapsulation.newInstance(DeviceClientConfig.class, mockIotHubConnectionString);
+    @Test
+    public void setOperationTimeoutThrowsForZeroTimeout() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            DeviceClientConfig config = Deencapsulation.newInstance(DeviceClientConfig.class, mockIotHubConnectionString);
 
-        //act
-        Deencapsulation.invoke(config, "setOperationTimeout", new Class[] {long.class}, 0);
+            //act
+            Deencapsulation.invoke(config, "setOperationTimeout", new Class[] {long.class}, 0);
+        });
     }
 
 

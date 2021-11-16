@@ -5,31 +5,30 @@
 
 package com.microsoft.azure.sdk.iot.service;
 
-import com.microsoft.azure.sdk.iot.service.IotHubConnectionString;
-import com.microsoft.azure.sdk.iot.service.IotHubConnectionStringBuilder;
-import com.microsoft.azure.sdk.iot.service.ServiceAuthenticationWithSharedAccessPolicyToken;
 import mockit.Deencapsulation;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(JMockit.class)
 public class ServiceAuthenticationWithSharedAccessPolicyTokenTest
 {
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICEAUTHENTICATIONWITHSHAREDACCESSTOKEN_12_002: [The function shall throw IllegalArgumentException if the input object is null]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void populate_input_null() throws Exception
-    {
-        // Arrange
-        String newPolicyName = "XXX";
-        String newPolicyToken = "YYY";
-        ServiceAuthenticationWithSharedAccessPolicyToken auth = new ServiceAuthenticationWithSharedAccessPolicyToken(newPolicyName, newPolicyToken);
-        // Act
-        auth.populate(null);
+    @Test
+    public void populate_input_null() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String newPolicyName = "XXX";
+            String newPolicyToken = "YYY";
+            ServiceAuthenticationWithSharedAccessPolicyToken auth = new ServiceAuthenticationWithSharedAccessPolicyToken(newPolicyName, newPolicyToken);
+            // Act
+            auth.populate(null);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICEAUTHENTICATIONWITHSHAREDACCESSTOKEN_12_003: [The function shall save the policyName and token to the target object]

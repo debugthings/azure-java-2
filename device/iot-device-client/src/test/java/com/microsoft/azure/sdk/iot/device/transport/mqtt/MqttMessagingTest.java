@@ -8,13 +8,11 @@ import com.microsoft.azure.sdk.iot.device.Message;
 import com.microsoft.azure.sdk.iot.device.MessageProperty;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubListener;
-import com.microsoft.azure.sdk.iot.device.transport.mqtt.Mqtt;
-import com.microsoft.azure.sdk.iot.device.transport.mqtt.MqttMessaging;
 import mockit.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -27,6 +25,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * Unit tests for MqttMessaging.java
@@ -88,16 +87,18 @@ public class MqttMessagingTest
     /*
      **Tests_SRS_MqttMessaging_25_001: [The constructor shall throw IllegalArgumentException if any of the parameters are null or empty .]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorFailsIfDeviceIDIsEmpty() throws TransportException
-    {
-        MqttMessaging testMqttMessaging = new MqttMessaging( "", null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+    @Test
+    public void constructorFailsIfDeviceIDIsEmpty() throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            MqttMessaging testMqttMessaging = new MqttMessaging( "", null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorFailsIfDeviceIDIsNull() throws TransportException
-    {
-        MqttMessaging testMqttMessaging = new MqttMessaging( null, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+    @Test
+    public void constructorFailsIfDeviceIDIsNull() throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            MqttMessaging testMqttMessaging = new MqttMessaging( null, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+        });
     }
 
     /*
@@ -130,59 +131,61 @@ public class MqttMessagingTest
 
     }
 
-    @Test (expected = TransportException.class)
-    public void startThrowsIoExceptionIfConnectFails(@Mocked final Mqtt mockMqtt) throws TransportException
-    {
-        new StrictExpectations()
-        {
+    @Test
+    public void startThrowsIoExceptionIfConnectFails(@Mocked final Mqtt mockMqtt) throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            new StrictExpectations()
             {
-                Deencapsulation.invoke(mockMqtt, "connect");
-                result = new TransportException();
-            }
-        };
+                {
+                    Deencapsulation.invoke(mockMqtt, "connect");
+                    result = new TransportException();
+                }
+            };
 
-        MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-        testMqttMessaging.start();
+            MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+            testMqttMessaging.start();
 
-        new Verifications()
-        {
+            new Verifications()
             {
-                Deencapsulation.invoke(mockMqtt, "connect");
-                times = 1;
-                Deencapsulation.invoke(mockMqtt, "subscribe", anyString);
-                times = 0;
+                {
+                    Deencapsulation.invoke(mockMqtt, "connect");
+                    times = 1;
+                    Deencapsulation.invoke(mockMqtt, "subscribe", anyString);
+                    times = 0;
 
-            }
-        };
+                }
+            };
 
+        });
     }
 
-    @Test (expected = TransportException.class)
-    public void startThrowsIoExceptionIfSubscribeFails(@Mocked final Mqtt mockMqtt) throws TransportException
-    {
-        new StrictExpectations()
-        {
+    @Test
+    public void startThrowsIoExceptionIfSubscribeFails(@Mocked final Mqtt mockMqtt) throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            new StrictExpectations()
             {
-                Deencapsulation.invoke(mockMqtt, "connect");
-                Deencapsulation.invoke(mockMqtt, "subscribe", anyString);
-                result = new TransportException();
-            }
-        };
+                {
+                    Deencapsulation.invoke(mockMqtt, "connect");
+                    Deencapsulation.invoke(mockMqtt, "subscribe", anyString);
+                    result = new TransportException();
+                }
+            };
 
-        MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-        testMqttMessaging.start();
+            MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+            testMqttMessaging.start();
 
-        new Verifications()
-        {
+            new Verifications()
             {
-                Deencapsulation.invoke(mockMqtt, "connect");
-                times = 1;
-                Deencapsulation.invoke(mockMqtt, "subscribe", anyString);
-                times = 1;
+                {
+                    Deencapsulation.invoke(mockMqtt, "connect");
+                    times = 1;
+                    Deencapsulation.invoke(mockMqtt, "subscribe", anyString);
+                    times = 1;
 
-            }
-        };
+                }
+            };
 
+        });
     }
 
     /*
@@ -213,30 +216,31 @@ public class MqttMessagingTest
         };
     }
 
-    @Test (expected = TransportException.class)
-    public void stopIfDisconnectFailsThrowsIOException(@Mocked final Mqtt mockMqtt) throws TransportException
-    {
-        new StrictExpectations()
-        {
+    @Test
+    public void stopIfDisconnectFailsThrowsIOException(@Mocked final Mqtt mockMqtt) throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            new StrictExpectations()
             {
-                Deencapsulation.invoke(mockMqtt, "connect");
-                Deencapsulation.invoke(mockMqtt, "subscribe", anyString);
-                Deencapsulation.invoke(mockMqtt, "disconnect");
-                result = new TransportException();
-            }
-        };
+                {
+                    Deencapsulation.invoke(mockMqtt, "connect");
+                    Deencapsulation.invoke(mockMqtt, "subscribe", anyString);
+                    Deencapsulation.invoke(mockMqtt, "disconnect");
+                    result = new TransportException();
+                }
+            };
 
-        MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-        testMqttMessaging.start();
-        testMqttMessaging.stop();
+            MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+            testMqttMessaging.start();
+            testMqttMessaging.stop();
 
-        new Verifications()
-        {
+            new Verifications()
             {
-                Deencapsulation.invoke(mockMqtt, "disconnect");
-                times = 1;
-            }
-        };
+                {
+                    Deencapsulation.invoke(mockMqtt, "disconnect");
+                    times = 1;
+                }
+            };
+        });
     }
 
     /*
@@ -272,51 +276,53 @@ public class MqttMessagingTest
     }
 
     //Tests_SRS_MqttMessaging_25_025: [send method shall throw an IllegalArgumentException if the message is null.]
-    @Test (expected =  IllegalArgumentException.class)
-    public void sendShallThrowIllegalArgumentExceptionIfMessageIsEmpty(@Mocked final Mqtt mockMqtt) throws TransportException
-    {
-        final byte[] messageBody = {};
-        new NonStrictExpectations()
-        {
+    @Test
+    public void sendShallThrowIllegalArgumentExceptionIfMessageIsEmpty(@Mocked final Mqtt mockMqtt) throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final byte[] messageBody = {};
+            new NonStrictExpectations()
             {
-                mockedMessage.getBytes();
-                result = messageBody;
-            }
-        };
+                {
+                    mockedMessage.getBytes();
+                    result = messageBody;
+                }
+            };
 
-        MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-        testMqttMessaging.send(null);
+            MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+            testMqttMessaging.send(null);
 
-        new Verifications()
-        {
+            new Verifications()
             {
-                mockedMessage.getBytes();
-                times = 1;
-                Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, new byte[1]);
-                times = 1;
-            }
-        };
+                {
+                    mockedMessage.getBytes();
+                    times = 1;
+                    Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, new byte[1]);
+                    times = 1;
+                }
+            };
+        });
     }
 
     /*
      **Tests_SRS_MqttMessaging_25_025: [send method shall throw an IllegalArgumentException if the message is null.]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void sendShallThrowTransportExceptionIfMessageIsNull(@Mocked final Mqtt mockMqtt) throws TransportException
-    {
+    @Test
+    public void sendShallThrowTransportExceptionIfMessageIsNull(@Mocked final Mqtt mockMqtt) throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
 
-        MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-        testMqttMessaging.send(null);
+            MqttMessaging testMqttMessaging = new MqttMessaging( CLIENT_ID, null, "", false, mockConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+            testMqttMessaging.send(null);
 
-        new Verifications()
-        {
+            new Verifications()
             {
-                mockedMessage.getBytes();
-                times = 0;
-                Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, new byte[1]);
-                times = 0;
-            }
-        };
+                {
+                    mockedMessage.getBytes();
+                    times = 0;
+                    Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, new byte[1]);
+                    times = 0;
+                }
+            };
+        });
     }
 
     //Tests_SRS_MqttMessaging_34_026: [This method shall append each custom property's name and value to the publishTopic before publishing.]

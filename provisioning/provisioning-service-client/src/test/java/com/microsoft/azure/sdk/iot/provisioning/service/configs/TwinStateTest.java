@@ -5,7 +5,7 @@ package com.microsoft.azure.sdk.iot.provisioning.service.configs;
 
 import com.google.gson.JsonElement;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.provisioning.service.Helpers;
 
 import static org.junit.Assert.assertEquals;

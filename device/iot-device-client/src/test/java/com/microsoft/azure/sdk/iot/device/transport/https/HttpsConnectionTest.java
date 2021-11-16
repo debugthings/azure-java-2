@@ -5,12 +5,10 @@ package com.microsoft.azure.sdk.iot.device.transport.https;
 
 import com.microsoft.azure.sdk.iot.device.ProxySettings;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsConnection;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsMethod;
 import com.microsoft.azure.sdk.iot.device.transport.HttpProxySocketFactory;
 import mockit.*;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -26,6 +24,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for HttpsConnection.
  * Lines: 89%
@@ -93,56 +92,59 @@ public class HttpsConnectionTest
         };
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfHttpsProtocolIsNotExpected() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.PUT;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsIfHttpsProtocolIsNotExpected() throws IOException, TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.PUT;
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-            }
-        };
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                }
+            };
 
-        new HttpsConnection(mockUrl, httpsMethod, null, false);
+            new HttpsConnection(mockUrl, httpsMethod, null, false);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfHttpProtocolIsNotExpected() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.PUT;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsIfHttpProtocolIsNotExpected() throws IOException, TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.PUT;
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "http";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-            }
-        };
+                {
+                    mockUrl.getProtocol();
+                    result = "http";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                }
+            };
 
-        new HttpsConnection(mockUrl, httpsMethod, null, true);
+            new HttpsConnection(mockUrl, httpsMethod, null, true);
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_002: [The constructor shall throw a TransportException if the connection was unable to be opened.]
-    @Test(expected = TransportException.class)
-    public void constructorThrowsIoExceptionIfCannotOpenConnection() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.PUT;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorThrowsIoExceptionIfCannotOpenConnection() throws IOException, TransportException {
+        assertThrows(TransportException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.PUT;
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-                mockUrl.openConnection();
-                result = new IOException();
-            }
-        };
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                    mockUrl.openConnection();
+                    result = new IOException();
+                }
+            };
 
-        new HttpsConnection(mockUrl, httpsMethod);
+            new HttpsConnection(mockUrl, httpsMethod);
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_021: [The constructor shall set the HTTPS method to the given method.]
@@ -173,23 +175,24 @@ public class HttpsConnectionTest
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_022: [If the URI given does not use the HTTPS or HTTP protocol, the constructor shall throw an IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorRejectsNonHttpsUrl() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.PUT;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void constructorRejectsNonHttpsUrl() throws IOException, TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.PUT;
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "unix";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-                mockUrlConn.getRequestMethod();
-                result = httpsMethod.name();
-            }
-        };
+                {
+                    mockUrl.getProtocol();
+                    result = "unix";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                    mockUrlConn.getRequestMethod();
+                    result = httpsMethod.name();
+                }
+            };
 
-        new HttpsConnection(mockUrl, httpsMethod);
+            new HttpsConnection(mockUrl, httpsMethod);
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_003: [The function shall send a request to the URL given in the constructor.]
@@ -254,26 +257,27 @@ public class HttpsConnectionTest
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_005: [The function shall throw a TransportException if the connection could not be established, or the server responded with a bad status code.]
-    @Test(expected = TransportException.class)
-    public void connectThrowsIoExceptionIfCannotConnect() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.PUT;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void connectThrowsIoExceptionIfCannotConnect() throws IOException, TransportException {
+        assertThrows(TransportException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.PUT;
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-                mockUrlConn.getRequestMethod();
-                result = httpsMethod.name();
-                mockUrlConn.connect();
-                result = new IOException();
-            }
-        };
-        HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                    mockUrlConn.getRequestMethod();
+                    result = httpsMethod.name();
+                    mockUrlConn.connect();
+                    result = new IOException();
+                }
+            };
+            HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
 
-        conn.connect();
+            conn.connect();
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_006: [The function shall set the request method.]
@@ -305,27 +309,28 @@ public class HttpsConnectionTest
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_007: [The function shall throw an IllegalArgumentException if the request currently has a non-empty body and the new method is not a POST or a PUT.]
-    @Test(expected = IllegalArgumentException.class)
-    public void setRequestMethodRejectsNonPostOrPutIfHasBody() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.POST;
-        final HttpsMethod illegalHttpsMethod = HttpsMethod.DELETE;
-        final byte[] body = { 1, 2, 3 };
-        new NonStrictExpectations()
-        {
+    @Test
+    public void setRequestMethodRejectsNonPostOrPutIfHasBody() throws IOException, TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.POST;
+            final HttpsMethod illegalHttpsMethod = HttpsMethod.DELETE;
+            final byte[] body = { 1, 2, 3 };
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-                mockUrlConn.getRequestMethod();
-                returns(httpsMethod.name(), illegalHttpsMethod.name());
-            }
-        };
-        HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                    mockUrlConn.getRequestMethod();
+                    returns(httpsMethod.name(), illegalHttpsMethod.name());
+                }
+            };
+            HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
 
-        conn.writeOutput(body);
-        conn.setRequestMethod(illegalHttpsMethod);
+            conn.writeOutput(body);
+            conn.setRequestMethod(illegalHttpsMethod);
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_008: [The function shall set the given request header field.]
@@ -484,64 +489,67 @@ public class HttpsConnectionTest
     }
 
     //Tests_SRS_HTTPSCONNECTION_34_026: [If this object uses HTTP, this function shall throw an UnsupportedOperationException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void HttpsConnectionConstructorThrowsIfHttp(@Mocked final SSLContext mockedContext) throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.POST;
-        final String field = "test-field";
-        final String value = "test-value";
-        final int timeout = 1;
-        new Expectations()
-        {
+    @Test
+    public void HttpsConnectionConstructorThrowsIfHttp(@Mocked final SSLContext mockedContext) throws IOException, TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.POST;
+            final String field = "test-field";
+            final String value = "test-value";
+            final int timeout = 1;
+            new Expectations()
             {
-                mockUrl.getProtocol();
-                result = "http";
-            }
-        };
-        final HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+                {
+                    mockUrl.getProtocol();
+                    result = "http";
+                }
+            };
+            final HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+        });
     }
 
 
     //Tests_SRS_HTTPSCONNECTION_25_025: [The function shall throw IllegalArgumentException if the context is null value.**]**
-    @Test (expected = IllegalArgumentException.class)
-    public void setSSLContextThrowsOnNullContext(@Mocked final SSLContext mockedContext) throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.POST;
-        final String field = "test-field";
-        final String value = "test-value";
-        final int timeout = 1;
-        new Expectations()
-        {
+    @Test
+    public void setSSLContextThrowsOnNullContext(@Mocked final SSLContext mockedContext) throws IOException, TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.POST;
+            final String field = "test-field";
+            final String value = "test-value";
+            final int timeout = 1;
+            new Expectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-            }
-        };
-        final HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                }
+            };
+            final HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
 
-        Deencapsulation.invoke(conn, "setSSLContext", SSLContext.class);
+            Deencapsulation.invoke(conn, "setSSLContext", SSLContext.class);
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_010: [The function shall throw an IllegalArgumentException if the request does not currently use method POST or PUT and the body is non-empty.]
-    @Test(expected = IllegalArgumentException.class)
-    public void writeOutputFailsWhenMethodIsNotPostOrPut() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.GET;
-        final byte[] body = { 1, 2 };
-        new Expectations()
-        {
+    @Test
+    public void writeOutputFailsWhenMethodIsNotPostOrPut() throws IOException, TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.GET;
+            final byte[] body = { 1, 2 };
+            new Expectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-                mockUrlConn.getRequestMethod();
-                result = httpsMethod.name();
-            }
-        };
-        HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                    mockUrlConn.getRequestMethod();
+                    result = httpsMethod.name();
+                }
+            };
+            HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
 
-        conn.writeOutput(body);
+            conn.writeOutput(body);
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_010: [The function shall throw an IllegalArgumentException if the request does not currently use method POST or PUT and the body is non-empty.]
@@ -640,27 +648,28 @@ public class HttpsConnectionTest
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_012: [The function shall throw a TransportException if the input stream could not be accessed.]
-    @Test(expected = TransportException.class)
-    public void readInputFailsIfCannotAccessInputStream() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.GET;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void readInputFailsIfCannotAccessInputStream() throws IOException, TransportException {
+        assertThrows(TransportException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.GET;
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-                mockUrlConn.getRequestMethod();
-                result = httpsMethod.name();
-                mockUrlConn.getInputStream();
-                result = new IOException();
-            }
-        };
-        HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
-        conn.connect();
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                    mockUrlConn.getRequestMethod();
+                    result = httpsMethod.name();
+                    mockUrlConn.getInputStream();
+                    result = new IOException();
+                }
+            };
+            HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+            conn.connect();
 
-        conn.readInput();
+            conn.readInput();
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_34_027: [If an UnknownHostException or a NoRouteToHostException is encountered, the thrown TransportException shall be retryable.]
@@ -835,27 +844,28 @@ public class HttpsConnectionTest
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_014: [The function shall throw a TransportException if the error stream could not be accessed.]
-    @Test(expected = TransportException.class)
-    public void readErrorFailsIfCannotAccessErrorStream() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.GET;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void readErrorFailsIfCannotAccessErrorStream() throws IOException, TransportException {
+        assertThrows(TransportException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.GET;
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-                mockUrlConn.getRequestMethod();
-                result = httpsMethod.name();
-                mockUrlConn.getErrorStream();
-                result = new IOException();
-            }
-        };
-        HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
-        conn.connect();
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                    mockUrlConn.getRequestMethod();
+                    result = httpsMethod.name();
+                    mockUrlConn.getErrorStream();
+                    result = new IOException();
+                }
+            };
+            HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+            conn.connect();
 
-        conn.readError();
+            conn.readError();
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_020: [The function shall close the error stream after it has been completely read.]
@@ -920,28 +930,29 @@ public class HttpsConnectionTest
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_016: [The function shall throw a TransportException if no response was received.]
-    @Test(expected = TransportException.class)
+    @Test
     public void getResponseStatusFailsIfDidNotReceiveResponse(
-            @Mocked final InputStream mockIs) throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.GET;
-        new NonStrictExpectations()
-        {
+            @Mocked final InputStream mockIs) throws IOException, TransportException {
+        assertThrows(TransportException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.GET;
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-                mockUrlConn.getRequestMethod();
-                result = httpsMethod.name();
-                mockUrlConn.getResponseCode();
-                result = new IOException();
-            }
-        };
-        HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
-        conn.connect();
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                    mockUrlConn.getRequestMethod();
+                    result = httpsMethod.name();
+                    mockUrlConn.getResponseCode();
+                    result = new IOException();
+                }
+            };
+            HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+            conn.connect();
 
-        conn.getResponseStatus();
+            conn.getResponseStatus();
+        });
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_017: [The function shall return a mapping of header field names to the values associated with the header field name.]
@@ -990,27 +1001,28 @@ public class HttpsConnectionTest
     }
 
     // Tests_SRS_HTTPSCONNECTION_11_018: [The function shall throw an IOException if no response was received.]
-    @Test(expected = IOException.class)
-    public void getResponseHeadersFailsIfDidNotReceiveResponse() throws IOException, TransportException
-    {
-        final HttpsMethod httpsMethod = HttpsMethod.GET;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void getResponseHeadersFailsIfDidNotReceiveResponse() throws IOException, TransportException {
+        assertThrows(IOException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.GET;
+            new NonStrictExpectations()
             {
-                mockUrl.getProtocol();
-                result = "https";
-                mockUrl.openConnection();
-                result = mockUrlConn;
-                mockUrlConn.getRequestMethod();
-                result = httpsMethod.name();
-                mockUrlConn.getHeaderFields();
-                result = new IOException();
-            }
-        };
-        HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
-        conn.connect();
+                {
+                    mockUrl.getProtocol();
+                    result = "https";
+                    mockUrl.openConnection();
+                    result = mockUrlConn;
+                    mockUrlConn.getRequestMethod();
+                    result = httpsMethod.name();
+                    mockUrlConn.getHeaderFields();
+                    result = new IOException();
+                }
+            };
+            HttpsConnection conn = new HttpsConnection(mockUrl, httpsMethod);
+            conn.connect();
 
-        conn.getResponseHeaders();
+            conn.getResponseHeaders();
+        });
     }
 
     //Tests_SRS_HTTPSCONNECTION_34_031: [The function shall return the saved body.]

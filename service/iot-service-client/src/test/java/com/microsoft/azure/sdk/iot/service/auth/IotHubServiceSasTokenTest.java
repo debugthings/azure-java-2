@@ -7,10 +7,9 @@ package com.microsoft.azure.sdk.iot.service.auth;
 
 import com.microsoft.azure.sdk.iot.service.IotHubConnectionString;
 import com.microsoft.azure.sdk.iot.service.IotHubConnectionStringBuilder;
-import com.microsoft.azure.sdk.iot.service.auth.IotHubServiceSasToken;
 import mockit.Deencapsulation;
 import mockit.Expectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -19,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  *
@@ -28,13 +28,14 @@ public class IotHubServiceSasTokenTest
 {
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBSERVICESASTOKEN_12_001: [The constructor shall throw IllegalArgumentException if the input object is null]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor_input_null()
-    {
-        // Arrange
-        IotHubConnectionString iotHubConnectionString = null;
-        // Act
-        IotHubServiceSasToken iotHubServiceSasToken = new IotHubServiceSasToken(iotHubConnectionString);
+    @Test
+    public void constructor_input_null() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            IotHubConnectionString iotHubConnectionString = null;
+            // Act
+            IotHubServiceSasToken iotHubServiceSasToken = new IotHubServiceSasToken(iotHubConnectionString);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBSERVICESASTOKEN_12_002: [The constructor shall create a target uri from the url encoded host name)]
@@ -109,20 +110,21 @@ public class IotHubServiceSasTokenTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_IOTHUBSERVICESASTOKEN_12_007: [The constructor shall throw Exception if building the token failed]
     // Assert
-    @Test (expected = Exception.class)
-    public void constructor_buil_token_failed() throws Exception
-    {
-        // Arrange
-        String iotHubName = "b.c.d";
-        String hostName = "HOSTNAME." + iotHubName;
-        String sharedAccessKeyName = "ACCESSKEYNAME";
-        String policyName = "SharedAccessKey";
-        String sharedAccessKey = "key";
-        String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
+    @Test
+    public void constructor_buil_token_failed() throws Exception {
+        assertThrows(Exception.class, () -> {
+            // Arrange
+            String iotHubName = "b.c.d";
+            String hostName = "HOSTNAME." + iotHubName;
+            String sharedAccessKeyName = "ACCESSKEYNAME";
+            String policyName = "SharedAccessKey";
+            String sharedAccessKey = "key";
+            String connectionString = "HostName=" + hostName + ";SharedAccessKeyName=" + sharedAccessKeyName + ";" + policyName + "=" + sharedAccessKey;
 
-        // Act
-        IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
-        Deencapsulation.setField(iotHubConnectionString, "hostName", null);
-        IotHubServiceSasToken iotHubServiceSasToken = new IotHubServiceSasToken(iotHubConnectionString);
+            // Act
+            IotHubConnectionString iotHubConnectionString = IotHubConnectionStringBuilder.createConnectionString(connectionString);
+            Deencapsulation.setField(iotHubConnectionString, "hostName", null);
+            IotHubServiceSasToken iotHubServiceSasToken = new IotHubServiceSasToken(iotHubConnectionString);
+        });
     }
 }

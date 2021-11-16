@@ -6,13 +6,12 @@
 package com.microsoft.azure.sdk.iot.device.hsm;
 
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
-import com.microsoft.azure.sdk.iot.device.hsm.HttpsRequestResponseSerializer;
 import com.microsoft.azure.sdk.iot.device.transport.https.HttpsConnection;
 import com.microsoft.azure.sdk.iot.device.transport.https.HttpsMethod;
 import com.microsoft.azure.sdk.iot.device.transport.https.HttpsRequest;
 import com.microsoft.azure.sdk.iot.device.transport.https.HttpsResponse;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HttpsRequestResponseSerializerTest
 {
@@ -153,35 +153,38 @@ public class HttpsRequestResponseSerializerTest
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_001: [If the provided request is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void serializeThrowsForNullRequest() throws UnsupportedEncodingException, URISyntaxException
-    {
-        //act
-        HttpsRequestResponseSerializer.serializeRequest(null, "modules/testModule/sign", "api-version=2018-06-28",  "");
+    @Test
+    public void serializeThrowsForNullRequest() throws UnsupportedEncodingException, URISyntaxException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            HttpsRequestResponseSerializer.serializeRequest(null, "modules/testModule/sign", "api-version=2018-06-28",  "");
+        });
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_002: [If the provided request's url is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void serializeThrowsForRequestWithNullRequestUrl() throws UnsupportedEncodingException, URISyntaxException
-    {
-        new NonStrictExpectations()
-        {
+    @Test
+    public void serializeThrowsForRequestWithNullRequestUrl() throws UnsupportedEncodingException, URISyntaxException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new NonStrictExpectations()
             {
-                mockedHttpsRequest.getRequestUrl();
-                result = null;
-            }
-        };
+                {
+                    mockedHttpsRequest.getRequestUrl();
+                    result = null;
+                }
+            };
 
-        //act
-        HttpsRequestResponseSerializer.serializeRequest(mockedHttpsRequest, "modules/testModule/sign", "api-version=2018-06-28",  "");
+            //act
+            HttpsRequestResponseSerializer.serializeRequest(mockedHttpsRequest, "modules/testModule/sign", "api-version=2018-06-28",  "");
+        });
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_004: [If the provided bufferedReader is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void deserializeThrowsForNullReader() throws IOException
-    {
-        //act
-        HttpsRequestResponseSerializer.deserializeResponse(null);
+    @Test
+    public void deserializeThrowsForNullReader() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            HttpsRequestResponseSerializer.deserializeResponse(null);
+        });
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_005: [This function shall read lines from the provided buffered
@@ -240,106 +243,113 @@ public class HttpsRequestResponseSerializerTest
         assertEquals(response.getHeaderFields(), expectedHeaders);
     }
 
-    @Test (expected = IOException.class)
-    public void deserializeThrowsIfTooManyHttpHeadersReceived() throws IOException
-    {
-        //arrange
-        final byte[] expectedBodyWithNewLine = ("test\r\n").getBytes(StandardCharsets.UTF_8);
+    @Test
+    public void deserializeThrowsIfTooManyHttpHeadersReceived() throws IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            final byte[] expectedBodyWithNewLine = ("test\r\n").getBytes(StandardCharsets.UTF_8);
 
-        long MAX_HEADER_COUNT = Deencapsulation.getField(HttpsRequestResponseSerializer.class, "MAXIMUM_HEADER_COUNT");
+            long MAX_HEADER_COUNT = Deencapsulation.getField(HttpsRequestResponseSerializer.class, "MAXIMUM_HEADER_COUNT");
 
-        StringBuilder stringToDeserialize = new StringBuilder();
-        stringToDeserialize.append("HTTP/1.1 203 OK\r\n");
+            StringBuilder stringToDeserialize = new StringBuilder();
+            stringToDeserialize.append("HTTP/1.1 203 OK\r\n");
 
-        for (int i = 0; i < MAX_HEADER_COUNT + 1; i++)
-        {
-            stringToDeserialize.append("header").append(i).append(":value").append(i).append("\r\n");
-        }
+            for (int i = 0; i < MAX_HEADER_COUNT + 1; i++)
+            {
+                stringToDeserialize.append("header").append(i).append(":value").append(i).append("\r\n");
+            }
 
-        stringToDeserialize.append("\r\n");
-        stringToDeserialize.append(new String(expectedBodyWithNewLine));
+            stringToDeserialize.append("\r\n");
+            stringToDeserialize.append(new String(expectedBodyWithNewLine));
 
-        //act
-        HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize.toString())));
+            //act
+            HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize.toString())));
+        });
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_006: [If the buffered reader doesn't have at least one line, this function shall throw an IOException.]
-    @Test (expected = IOException.class)
-    public void deserializeThrowsForMissingStatusLine() throws IOException
-    {
-        //arrange
-        String stringToDeserialize = "";
+    @Test
+    public void deserializeThrowsForMissingStatusLine() throws IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            String stringToDeserialize = "";
 
-        //act
-        HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+            //act
+            HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+        });
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_006: [If the buffered reader's first line does not have the version, status code, and error reason split by a space, this function shall throw an IOException.]
-    @Test (expected = IOException.class)
-    public void deserializeThrowsForStatusLineWithoutVersion() throws IOException
-    {
-        //arrange
-        String stringToDeserialize = "200 OK\r\n";
+    @Test
+    public void deserializeThrowsForStatusLineWithoutVersion() throws IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            String stringToDeserialize = "200 OK\r\n";
 
-        //act
-        HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+            //act
+            HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+        });
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_006: [If the buffered reader's first line does not have the version, status code, and error reason split by a space, this function shall throw an IOException.]
-    @Test (expected = IOException.class)
-    public void deserializeThrowsForStatusLineWithoutStatusCode() throws IOException
-    {
-        //arrange
-        String stringToDeserialize = "HTTP/1.1 OK\r\n";
+    @Test
+    public void deserializeThrowsForStatusLineWithoutStatusCode() throws IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            String stringToDeserialize = "HTTP/1.1 OK\r\n";
 
-        //act
-        HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+            //act
+            HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+        });
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_006: [If the buffered reader's first line does not have the version, status code, and error reason split by a space, this function shall throw an IOException.]
-    @Test (expected = IOException.class)
-    public void deserializeThrowsForStatusLineWithoutReason() throws IOException
-    {
-        //arrange
-        String stringToDeserialize = "HTTP/1.1 200\r\n";
+    @Test
+    public void deserializeThrowsForStatusLineWithoutReason() throws IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            String stringToDeserialize = "HTTP/1.1 200\r\n";
 
-        //act
-        HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+            //act
+            HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+        });
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_007: [If the status code is not parsable into an int, this function shall throw an IOException.]
-    @Test (expected = IOException.class)
-    public void deserializeThrowsForStatusLineWithInvalidStatusCode() throws IOException
-    {
-        //arrange
-        String stringToDeserialize = "HTTP/1.1 notAStatusCode OK\r\n";
+    @Test
+    public void deserializeThrowsForStatusLineWithInvalidStatusCode() throws IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            String stringToDeserialize = "HTTP/1.1 notAStatusCode OK\r\n";
 
-        //act
-        HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+            //act
+            HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+        });
     }
 
     // Tests_SRS_HTTPREQUESTRESPONSESERIALIZER_34_008: [If a header is not separated from its value by a':', this function shall throw an IOException.]
-    @Test (expected = IOException.class)
-    public void deserializeThrowsForHeaderWithoutSeparators() throws IOException
-    {
-        //arrange
-        final byte[] expectedBody = ("test").getBytes(StandardCharsets.UTF_8);
-        final byte[] expectedBodyWithNewLine = ("test\r\n").getBytes(StandardCharsets.UTF_8);
+    @Test
+    public void deserializeThrowsForHeaderWithoutSeparators() throws IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            final byte[] expectedBody = ("test").getBytes(StandardCharsets.UTF_8);
+            final byte[] expectedBodyWithNewLine = ("test\r\n").getBytes(StandardCharsets.UTF_8);
 
-        final Map<String, List<String>> expectedHeaders = new HashMap<>();
-        List<String> values1 = new ArrayList<>();
-        List<String> values2 = new ArrayList<>();
-        values1.add("value1");
-        values2.add("value2");
-        expectedHeaders.put("header1", values1);
-        expectedHeaders.put("header2", values2);
-        String stringToDeserialize =
-                "HTTP/1.1 203 OK\r\n" +
-                        "header1 value1\r\n" +
-                        "\r\n" +
-                        new String(expectedBodyWithNewLine);
+            final Map<String, List<String>> expectedHeaders = new HashMap<>();
+            List<String> values1 = new ArrayList<>();
+            List<String> values2 = new ArrayList<>();
+            values1.add("value1");
+            values2.add("value2");
+            expectedHeaders.put("header1", values1);
+            expectedHeaders.put("header2", values2);
+            String stringToDeserialize =
+                    "HTTP/1.1 203 OK\r\n" +
+                            "header1 value1\r\n" +
+                            "\r\n" +
+                            new String(expectedBodyWithNewLine);
 
-        //act
-        HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+            //act
+            HttpsRequestResponseSerializer.deserializeResponse(new BufferedReader(new StringReader(stringToDeserialize)));
+        });
     }
 }

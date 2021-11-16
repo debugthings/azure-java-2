@@ -6,17 +6,14 @@
 package com.microsoft.azure.sdk.iot.device.hsm;
 
 import com.microsoft.azure.sdk.iot.device.ModuleClient;
-import com.microsoft.azure.sdk.iot.device.hsm.HsmException;
-import com.microsoft.azure.sdk.iot.device.hsm.HttpsHsmClient;
 import com.microsoft.azure.sdk.iot.device.hsm.parser.SignRequest;
 import com.microsoft.azure.sdk.iot.device.hsm.parser.SignResponse;
-import com.microsoft.azure.sdk.iot.device.hsm.HttpHsmSignatureProvider;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.crypto.Mac;
 import java.io.IOException;
@@ -26,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HttpHsmSignatureProviderTest
 {
@@ -84,19 +82,21 @@ public class HttpHsmSignatureProviderTest
     }
 
     // Codes_SRS_HTTPHSMSIGNATUREPROVIDER_34_004: [If the providerUri is null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfProviderUriNullOrEmpty() throws NoSuchAlgorithmException, URISyntaxException
-    {
-        //act
-        HttpHsmSignatureProvider httpHsmSignatureProvider = new HttpHsmSignatureProvider(null, expectedApiVersion);
+    @Test
+    public void constructorThrowsIfProviderUriNullOrEmpty() throws NoSuchAlgorithmException, URISyntaxException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            HttpHsmSignatureProvider httpHsmSignatureProvider = new HttpHsmSignatureProvider(null, expectedApiVersion);
+        });
     }
 
     // Codes_SRS_HTTPHSMSIGNATUREPROVIDER_34_005: [If the apiVersion is null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfApiVersionNullOrEmpty() throws NoSuchAlgorithmException, URISyntaxException
-    {
-        //act
-        HttpHsmSignatureProvider httpHsmSignatureProvider = new HttpHsmSignatureProvider(expectedProviderUri, null);
+    @Test
+    public void constructorThrowsIfApiVersionNullOrEmpty() throws NoSuchAlgorithmException, URISyntaxException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            HttpHsmSignatureProvider httpHsmSignatureProvider = new HttpHsmSignatureProvider(expectedProviderUri, null);
+        });
     }
 
     // Codes_SRS_HTTPHSMSIGNATUREPROVIDER_34_006: [This function shall create a signRequest for the hsm http client to sign, and shall return the utf-8 encoded result of that signing.]
@@ -149,15 +149,16 @@ public class HttpHsmSignatureProviderTest
 
 
     // Codes_SRS_HTTPHSMSIGNATUREPROVIDER_34_007: [If the provided data is null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void signThrowsForNullData() throws NoSuchAlgorithmException, TransportException, IOException, URISyntaxException, HsmException
-    {
-        //arrange
-        final String keyName = "keyName";
-        final HttpHsmSignatureProvider signatureProvider = new HttpHsmSignatureProvider(expectedProviderUri, expectedApiVersion);
+    @Test
+    public void signThrowsForNullData() throws NoSuchAlgorithmException, TransportException, IOException, URISyntaxException, HsmException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String keyName = "keyName";
+            final HttpHsmSignatureProvider signatureProvider = new HttpHsmSignatureProvider(expectedProviderUri, expectedApiVersion);
 
-        //act
-        signatureProvider.sign(keyName, null, expectedGenId);
+            //act
+            signatureProvider.sign(keyName, null, expectedGenId);
+        });
     }
 
 }

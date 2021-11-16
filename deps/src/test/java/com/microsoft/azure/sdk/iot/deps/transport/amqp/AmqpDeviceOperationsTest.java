@@ -5,23 +5,23 @@
 
 package com.microsoft.azure.sdk.iot.deps.transport.amqp;
 
-import com.microsoft.azure.sdk.iot.deps.transport.amqp.AmqpMessage;
 import org.apache.qpid.proton.amqp.messaging.Target;
 
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.integration.junit4.JMockit;
-import com.microsoft.azure.sdk.iot.deps.transport.amqp.AmqpDeviceOperations;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.*;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import java.util.Map;
 
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for AmqpConnection.
  * Coverage : 100% method, 100% line */
@@ -212,22 +212,23 @@ public class AmqpDeviceOperationsTest
         //assert
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void openLinksThrowsOnSessionNull() throws IOException, IllegalArgumentException
-    {
-        // Arrange
-        AmqpDeviceOperations amqpDeviceOperation = new AmqpDeviceOperations();
+    @Test
+    public void openLinksThrowsOnSessionNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            AmqpDeviceOperations amqpDeviceOperation = new AmqpDeviceOperations();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-            }
-        };
+                {
+                }
+            };
 
-        // Act
-        amqpDeviceOperation.openLinks(null);
+            // Act
+            amqpDeviceOperation.openLinks(null);
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -256,16 +257,17 @@ public class AmqpDeviceOperationsTest
         Assert.assertTrue(result);
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void initLinkThrowOnLinkNull() throws IOException, IllegalArgumentException
-    {
-        // Arrange
-        AmqpDeviceOperations amqpDeviceOperation = new AmqpDeviceOperations();
+    @Test
+    public void initLinkThrowOnLinkNull() throws IOException, IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            AmqpDeviceOperations amqpDeviceOperation = new AmqpDeviceOperations();
 
-        // Act
-        amqpDeviceOperation.initLink(null);
+            // Act
+            amqpDeviceOperation.initLink(null);
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -319,24 +321,25 @@ public class AmqpDeviceOperationsTest
         //assert
     }
 
-    @Test (expected = Exception.class)
-    public void initLinkThrowsOnGetName() throws IOException, IllegalArgumentException
-    {
-        // Arrange
-        AmqpDeviceOperations amqpDeviceOperation = new AmqpDeviceOperations();
+    @Test
+    public void initLinkThrowsOnGetName() throws IOException, IllegalArgumentException {
+        assertThrows(Exception.class, () -> {
+            // Arrange
+            AmqpDeviceOperations amqpDeviceOperation = new AmqpDeviceOperations();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedLink.getName();
-                result = new Exception();
-            }
-        };
+                {
+                    mockedLink.getName();
+                    result = new Exception();
+                }
+            };
 
-        // Act
-        amqpDeviceOperation.initLink(mockedLink);
+            // Act
+            amqpDeviceOperation.initLink(mockedLink);
 
-        //assert
+            //assert
+        });
     }
 
     @Test

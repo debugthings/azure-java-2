@@ -5,19 +5,17 @@
 
 package com.microsoft.azure.sdk.iot.service.auth;
 
-import com.microsoft.azure.sdk.iot.service.auth.AuthenticationMechanism;
-import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
-import com.microsoft.azure.sdk.iot.service.auth.SymmetricKey;
 import mockit.Deencapsulation;
 import mockit.integration.junit4.JMockit;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code coverage:
@@ -31,7 +29,7 @@ public class AuthenticationMechanismTest
     String expectedSecondaryThumbprint;
     private SymmetricKey expectedSymmetricKey;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         expectedPrimaryThumbprint = "0000000000000000000000000000000000000000";
@@ -147,36 +145,39 @@ public class AuthenticationMechanismTest
     }
 
     //Tests_SRS_AUTHENTICATION_MECHANISM_34_012: [This constructor shall throw an IllegalArgumentException if the provided symmetricKey is null.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIllegalArgumentExceptionForNullSymmetricKey()
-    {
-        //arrange
-        SymmetricKey key = null;
+    @Test
+    public void constructorThrowsIllegalArgumentExceptionForNullSymmetricKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            SymmetricKey key = null;
 
-        //act
-        new AuthenticationMechanism(key);
+            //act
+            new AuthenticationMechanism(key);
+        });
     }
 
     //Tests_SRS_AUTHENTICATION_MECHANISM_34_013: [If the provided symmetricKey is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setSymmetricKeyThrowsForNullSymmetricKey()
-    {
-        //arrange
-        AuthenticationMechanism authentication = new AuthenticationMechanism(expectedSymmetricKey);
+    @Test
+    public void setSymmetricKeyThrowsForNullSymmetricKey() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            AuthenticationMechanism authentication = new AuthenticationMechanism(expectedSymmetricKey);
 
-        //act
-        authentication.setSymmetricKey(null);
+            //act
+            authentication.setSymmetricKey(null);
+        });
     }
 
     //Tests_SRS_AUTHENTICATION_MECHANISM_34_014: [If the provided type is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setAuthenticationTypeThrowsForNullType()
-    {
-        //arrange
-        AuthenticationMechanism authentication = new AuthenticationMechanism(expectedSymmetricKey);
+    @Test
+    public void setAuthenticationTypeThrowsForNullType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            AuthenticationMechanism authentication = new AuthenticationMechanism(expectedSymmetricKey);
 
-        //act
-        authentication.setAuthenticationType(null);
+            //act
+            authentication.setAuthenticationType(null);
+        });
     }
 
     //Tests_SRS_AUTHENTICATION_MECHANISM_34_023: [If the provided authentication type is self signed, a thumbprint will be generated, but no symmetric key will be generated.]

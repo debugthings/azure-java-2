@@ -1,30 +1,32 @@
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.ConfigurationMetricsParser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ConfigurationMetricsParserTest
 {
     //Tests_SRS_CONFIGURATION_METRICS_PARSER_28_001: [If the provided json is null, empty, an IllegalArgumentException shall be thrown.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullJson()
-    {
-        //act
-        new ConfigurationMetricsParser(null);
+    @Test
+    public void constructorThrowsForNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ConfigurationMetricsParser(null);
+        });
     }
 
     //Tests_SRS_CONFIGURATION_METRICS_PARSER_28_001: [If the provided json is null, empty, an IllegalArgumentException shall be thrown.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyJson()
-    {
-        //act
-        new ConfigurationMetricsParser("");
+    @Test
+    public void constructorThrowsForEmptyJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ConfigurationMetricsParser("");
+        });
     }
 
     //Codes_SRS_CONFIGURATION_METRICS_PARSER_28_002: [The constructor shall take the provided json and convert
@@ -51,14 +53,15 @@ public class ConfigurationMetricsParserTest
 
     //Tests_SRS_CONFIGURATION_METRICS_PARSER_28_003: [If the provided json cannot be parsed into a ConfigurationMetricsParser
     // object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForInvalidJson()
-    {
-        //arrange
-        String json = "{";
+    @Test
+    public void constructorThrowsForInvalidJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{";
 
-        //act
-        new ConfigurationMetricsParser(json);
+            //act
+            new ConfigurationMetricsParser(json);
+        });
     }
 
     //Tests_SRS_CONFIGURATION_METRICS_PARSER_28_005: [This method shall return the value of this object's results.]

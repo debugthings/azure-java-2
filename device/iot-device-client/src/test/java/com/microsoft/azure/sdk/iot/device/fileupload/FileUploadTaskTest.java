@@ -11,8 +11,6 @@ import com.microsoft.azure.sdk.iot.device.IotHubStatusCode;
 import com.microsoft.azure.sdk.iot.device.ResponseMessage;
 import com.microsoft.azure.sdk.iot.device.exceptions.BadFormatException;
 import com.microsoft.azure.sdk.iot.device.exceptions.UnauthorizedException;
-import com.microsoft.azure.sdk.iot.device.fileupload.FileUploadTask;
-import com.microsoft.azure.sdk.iot.device.transport.IotHubTransport;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
 import com.microsoft.azure.sdk.iot.device.transport.https.HttpsTransportManager;
 import mockit.Deencapsulation;
@@ -20,7 +18,7 @@ import mockit.Expectations;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for file upload task class.
@@ -215,78 +214,84 @@ public class FileUploadTaskTest
     }
 
     /* Tests_SRS_FILEUPLOADTASK_21_001: [If the `blobName` is null or empty, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullBlobNameThrows()
-    {
-        // arrange
-        final String blobName = null;
+    @Test
+    public void constructorNullBlobNameThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String blobName = null;
 
-        // act
-        Deencapsulation.newInstance(FileUploadTask.class,
-                new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
-                blobName, mockInputStream, VALID_STREAM_LENGTH, mockHttpsTransportManager, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+            // act
+            Deencapsulation.newInstance(FileUploadTask.class,
+                    new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
+                    blobName, mockInputStream, VALID_STREAM_LENGTH, mockHttpsTransportManager, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+        });
     }
 
     /* Tests_SRS_FILEUPLOADTASK_21_001: [If the `blobName` is null or empty, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorEmptyBlobNameThrows()
-    {
-        // arrange
-        final String blobName = "";
+    @Test
+    public void constructorEmptyBlobNameThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String blobName = "";
 
-        // act
-        Deencapsulation.newInstance(FileUploadTask.class,
-                new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
-                blobName, mockInputStream, VALID_STREAM_LENGTH, mockHttpsTransportManager, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+            // act
+            Deencapsulation.newInstance(FileUploadTask.class,
+                    new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
+                    blobName, mockInputStream, VALID_STREAM_LENGTH, mockHttpsTransportManager, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+        });
     }
 
     /* Tests_SRS_FILEUPLOADTASK_21_002: [If the `inputStream` is null, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullInputStreamThrows()
-    {
-        // arrange
+    @Test
+    public void constructorNullInputStreamThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        Deencapsulation.newInstance(FileUploadTask.class,
-                new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
-                VALID_BLOB_NAME, null, VALID_STREAM_LENGTH, mockHttpsTransportManager, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+            // act
+            Deencapsulation.newInstance(FileUploadTask.class,
+                    new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
+                    VALID_BLOB_NAME, null, VALID_STREAM_LENGTH, mockHttpsTransportManager, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+        });
     }
 
     /* Tests_SRS_FILEUPLOADTASK_21_003: [If the `streamLength` is negative, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNegativeStreamLengthThrows()
-    {
-        // arrange
-        final long streamLength = -100;
+    @Test
+    public void constructorNegativeStreamLengthThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final long streamLength = -100;
 
-        // act
-        Deencapsulation.newInstance(FileUploadTask.class,
-                new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
-                VALID_BLOB_NAME, mockInputStream, streamLength, mockHttpsTransportManager, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+            // act
+            Deencapsulation.newInstance(FileUploadTask.class,
+                    new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
+                    VALID_BLOB_NAME, mockInputStream, streamLength, mockHttpsTransportManager, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+        });
     }
 
     /* Tests_SRS_FILEUPLOADTASK_21_004: [If the `httpsTransportManager` is null, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullHttpsTransportManagerThrows()
-    {
-        // arrange
+    @Test
+    public void constructorNullHttpsTransportManagerThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        Deencapsulation.newInstance(FileUploadTask.class,
-                new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
-                VALID_BLOB_NAME, mockInputStream, VALID_STREAM_LENGTH, null, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+            // act
+            Deencapsulation.newInstance(FileUploadTask.class,
+                    new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
+                    VALID_BLOB_NAME, mockInputStream, VALID_STREAM_LENGTH, null, mockIotHubEventCallback, VALID_CALLBACK_CONTEXT);
+        });
     }
 
     /* Tests_SRS_FILEUPLOADTASK_21_005: [If the `userCallback` is null, the constructor shall throw IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullUserCallbackThrows()
-    {
-        // arrange
+    @Test
+    public void constructorNullUserCallbackThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        Deencapsulation.newInstance(FileUploadTask.class,
-                new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
-                VALID_BLOB_NAME, mockInputStream, VALID_STREAM_LENGTH, mockHttpsTransportManager, null, VALID_CALLBACK_CONTEXT);
+            // act
+            Deencapsulation.newInstance(FileUploadTask.class,
+                    new Class[] {String.class, InputStream.class, long.class, HttpsTransportManager.class, IotHubEventCallback.class, Object.class},
+                    VALID_BLOB_NAME, mockInputStream, VALID_STREAM_LENGTH, mockHttpsTransportManager, null, VALID_CALLBACK_CONTEXT);
+        });
     }
 
     /* Tests_SRS_FILEUPLOADTASK_21_006: [The constructor shall store all the provided parameters.] */

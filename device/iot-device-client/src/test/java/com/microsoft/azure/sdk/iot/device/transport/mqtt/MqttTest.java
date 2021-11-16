@@ -10,13 +10,12 @@ import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubListener;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
 import com.microsoft.azure.sdk.iot.device.transport.ReconnectionNotifier;
-import com.microsoft.azure.sdk.iot.device.transport.mqtt.*;
 import mockit.*;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.paho.client.mqttv3.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -29,6 +28,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceOperations.*;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for Mqtt class.
@@ -79,7 +79,7 @@ public class MqttTest
     @Mocked
     private MqttMessageListener mockedMessageListener;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         expectedMessage = new Message(EXPECTED_PAYLOAD);
@@ -333,152 +333,157 @@ public class MqttTest
     /*
     **Tests_SRS_Mqtt_25_012: [If the MQTT connection is closed, the function shall throw a TransportException.]
      */
-    @Test(expected = TransportException.class)
-    public void publishFailsWhenNotConnected(final @Mocked Message mockedMessage) throws TransportException
-    {
-        //arrange
-        final byte[] payload = {0x61, 0x62, 0x63};
-        new NonStrictExpectations()
-        {
+    @Test
+    public void publishFailsWhenNotConnected(final @Mocked Message mockedMessage) throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            //arrange
+            final byte[] payload = {0x61, 0x62, 0x63};
+            new NonStrictExpectations()
             {
-                mockMqttAsyncClient.isConnected();
-                result = false;
-            }
-        };
-        Mqtt mockMqtt = instantiateMqtt(true);
+                {
+                    mockMqttAsyncClient.isConnected();
+                    result = false;
+                }
+            };
+            Mqtt mockMqtt = instantiateMqtt(true);
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, mockedMessage);
+            //act
+            Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, mockedMessage);
+        });
     }
 
     /*
     **Tests_SRS_Mqtt_25_012: [If the MQTT connection is closed, the function shall throw a TransportException.]
     */
-    @Test (expected = TransportException.class)
-    public void publishFailsWhenConnectionBrokenWhilePublishing(final @Mocked Message mockedMessage) throws TransportException
-    {
-        //arrange
-        final byte[] payload = {0x61, 0x62, 0x63};
-        final IMqttDeliveryToken[] testTokens = {mockMqttDeliveryToken, mockMqttDeliveryToken, mockMqttDeliveryToken,
-                mockMqttDeliveryToken, mockMqttDeliveryToken, mockMqttDeliveryToken,
-                mockMqttDeliveryToken, mockMqttDeliveryToken, mockMqttDeliveryToken,
-                mockMqttDeliveryToken, mockMqttDeliveryToken, mockMqttDeliveryToken
-        };
-        new NonStrictExpectations()
-        {
+    @Test
+    public void publishFailsWhenConnectionBrokenWhilePublishing(final @Mocked Message mockedMessage) throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            //arrange
+            final byte[] payload = {0x61, 0x62, 0x63};
+            final IMqttDeliveryToken[] testTokens = {mockMqttDeliveryToken, mockMqttDeliveryToken, mockMqttDeliveryToken,
+                    mockMqttDeliveryToken, mockMqttDeliveryToken, mockMqttDeliveryToken,
+                    mockMqttDeliveryToken, mockMqttDeliveryToken, mockMqttDeliveryToken,
+                    mockMqttDeliveryToken, mockMqttDeliveryToken, mockMqttDeliveryToken
+            };
+            new NonStrictExpectations()
             {
-                mockMqttAsyncClient.isConnected();
-                result = true;
-                mockMqttAsyncClient.getPendingDeliveryTokens();
-                result = testTokens;
-                mockMqttAsyncClient.isConnected();
-                result = false;
-            }
-        };
-        Mqtt mockMqtt = instantiateMqtt(true);
+                {
+                    mockMqttAsyncClient.isConnected();
+                    result = true;
+                    mockMqttAsyncClient.getPendingDeliveryTokens();
+                    result = testTokens;
+                    mockMqttAsyncClient.isConnected();
+                    result = false;
+                }
+            };
+            Mqtt mockMqtt = instantiateMqtt(true);
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, mockedMessage);
+            //act
+            Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, mockedMessage);
+        });
     }
 
 
     /*
      **Tests_SRS_Mqtt_25_047: [If the Mqtt Client Async throws MqttException, the function shall throw a ProtocolException with the message.]
      */
-    @Test(expected = ProtocolException.class)
-    public void publishThrowsIOExceptionWhenAnyOfTheAsyncMethodsThrow(final @Mocked Message mockedMessage) throws MqttException, TransportException
-    {
-        //arrange
-        basePublishExpectations(mockedMessage);
-        final byte[] payload = {0x61, 0x62, 0x63};
-        new NonStrictExpectations()
-        {
+    @Test
+    public void publishThrowsIOExceptionWhenAnyOfTheAsyncMethodsThrow(final @Mocked Message mockedMessage) throws MqttException, TransportException {
+        assertThrows(ProtocolException.class, () -> {
+            //arrange
+            basePublishExpectations(mockedMessage);
+            final byte[] payload = {0x61, 0x62, 0x63};
+            new NonStrictExpectations()
             {
-                mockMqttAsyncClient.isConnected();
-                result = true;
-                new MqttMessage(payload);
-                result = mockMqttMessage;
-                mockMqttAsyncClient.publish(MOCK_PARSE_TOPIC, mockMqttMessage);
-                result = mockMqttException;
-            }
-        };
-        Mqtt mockMqtt = instantiateMqtt(true);
-        Deencapsulation.setField(mockMqtt, "mqttAsyncClient", mockMqttAsyncClient);
-        Deencapsulation.invoke(mockMqtt, "connect");
+                {
+                    mockMqttAsyncClient.isConnected();
+                    result = true;
+                    new MqttMessage(payload);
+                    result = mockMqttMessage;
+                    mockMqttAsyncClient.publish(MOCK_PARSE_TOPIC, mockMqttMessage);
+                    result = mockMqttException;
+                }
+            };
+            Mqtt mockMqtt = instantiateMqtt(true);
+            Deencapsulation.setField(mockMqtt, "mqttAsyncClient", mockMqttAsyncClient);
+            Deencapsulation.invoke(mockMqtt, "connect");
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, mockedMessage);
+            //act
+            Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, mockedMessage);
 
-        //assert
-        new Verifications()
-        {
+            //assert
+            new Verifications()
             {
-                mockMqttAsyncClient.isConnected();
-                minTimes = 1;
-            }
-        };
+                {
+                    mockMqttAsyncClient.isConnected();
+                    minTimes = 1;
+                }
+            };
+        });
     }
 
     /*
     **Tests_SRS_Mqtt_25_013: [If the either publishTopic or payload is null or empty, the function shall throw an IllegalArgumentException.]
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void publishThrowsExceptionWhenPublishTopicIsNull(final @Mocked Message mockedMessage) throws TransportException
-    {
-        //arrange
-        final byte[] payload = {0x61, 0x62, 0x63};
-        new NonStrictExpectations()
-        {
+    @Test
+    public void publishThrowsExceptionWhenPublishTopicIsNull(final @Mocked Message mockedMessage) throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final byte[] payload = {0x61, 0x62, 0x63};
+            new NonStrictExpectations()
             {
-                mockMqttAsyncClient.isConnected();
-                result = true;
-            }
-        };
-        Mqtt mockMqtt = instantiateMqtt(true);
-        Deencapsulation.invoke(mockMqtt, "connect");
+                {
+                    mockMqttAsyncClient.isConnected();
+                    result = true;
+                }
+            };
+            Mqtt mockMqtt = instantiateMqtt(true);
+            Deencapsulation.invoke(mockMqtt, "connect");
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "publish", String.class, payload, mockedMessage);
+            //act
+            Deencapsulation.invoke(mockMqtt, "publish", String.class, payload, mockedMessage);
 
-        //assert
-        new Verifications()
-        {
+            //assert
+            new Verifications()
             {
-                mockMqttAsyncClient.isConnected();
-                minTimes = 1;
-            }
-        };
+                {
+                    mockMqttAsyncClient.isConnected();
+                    minTimes = 1;
+                }
+            };
+        });
     }
 
     /*
     **Tests_SRS_Mqtt_25_013: [If the either publishTopic or payload is null or empty, the function shall throw an IllegalArgumentException.]
     */
-    @Test(expected = IllegalArgumentException.class)
-    public void publishThrowsExceptionWhenPayloadIsNull(final @Mocked Message mockedMessage) throws TransportException
-    {
-        //arrange
-        final byte[] payload = null;
-        new NonStrictExpectations()
-        {
+    @Test
+    public void publishThrowsExceptionWhenPayloadIsNull(final @Mocked Message mockedMessage) throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final byte[] payload = null;
+            new NonStrictExpectations()
             {
-                mockMqttAsyncClient.isConnected();
-                result = true;
-            }
-        };
-        Mqtt mockMqtt = instantiateMqtt(true);
-        Deencapsulation.invoke(mockMqtt, "connect");
+                {
+                    mockMqttAsyncClient.isConnected();
+                    result = true;
+                }
+            };
+            Mqtt mockMqtt = instantiateMqtt(true);
+            Deencapsulation.invoke(mockMqtt, "connect");
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, byte[].class, mockedMessage);
+            //act
+            Deencapsulation.invoke(mockMqtt, "publish", MOCK_PARSE_TOPIC, byte[].class, mockedMessage);
 
-        //assert
-        new Verifications()
-        {
+            //assert
+            new Verifications()
             {
-                mockMqttAsyncClient.isConnected();
-                minTimes = 1;
-            }
-        };
+                {
+                    mockMqttAsyncClient.isConnected();
+                    minTimes = 1;
+                }
+            };
+        });
     }
 
     /*
@@ -520,93 +525,97 @@ public class MqttTest
     /*
     **Tests_SRS_Mqtt_25_015: [If the MQTT connection is closed, the function shall throw a TransportException with message.]
      */
-    @Test(expected = TransportException.class)
-    public void subscribeFailsWhenNotConnected() throws TransportException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void subscribeFailsWhenNotConnected() throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                mockMqttAsyncClient.isConnected();
-                result = false;
-            }
-        };
+                {
+                    mockMqttAsyncClient.isConnected();
+                    result = false;
+                }
+            };
 
-        Mqtt mockMqtt = instantiateMqtt(true);
+            Mqtt mockMqtt = instantiateMqtt(true);
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "subscribe", MOCK_PARSE_TOPIC);
+            //act
+            Deencapsulation.invoke(mockMqtt, "subscribe", MOCK_PARSE_TOPIC);
 
-        //assert
-        new Verifications()
-        {
+            //assert
+            new Verifications()
             {
-                mockMqttAsyncClient.isConnected();
-                minTimes = 1;
-            }
-        };
+                {
+                    mockMqttAsyncClient.isConnected();
+                    minTimes = 1;
+                }
+            };
+        });
     }
 
-    @Test(expected = TransportException.class)
-    public void subscribeFailsWhenConfigIsNotSet() throws TransportException
-    {
-        //arrange
-        Mqtt mockMqtt = instantiateMqtt(false);
+    @Test
+    public void subscribeFailsWhenConfigIsNotSet() throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            //arrange
+            Mqtt mockMqtt = instantiateMqtt(false);
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "subscribe", MOCK_PARSE_TOPIC);
+            //act
+            Deencapsulation.invoke(mockMqtt, "subscribe", MOCK_PARSE_TOPIC);
+        });
     }
 
     /*
     **Tests_SRS_Mqtt_25_016: [If the subscribeTopic is null or empty, the function shall throw an IllegalArgumentException.]
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void subscribeThrowsExceptionWhenTopicIsNull() throws TransportException
-    {
-        //arrange
+    @Test
+    public void subscribeThrowsExceptionWhenTopicIsNull() throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
 
-        Mqtt mockMqtt = instantiateMqtt(true);
-        Deencapsulation.invoke(mockMqtt, "connect");
+            Mqtt mockMqtt = instantiateMqtt(true);
+            Deencapsulation.invoke(mockMqtt, "connect");
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "subscribe", String.class);
+            //act
+            Deencapsulation.invoke(mockMqtt, "subscribe", String.class);
+        });
     }
 
     /*
     **Tests_SRS_Mqtt_25_048: [If the Mqtt Client Async throws MqttException for any reason, the function shall throw a ProtocolException with the message.]
      */
-    @Test(expected = ProtocolException.class)
-    public void subscribeThrowsProtocolConnectionExceptionWhenMqttAsyncThrows() throws TransportException, MqttException
-    {
-        //arrange
-        baseConnectExpectation();
+    @Test
+    public void subscribeThrowsProtocolConnectionExceptionWhenMqttAsyncThrows() throws TransportException, MqttException {
+        assertThrows(ProtocolException.class, () -> {
+            //arrange
+            baseConnectExpectation();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockMqttAsyncClient.isConnected();
-                result = true;
-                mockMqttAsyncClient.subscribe(MOCK_PARSE_TOPIC, anyInt);
-                result = mockMqttException;
-            }
-        };
+                {
+                    mockMqttAsyncClient.isConnected();
+                    result = true;
+                    mockMqttAsyncClient.subscribe(MOCK_PARSE_TOPIC, anyInt);
+                    result = mockMqttException;
+                }
+            };
 
-        Mqtt mockMqtt = instantiateMqtt(true);
-        Deencapsulation.setField(mockMqtt, "mqttAsyncClient", mockMqttAsyncClient);
-        Deencapsulation.invoke(mockMqtt, "connect");
+            Mqtt mockMqtt = instantiateMqtt(true);
+            Deencapsulation.setField(mockMqtt, "mqttAsyncClient", mockMqttAsyncClient);
+            Deencapsulation.invoke(mockMqtt, "connect");
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "subscribe", MOCK_PARSE_TOPIC);
+            //act
+            Deencapsulation.invoke(mockMqtt, "subscribe", MOCK_PARSE_TOPIC);
 
-        new Verifications()
-        {
+            new Verifications()
             {
-                mockMqttAsyncClient.isConnected();
-                minTimes = 1;
-                mockMqttAsyncClient.subscribe(MOCK_PARSE_TOPIC, anyInt);
-                times = 1;
-            }
-        };
+                {
+                    mockMqttAsyncClient.isConnected();
+                    minTimes = 1;
+                    mockMqttAsyncClient.subscribe(MOCK_PARSE_TOPIC, anyInt);
+                    times = 1;
+                }
+            };
+        });
     }
 
     // Tests_SRS_Mqtt_34_023: [This method shall call peekMessage to get the message payload from the received Messages queue corresponding to the messaging client's operation.]
@@ -713,18 +722,19 @@ public class MqttTest
     }
 
     // Tests_SRS_Mqtt_34_025: [If the call to peekMessage returns null when topic is non-null then this method will throw a TransportException]
-    @Test(expected = TransportException.class)
-    public void receiveThrowsIotHubServiceExceptionWhenParsePayloadReturnsNull() throws TransportException
-    {
-        //arrange
-        final Mqtt mockMqtt = new MqttMessaging(CLIENT_ID, null, "", false, mockMqttConnectionOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+    @Test
+    public void receiveThrowsIotHubServiceExceptionWhenParsePayloadReturnsNull() throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            //arrange
+            final Mqtt mockMqtt = new MqttMessaging(CLIENT_ID, null, "", false, mockMqttConnectionOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
 
-        Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
-        Deencapsulation.setField(mockMqtt, "receivedMessages", testreceivedMessages);
-        testreceivedMessages.add(new MutablePair<>(MOCK_PARSE_TOPIC, (byte[]) null));
+            Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
+            Deencapsulation.setField(mockMqtt, "receivedMessages", testreceivedMessages);
+            testreceivedMessages.add(new MutablePair<>(MOCK_PARSE_TOPIC, (byte[]) null));
 
-        //act
-        mockMqtt.receive();
+            //act
+            mockMqtt.receive();
+        });
     }
 
     //Tests_SRS_Mqtt_25_030: [The payload of the message and the topic is added to the received messages queue .]
@@ -829,32 +839,33 @@ public class MqttTest
     /*
     **Tests_SRS_Mqtt_34_051: [If a topic string's property's key and value are not separated by the '=' symbol, an IllegalArgumentException shall be thrown]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void receiveFailureFromInvalidPropertyStringThrowsIllegalArgumentException() throws MqttException, IllegalArgumentException, TransportException
-    {
-        //arrange
-        final byte[] payload = {0x61, 0x62, 0x63};
-        final String mockParseTopicInvalidPropertyFormat = "devices/deviceID/messages/devicebound/%24.mid=69ea4caf-d83e-454b-81f2-caafda4c81c8&%24.exp=99999&%24.to=%2Fdevices%2FdeviceID%2Fmessages%2FdeviceBound&%24.cid=169c34b3-99b0-49f9-b0f6-8fa9d2c99345&iothub-ack=full&property1value1";
-        baseConnectExpectation();
+    @Test
+    public void receiveFailureFromInvalidPropertyStringThrowsIllegalArgumentException() throws MqttException, IllegalArgumentException, TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final byte[] payload = {0x61, 0x62, 0x63};
+            final String mockParseTopicInvalidPropertyFormat = "devices/deviceID/messages/devicebound/%24.mid=69ea4caf-d83e-454b-81f2-caafda4c81c8&%24.exp=99999&%24.to=%2Fdevices%2FdeviceID%2Fmessages%2FdeviceBound&%24.cid=169c34b3-99b0-49f9-b0f6-8fa9d2c99345&iothub-ack=full&property1value1";
+            baseConnectExpectation();
 
-        final Mqtt mockMqtt = new MqttMessaging(CLIENT_ID, null, "", false, mockMqttConnectionOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-        Deencapsulation.invoke(mockMqtt, "setMqttAsyncClient", mockMqttAsyncClient);
-        new NonStrictExpectations()
-        {
+            final Mqtt mockMqtt = new MqttMessaging(CLIENT_ID, null, "", false, mockMqttConnectionOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+            Deencapsulation.invoke(mockMqtt, "setMqttAsyncClient", mockMqttAsyncClient);
+            new NonStrictExpectations()
             {
-                mockMqttAsyncClient.isConnected();
-                result = true;
-            }
-        };
+                {
+                    mockMqttAsyncClient.isConnected();
+                    result = true;
+                }
+            };
 
-        Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
-        Deencapsulation.setField(mockMqtt, "receivedMessages", testreceivedMessages);
-        testreceivedMessages.add(new MutablePair<>(mockParseTopicInvalidPropertyFormat, payload));
+            Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
+            Deencapsulation.setField(mockMqtt, "receivedMessages", testreceivedMessages);
+            testreceivedMessages.add(new MutablePair<>(mockParseTopicInvalidPropertyFormat, payload));
 
-        Deencapsulation.invoke(mockMqtt, "connect");
+            Deencapsulation.invoke(mockMqtt, "connect");
 
-        //act
-        mockMqtt.receive();
+            //act
+            mockMqtt.receive();
+        });
     }
 
     /*
@@ -1170,24 +1181,25 @@ public class MqttTest
     }
 
     //Tests_SRS_Mqtt_34_044: [If an MqttException is encountered while connecting, this function shall throw the associated ProtocolException.]
-    @Test (expected = ProtocolException.class)
-    public void mqttConnectThrowsMqttExceptionHandled() throws TransportException, MqttException
-    {
-        //arrange
-        final Mqtt mockMqtt = instantiateMqtt(true);
-        Deencapsulation.setField(mockMqtt, "mqttAsyncClient", mockMqttAsyncClient);
-        Deencapsulation.setField(mockMqtt, "stateLock", new Object());
+    @Test
+    public void mqttConnectThrowsMqttExceptionHandled() throws TransportException, MqttException {
+        assertThrows(ProtocolException.class, () -> {
+            //arrange
+            final Mqtt mockMqtt = instantiateMqtt(true);
+            Deencapsulation.setField(mockMqtt, "mqttAsyncClient", mockMqttAsyncClient);
+            Deencapsulation.setField(mockMqtt, "stateLock", new Object());
 
-        final MqttException mqttException = new MqttException(new Throwable());
-        new NonStrictExpectations()
-        {
+            final MqttException mqttException = new MqttException(new Throwable());
+            new NonStrictExpectations()
             {
-                mockMqttAsyncClient.connect((MqttConnectOptions) any);
-                result = mqttException;
-            }
-        };
+                {
+                    mockMqttAsyncClient.connect((MqttConnectOptions) any);
+                    result = mqttException;
+                }
+            };
 
-        //act
-        Deencapsulation.invoke(mockMqtt, "connect");
+            //act
+            Deencapsulation.invoke(mockMqtt, "connect");
+        });
     }
 }

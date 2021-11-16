@@ -6,11 +6,8 @@
 package com.microsoft.azure.sdk.iot.device.auth;
 
 import com.microsoft.azure.sdk.iot.deps.auth.IotHubSSLContext;
-import com.microsoft.azure.sdk.iot.device.auth.IotHubAuthenticationProvider;
-import com.microsoft.azure.sdk.iot.device.auth.IotHubSasToken;
-import com.microsoft.azure.sdk.iot.device.auth.IotHubSasTokenAuthenticationProvider;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -20,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for IotHubSasTokenAuthenticationProvider.java
@@ -203,39 +201,42 @@ public class IotHubSasTokenAuthenticationProviderTest
     }
 
     //Tests_SRS_IOTHUBSASTOKENAUTHENTICATION_34_016: [If the provided tokenValidSecs is less than 1, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForTTLBelowOneSecond(@Mocked IotHubAuthenticationProvider mockedIotHubAuthenticationProvider)
-    {
-        //arrange
-        long expectedTokenValidSecs = 0;
-        int expectedTimeBufferPercentage = 34;
+    @Test
+    public void constructorThrowsForTTLBelowOneSecond(@Mocked IotHubAuthenticationProvider mockedIotHubAuthenticationProvider) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            long expectedTokenValidSecs = 0;
+            int expectedTimeBufferPercentage = 34;
 
-        //act
-        new mockIotHubSasTokenAuthenticationImplementation(expectedTokenValidSecs, expectedTimeBufferPercentage);
+            //act
+            new mockIotHubSasTokenAuthenticationImplementation(expectedTokenValidSecs, expectedTimeBufferPercentage);
+        });
     }
 
     //Tests_SRS_IOTHUBSASTOKENAUTHENTICATION_34_017: [If the provided timeBufferPercentage is less than 1 or greater than 100, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForBufferBelowOnePercent(@Mocked IotHubAuthenticationProvider mockedIotHubAuthenticationProvider)
-    {
-        //arrange
-        long expectedTokenValidSecs = 2;
-        int expectedTimeBufferPercentage = 0;
+    @Test
+    public void constructorThrowsForBufferBelowOnePercent(@Mocked IotHubAuthenticationProvider mockedIotHubAuthenticationProvider) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            long expectedTokenValidSecs = 2;
+            int expectedTimeBufferPercentage = 0;
 
-        //act
-        new mockIotHubSasTokenAuthenticationImplementation(expectedTokenValidSecs, expectedTimeBufferPercentage);
+            //act
+            new mockIotHubSasTokenAuthenticationImplementation(expectedTokenValidSecs, expectedTimeBufferPercentage);
+        });
     }
 
     //Tests_SRS_IOTHUBSASTOKENAUTHENTICATION_34_017: [If the provided timeBufferPercentage is less than 1 or greater than 100, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForBufferAboveOneHundred(@Mocked IotHubAuthenticationProvider mockedIotHubAuthenticationProvider)
-    {
-        //arrange
-        long expectedTokenValidSecs = 2;
-        int expectedTimeBufferPercentage = 101;
+    @Test
+    public void constructorThrowsForBufferAboveOneHundred(@Mocked IotHubAuthenticationProvider mockedIotHubAuthenticationProvider) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            long expectedTokenValidSecs = 2;
+            int expectedTimeBufferPercentage = 101;
 
-        //act
-        new mockIotHubSasTokenAuthenticationImplementation(expectedTokenValidSecs, expectedTimeBufferPercentage);
+            //act
+            new mockIotHubSasTokenAuthenticationImplementation(expectedTokenValidSecs, expectedTimeBufferPercentage);
+        });
     }
 
     //Codes_SRS_IOTHUBSASTOKENAUTHENTICATION_34_019: [This function shall return true if the saved token has lived for longer

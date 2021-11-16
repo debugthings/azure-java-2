@@ -5,11 +5,9 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service.auth;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.auth.AuthenticationMethod;
-import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningConnectionString;
 import mockit.Deencapsulation;
 import mockit.Mocked;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 

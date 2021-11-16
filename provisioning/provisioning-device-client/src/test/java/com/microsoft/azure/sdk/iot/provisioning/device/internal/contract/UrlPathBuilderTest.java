@@ -8,13 +8,13 @@
 package com.microsoft.azure.sdk.iot.provisioning.device.internal.contract;
 
 import com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClientTransportProtocol;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.UrlPathBuilder;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * Unit tests for UrlPathBuilder
@@ -41,20 +41,22 @@ public class UrlPathBuilderTest
     }
 
     //SRS_UrlPathBuilder_25_002: [ Constructor throw IllegalArgumentException if scope id is null or empty.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithScopeOnlyThrowsOnNullScope() throws IllegalArgumentException
-    {
-        //act
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(null);
+    @Test
+    public void constructorWithScopeOnlyThrowsOnNullScope() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(null);
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithScopeOnlyThrowsOnEmptyScope() throws IllegalArgumentException
-    {
-        //act
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder("");
-        //assert
+    @Test
+    public void constructorWithScopeOnlyThrowsOnEmptyScope() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder("");
+            //assert
+        });
     }
 
     //SRS_UrlPathBuilder_25_004: [ The constructor shall save the scope id or hostName string and protocol. ]
@@ -69,54 +71,59 @@ public class UrlPathBuilderTest
     }
 
     //SRS_UrlPathBuilder_25_003: [ The constructor shall throw IllegalArgumentException if the scope id or hostName string is empty or null or if protocol is null.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithNullHostNameThrows() throws IllegalArgumentException
-    {
-        //arrange
+    @Test
+    public void constructorWithNullHostNameThrows() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
 
-        //act
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(null, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //assert
+            //act
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(null, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithEmptyHostNameThrows() throws IllegalArgumentException
-    {
-        //arrange
+    @Test
+    public void constructorWithEmptyHostNameThrows() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
 
-        //act
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder("", TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //assert
+            //act
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder("", TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithNullScopeThrows() throws IllegalArgumentException
-    {
-        //arrange
+    @Test
+    public void constructorWithNullScopeThrows() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
 
-        //act
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, null, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //assert
+            //act
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, null, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithEmptyScopeThrows() throws IllegalArgumentException
-    {
-        //arrange
+    @Test
+    public void constructorWithEmptyScopeThrows() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
 
-        //act
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, "", ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //assert
+            //act
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, "", ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorWithNullProtocolThrows() throws IllegalArgumentException
-    {
-        //arrange
+    @Test
+    public void constructorWithNullProtocolThrows() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
 
-        //act
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, null);
-        //assert
+            //act
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, null);
+            //assert
+        });
     }
 
     //SRS_UrlPathBuilder_25_008: [ This method shall create a String using the following format: HTTP - https://<HostName>/<Scope>/registrations/<Registration ID>/register?api-version=<Service API Version> MQTT - TBD AMQP - TBD ]
@@ -134,23 +141,25 @@ public class UrlPathBuilderTest
     }
 
     //SRS_UrlPathBuilder_25_007: [ This method shall throw IllegalArgumentException if the registration id is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void generateRegisterUrlHttpThrowsOnNullRegID() throws IOException
-    {
-        //arrange
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //act
-        urlPathBuilder.generateRegisterUrl(null);
+    @Test
+    public void generateRegisterUrlHttpThrowsOnNullRegID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //act
+            urlPathBuilder.generateRegisterUrl(null);
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void generateRegisterUrlHttpThrowsOnEmptyRegID() throws IOException
-    {
-        //arrange
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //act
-        urlPathBuilder.generateRegisterUrl("");
+    @Test
+    public void generateRegisterUrlHttpThrowsOnEmptyRegID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //act
+            urlPathBuilder.generateRegisterUrl("");
+        });
     }
 
     //SRS_UrlPathBuilder_25_010: [ This method shall create a String using the following format: HTTP - https://<HostName>/<Scope>/registrations/<Registration ID>/operations/<operationId>?api-version=<Service API Version> MQTT - TBD AMQP - TBD ]
@@ -169,42 +178,46 @@ public class UrlPathBuilderTest
     }
 
     //SRS_UrlPathBuilder_25_009: [ This method shall throw IllegalArgumentException if the registration id or operation id is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void generateRequestUrlHttpThrowsOnNullRegID() throws IOException
-    {
-        //arrange
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //act
-        urlPathBuilder.generateRequestUrl(null, TEST_OPERATION_ID);
-        //assert
+    @Test
+    public void generateRequestUrlHttpThrowsOnNullRegID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //act
+            urlPathBuilder.generateRequestUrl(null, TEST_OPERATION_ID);
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void generateRequestUrlHttpThrowsOnEmptyRegID() throws IOException
-    {
-        //arrange
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //act
-        urlPathBuilder.generateRequestUrl("", TEST_OPERATION_ID);
+    @Test
+    public void generateRequestUrlHttpThrowsOnEmptyRegID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //act
+            urlPathBuilder.generateRequestUrl("", TEST_OPERATION_ID);
 
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void generateRequestUrlHttpThrowsOnNullOpID() throws IOException
-    {
-        //arrange
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //act
-        urlPathBuilder.generateRequestUrl(TEST_REGISTRATION_ID, null);
+    @Test
+    public void generateRequestUrlHttpThrowsOnNullOpID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //act
+            urlPathBuilder.generateRequestUrl(TEST_REGISTRATION_ID, null);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void generateRequestUrlHttpThrowsOnEmptyOpID() throws IOException
-    {
-        //arrange
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //act
-        urlPathBuilder.generateRequestUrl(TEST_REGISTRATION_ID, "");
+    @Test
+    public void generateRequestUrlHttpThrowsOnEmptyOpID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //act
+            urlPathBuilder.generateRequestUrl(TEST_REGISTRATION_ID, "");
+        });
     }
 
     //SRS_UrlPathBuilder_25_006: [ This method shall create a String using the following format after Url Encoding: <scopeid>/registrations/<registrationId> ]
@@ -222,21 +235,23 @@ public class UrlPathBuilderTest
     }
 
     //SRS_UrlPathBuilder_25_005: [ This method shall throw IllegalArgumentException if the registration id is null or empty. ]
-    @Test (expected = IllegalArgumentException.class)
-    public void generateSasTokenUrlThrowsOnNullRegID() throws IOException
-    {
-        //arrange
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //act
-        urlPathBuilder.generateSasTokenUrl(null);
+    @Test
+    public void generateSasTokenUrlThrowsOnNullRegID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //act
+            urlPathBuilder.generateSasTokenUrl(null);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void generateSasTokenUrlThrowsOnEmptyRegID() throws IOException
-    {
-        //arrange
-        UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
-        //act
-        urlPathBuilder.generateSasTokenUrl("");
+    @Test
+    public void generateSasTokenUrlThrowsOnEmptyRegID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            UrlPathBuilder urlPathBuilder = new UrlPathBuilder(TEST_HOST_NAME, TEST_SCOPE, ProvisioningDeviceClientTransportProtocol.HTTPS);
+            //act
+            urlPathBuilder.generateSasTokenUrl("");
+        });
     }
 }

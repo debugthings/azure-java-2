@@ -4,9 +4,8 @@
 package com.microsoft.azure.sdk.iot.provisioning.service.configs;
 
 
-import com.microsoft.azure.sdk.iot.provisioning.service.configs.X509CAReferences;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 

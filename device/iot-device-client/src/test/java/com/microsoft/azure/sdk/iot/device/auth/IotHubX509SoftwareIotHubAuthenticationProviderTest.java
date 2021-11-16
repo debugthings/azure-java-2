@@ -6,11 +6,10 @@
 package com.microsoft.azure.sdk.iot.device.auth;
 
 import com.microsoft.azure.sdk.iot.deps.auth.IotHubSSLContext;
-import com.microsoft.azure.sdk.iot.device.auth.*;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.provisioning.security.exceptions.SecurityProviderException;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -21,6 +20,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for IotHubX509SoftwareAuthenticationProvider.java
@@ -270,25 +270,26 @@ public class IotHubX509SoftwareIotHubAuthenticationProviderTest
     }
 
     //Tests_SRS_IOTHUBX509SOFTWAREAUTHENTICATION_34_004: [If the security provider throws a SecurityProviderException while generating an SSLContext, this function shall throw an IOException.]
-    @Test (expected = IOException.class)
-    public void getSSLContextThrowsIOExceptionIfExceptionEncountered() throws SecurityProviderException, IOException, TransportException
-    {
-        //arrange
-        IotHubAuthenticationProvider authentication = new IotHubX509SoftwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, publicKeyCertificate, false, privateKey, false);
+    @Test
+    public void getSSLContextThrowsIOExceptionIfExceptionEncountered() throws SecurityProviderException, IOException, TransportException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            IotHubAuthenticationProvider authentication = new IotHubX509SoftwareAuthenticationProvider(hostname, gatewayHostname, deviceId, moduleId, publicKeyCertificate, false, privateKey, false);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(IotHubSSLContext.class, new Class[] {String.class, String.class});
-                result = mockIotHubSSLContext;
+                {
+                    Deencapsulation.newInstance(IotHubSSLContext.class, new Class[] {String.class, String.class});
+                    result = mockIotHubSSLContext;
 
-                Deencapsulation.invoke(mockIotHubSSLContext, "getSSLContext");
-                result = new CertificateException();
-            }
-        };
+                    Deencapsulation.invoke(mockIotHubSSLContext, "getSSLContext");
+                    result = new CertificateException();
+                }
+            };
 
-        //act
-        authentication.getSSLContext();
+            //act
+            authentication.getSSLContext();
+        });
     }
 
     //Tests_SRS_IOTHUBX509SOFTWAREAUTHENTICATION_34_003: [If this object's ssl context has not been generated yet, this function shall generate it from the saved security provider.]

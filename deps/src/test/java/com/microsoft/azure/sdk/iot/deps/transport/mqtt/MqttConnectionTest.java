@@ -5,20 +5,19 @@
 
 package com.microsoft.azure.sdk.iot.deps.transport.mqtt;
 
-import com.microsoft.azure.sdk.iot.deps.transport.mqtt.MqttMessage;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.integration.junit4.JMockit;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 
-import com.microsoft.azure.sdk.iot.deps.transport.mqtt.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for AmqpConnection.
  * Coverage : 100% method, 96% line */
@@ -67,116 +66,123 @@ public class MqttConnectionTest
 
     private final Throwable mockedThrowable = new Throwable();
 
-    @Test (expected = IllegalArgumentException.class)
-    public void mqttConnectionConstructorThrowsWhenHostnameNULL() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void mqttConnectionConstructorThrowsWhenHostnameNULL() throws IOException, MqttException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-            }
-        };
+                {
+                }
+            };
 
-        // Act
-        MqttConnection mqttConnection = new MqttConnection(null, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
+            // Act
+            MqttConnection mqttConnection = new MqttConnection(null, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void mqttConnectionConstructorThrowsWhenHostnameEmpty() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void mqttConnectionConstructorThrowsWhenHostnameEmpty() throws IOException, MqttException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-            }
-        };
+                {
+                }
+            };
 
-        // Act
-        MqttConnection mqttConnection = new MqttConnection("", TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
+            // Act
+            MqttConnection mqttConnection = new MqttConnection("", TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void mqttConnectionConstructorThrowsWhenClientIdNULL() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void mqttConnectionConstructorThrowsWhenClientIdNULL() throws IOException, MqttException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-            }
-        };
+                {
+                }
+            };
 
-        // Act
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, null, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
+            // Act
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, null, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void mqttConnectionConstructorThrowsWhenClientIdEmpty() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void mqttConnectionConstructorThrowsWhenClientIdEmpty() throws IOException, MqttException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-            }
-        };
+                {
+                }
+            };
 
-        // Act
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, "", TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
+            // Act
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, "", TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void MqttConnectionConstructorThrowsWhenUsernameNULL() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void MqttConnectionConstructorThrowsWhenUsernameNULL() throws IOException, MqttException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-            }
-        };
+                {
+                }
+            };
 
-        // Act
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, null, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
+            // Act
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, null, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void mqttConnectionConstructorThrowsWhenUsernameEmpty() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void mqttConnectionConstructorThrowsWhenUsernameEmpty() throws IOException, MqttException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-            }
-        };
+                {
+                }
+            };
 
-        // Act
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, "", TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
+            // Act
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, "", TEST_PASSWORD, mockedSSLContext, mockedMqttListener, false);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void MqttConnectionConstructorThrowsWhenSslContextNULL() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void MqttConnectionConstructorThrowsWhenSslContextNULL() throws IOException, MqttException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-            }
-        };
+                {
+                }
+            };
 
-        // Act
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, null, mockedMqttListener, false);
+            // Act
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, null, mockedMqttListener, false);
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -221,34 +227,36 @@ public class MqttConnectionTest
         //assert
     }
 
-    @Test (expected = IOException.class)
-    public void mqttConnectionConstructorThrowsOnMqttAsyncClient() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void mqttConnectionConstructorThrowsOnMqttAsyncClient() throws IOException, MqttException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                new MqttAsyncClient(WEB_SOCKET_URI_NAME, TEST_CLIENT_ID, (MemoryPersistence)any);
-                result = new MqttException(0);
-            }
-        };
+                {
+                    new MqttAsyncClient(WEB_SOCKET_URI_NAME, TEST_CLIENT_ID, (MemoryPersistence)any);
+                    result = new MqttException(0);
+                }
+            };
 
-        // Act
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
+            // Act
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
 
-        //assert
+            //assert
+        });
     }
 
 
-    @Test (expected = IllegalArgumentException.class)
-    public void mqttConnectionConstructorThrowsOnListenerNullFail() throws IOException, MqttException
-    {
-        // Arrange
+    @Test
+    public void mqttConnectionConstructorThrowsOnListenerNullFail() throws IOException, MqttException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
 
-        // Act
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, null, true);
+            // Act
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, null, true);
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -372,37 +380,38 @@ public class MqttConnectionTest
         //assert
     }
 
-    @Test (expected = IOException.class)
-    public void connectThrowsOnConnectFail() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void connectThrowsOnConnectFail() throws IOException, MqttException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
-                result = mockedMqttAsyncClient;
+                {
+                    new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
+                    result = mockedMqttAsyncClient;
 
-                new MqttConnectOptions();
-                result = mockedMqttConnectOptions;
-            }
-        };
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
+                    new MqttConnectOptions();
+                    result = mockedMqttConnectOptions;
+                }
+            };
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedMqttAsyncClient.isConnected();
-                result = false;
+                {
+                    mockedMqttAsyncClient.isConnected();
+                    result = false;
 
-                mockedMqttAsyncClient.connect((MqttConnectOptions)any);
-                result = new MqttException(0);
-            }
-        };
+                    mockedMqttAsyncClient.connect((MqttConnectOptions)any);
+                    result = new MqttException(0);
+                }
+            };
 
-        // Act
-        mqttConnection.connect();
+            // Act
+            mqttConnection.connect();
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -440,37 +449,38 @@ public class MqttConnectionTest
         //assert
     }
 
-    @Test (expected = IOException.class)
-    public void disconnectThrowsOnDisconnect() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void disconnectThrowsOnDisconnect() throws IOException, MqttException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
-                result = mockedMqttAsyncClient;
+                {
+                    new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
+                    result = mockedMqttAsyncClient;
 
-                new MqttConnectOptions();
-                result = mockedMqttConnectOptions;
-            }
-        };
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
+                    new MqttConnectOptions();
+                    result = mockedMqttConnectOptions;
+                }
+            };
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedMqttAsyncClient.isConnected();
-                result = true;
+                {
+                    mockedMqttAsyncClient.isConnected();
+                    result = true;
 
-                mockedMqttAsyncClient.disconnect();
-                result = new MqttException(0);
-            }
-        };
+                    mockedMqttAsyncClient.disconnect();
+                    result = new MqttException(0);
+                }
+            };
 
-        // Act
-        mqttConnection.disconnect();
+            // Act
+            mqttConnection.disconnect();
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -591,97 +601,100 @@ public class MqttConnectionTest
         //assert
     }
 
-    @Test (expected = IOException.class)
-    public void publishMessageThrowsOnPublishFail() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void publishMessageThrowsOnPublishFail() throws IOException, MqttException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
-                result = mockedMqttAsyncClient;
+                {
+                    new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
+                    result = mockedMqttAsyncClient;
 
-                new MqttConnectOptions();
-                result = mockedMqttConnectOptions;
-            }
-        };
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
+                    new MqttConnectOptions();
+                    result = mockedMqttConnectOptions;
+                }
+            };
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedMqttAsyncClient.isConnected();
-                result = true;
+                {
+                    mockedMqttAsyncClient.isConnected();
+                    result = true;
 
-                mockedMqttAsyncClient.publish(anyString, (org.eclipse.paho.client.mqttv3.MqttMessage)any);
-                result = new MqttException(0);
-            }
-        };
+                    mockedMqttAsyncClient.publish(anyString, (org.eclipse.paho.client.mqttv3.MqttMessage)any);
+                    result = new MqttException(0);
+                }
+            };
 
-        // Act
-        mqttConnection.publishMessage(mockedMqttMessage);
+            // Act
+            mqttConnection.publishMessage(mockedMqttMessage);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = IOException.class)
-    public void publishMessageThrowsOnNoConnectedFail() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void publishMessageThrowsOnNoConnectedFail() throws IOException, MqttException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
-                result = mockedMqttAsyncClient;
+                {
+                    new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
+                    result = mockedMqttAsyncClient;
 
-                new MqttConnectOptions();
-                result = mockedMqttConnectOptions;
-            }
-        };
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
+                    new MqttConnectOptions();
+                    result = mockedMqttConnectOptions;
+                }
+            };
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedMqttAsyncClient.isConnected();
-                result = false;
-            }
-        };
+                {
+                    mockedMqttAsyncClient.isConnected();
+                    result = false;
+                }
+            };
 
-        // Act
-        mqttConnection.publishMessage(mockedMqttMessage);
+            // Act
+            mqttConnection.publishMessage(mockedMqttMessage);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = IOException.class)
-    public void publishMessageThrowsOnMessageNullFail() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void publishMessageThrowsOnMessageNullFail() throws IOException, MqttException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
-                result = mockedMqttAsyncClient;
+                {
+                    new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
+                    result = mockedMqttAsyncClient;
 
-                new MqttConnectOptions();
-                result = mockedMqttConnectOptions;
-            }
-        };
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
+                    new MqttConnectOptions();
+                    result = mockedMqttConnectOptions;
+                }
+            };
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedMqttAsyncClient.isConnected();
-                result = true;
-            }
-        };
+                {
+                    mockedMqttAsyncClient.isConnected();
+                    result = true;
+                }
+            };
 
-        // Act
-        mqttConnection.publishMessage(null);
+            // Act
+            mqttConnection.publishMessage(null);
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -719,67 +732,69 @@ public class MqttConnectionTest
         //assert
     }
 
-    @Test (expected = IOException.class)
-    public void subscribeThrowsOnSubscribeFail() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void subscribeThrowsOnSubscribeFail() throws IOException, MqttException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
-                result = mockedMqttAsyncClient;
+                {
+                    new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
+                    result = mockedMqttAsyncClient;
 
-                new MqttConnectOptions();
-                result = mockedMqttConnectOptions;
-            }
-        };
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
+                    new MqttConnectOptions();
+                    result = mockedMqttConnectOptions;
+                }
+            };
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedMqttAsyncClient.isConnected();
-                result = true;
+                {
+                    mockedMqttAsyncClient.isConnected();
+                    result = true;
 
-                mockedMqttAsyncClient.subscribe(TEST_TOPIC, anyInt);
-                result = new MqttException(0);
-            }
-        };
+                    mockedMqttAsyncClient.subscribe(TEST_TOPIC, anyInt);
+                    result = new MqttException(0);
+                }
+            };
 
-        // Act
-        mqttConnection.subscribe(TEST_TOPIC, mockedMqttQos);
+            // Act
+            mqttConnection.subscribe(TEST_TOPIC, mockedMqttQos);
 
-        //assert
+            //assert
+        });
     }
 
-    @Test (expected = IOException.class)
-    public void subscribeThrowsOnNotConnectedFail() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void subscribeThrowsOnNotConnectedFail() throws IOException, MqttException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
-                result = mockedMqttAsyncClient;
+                {
+                    new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
+                    result = mockedMqttAsyncClient;
 
-                new MqttConnectOptions();
-                result = mockedMqttConnectOptions;
-            }
-        };
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
+                    new MqttConnectOptions();
+                    result = mockedMqttConnectOptions;
+                }
+            };
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedMqttAsyncClient.isConnected();
-                result = false;
-            }
-        };
+                {
+                    mockedMqttAsyncClient.isConnected();
+                    result = false;
+                }
+            };
 
-        // Act
-        mqttConnection.subscribe(TEST_TOPIC, mockedMqttQos);
+            // Act
+            mqttConnection.subscribe(TEST_TOPIC, mockedMqttQos);
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -814,34 +829,35 @@ public class MqttConnectionTest
         //assert
     }
 
-    @Test (expected = IOException.class)
-    public void unsubscribeThrowsOnSubscribeFail() throws IOException, MqttException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void unsubscribeThrowsOnSubscribeFail() throws IOException, MqttException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
-                result = mockedMqttAsyncClient;
+                {
+                    new MqttAsyncClient(anyString, TEST_CLIENT_ID, (MemoryPersistence)any);
+                    result = mockedMqttAsyncClient;
 
-                new MqttConnectOptions();
-                result = mockedMqttConnectOptions;
-            }
-        };
-        MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
+                    new MqttConnectOptions();
+                    result = mockedMqttConnectOptions;
+                }
+            };
+            MqttConnection mqttConnection = new MqttConnection(TEST_HOST_NAME, TEST_CLIENT_ID, TEST_USERNAME, TEST_PASSWORD, mockedSSLContext, mockedMqttListener, true);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedMqttAsyncClient.unsubscribe(TEST_TOPIC);
-                result = new MqttException(0);
-            }
-        };
+                {
+                    mockedMqttAsyncClient.unsubscribe(TEST_TOPIC);
+                    result = new MqttException(0);
+                }
+            };
 
-        // Act
-        mqttConnection.unsubscribe(TEST_TOPIC);
+            // Act
+            mqttConnection.unsubscribe(TEST_TOPIC);
 
-        //assert
+            //assert
+        });
     }
 
     @Test

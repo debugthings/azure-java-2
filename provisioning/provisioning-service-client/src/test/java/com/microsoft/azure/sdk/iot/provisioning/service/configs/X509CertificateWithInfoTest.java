@@ -3,13 +3,12 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service.configs;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.configs.X509CertificateInfo;
-import com.microsoft.azure.sdk.iot.provisioning.service.configs.X509CertificateWithInfo;
 import mockit.Deencapsulation;
 import mockit.Mocked;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service X509 certificates
@@ -33,23 +32,25 @@ public class X509CertificateWithInfoTest
             "-----END CERTIFICATE-----\n";
 
     /* SRS_X509_CERTIFICATE_WITH_INFO_21_001: [The constructor shall throw IllegalArgumentException if the provided certificate is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnCertificateNull()
-    {
-        // arrange
-        // act
-        Deencapsulation.newInstance(X509CertificateWithInfo.class, new Class[] {String.class},(String)null);
-        // assert
+    @Test
+    public void constructorThrowsOnCertificateNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            Deencapsulation.newInstance(X509CertificateWithInfo.class, new Class[] {String.class},(String)null);
+            // assert
+        });
     }
 
     /* SRS_X509_CERTIFICATE_WITH_INFO_21_001: [The constructor shall throw IllegalArgumentException if the provided certificate is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnCertificateEmpty()
-    {
-        // arrange
-        // act
-        Deencapsulation.newInstance(X509CertificateWithInfo.class, new Class[] {String.class},"");
-        // assert
+    @Test
+    public void constructorThrowsOnCertificateEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            Deencapsulation.newInstance(X509CertificateWithInfo.class, new Class[] {String.class},"");
+            // assert
+        });
     }
 
     /* SRS_X509_CERTIFICATE_WITH_INFO_21_002: [The constructor shall store the provided certificate and set info as null.] */
@@ -66,13 +67,14 @@ public class X509CertificateWithInfoTest
     }
 
     /* SRS_X509_CERTIFICATE_WITH_INFO_21_003: [The constructor shall throw IllegalArgumentException if the provided x509CertificateWithInfo is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorCopyThrowsOnNull()
-    {
-        // arrange
-        // act
-        new X509CertificateWithInfo((X509CertificateWithInfo) null);
-        // assert
+    @Test
+    public void constructorCopyThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            new X509CertificateWithInfo((X509CertificateWithInfo) null);
+            // assert
+        });
     }
 
     /* SRS_X509_CERTIFICATE_WITH_INFO_21_004: [The constructor shall copy the certificate form the provided x509CertificateWithInfo.] */

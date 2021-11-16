@@ -5,13 +5,13 @@
 
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.JobQueryResponseError;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
     Unit tests for JobQueryResponseError
@@ -33,55 +33,60 @@ public class JobQueryResponseErrorTest
     }
 
     //Tests_SRS_JOB_QUERY_RESPONSE_ERROR_25_006: [This method shall throw IOException if parsing of json fails for any reason.]
-    @Test (expected = IOException.class)
-    public void fromJsonThrowsOnInvalidJson() throws IOException
-    {
-        final String errorJson =
-                "" +
-                        "\"code\":\"JobRunPreconditionFailed\"," +
-                        "\"description\":\"The job did not start within specified period: either device did not come online or invalid endTime specified.\"" +
-                        "}";
+    @Test
+    public void fromJsonThrowsOnInvalidJson() throws IOException {
+        assertThrows(IOException.class, () -> {
+            final String errorJson =
+                    "" +
+                            "\"code\":\"JobRunPreconditionFailed\"," +
+                            "\"description\":\"The job did not start within specified period: either device did not come online or invalid endTime specified.\"" +
+                            "}";
 
 
-        JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+            JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+        });
     }
 
     //Tests_SRS_JOB_QUERY_RESPONSE_ERROR_25_007: [If the input json is null or empty then this method shall throw IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void fromJsonThrowsNullJson() throws IOException
-    {
-        final String errorJson = null;
+    @Test
+    public void fromJsonThrowsNullJson() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String errorJson = null;
 
-        JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+            JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+        });
     }
 
-    @Test  (expected = IllegalArgumentException.class)
-    public void fromJsonThrowsEmptyJson() throws IOException
-    {
-        final String errorJson = "";
+    @Test
+    public void fromJsonThrowsEmptyJson() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String errorJson = "";
 
-        JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+            JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+        });
     }
 
     //Tests_SRS_JOB_QUERY_RESPONSE_ERROR_25_005: [This method shall throw IOException if either code and description is not present in the json.]
-    @Test (expected = IllegalArgumentException.class)
-    public void fromJsonThrowsOnNoCode() throws IOException
-    {
-        final String errorJson = "{" +
-                "\"description\":\"The job did not start within specified period: either device did not come online or invalid endTime specified.\"" +
-                "}";
+    @Test
+    public void fromJsonThrowsOnNoCode() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String errorJson = "{" +
+                    "\"description\":\"The job did not start within specified period: either device did not come online or invalid endTime specified.\"" +
+                    "}";
 
-        JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+            JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void fromJsonThrowsOnNoDescription() throws IOException
-    {
-        final String errorJson = "{" +
-                "\"code\":\"JobRunPreconditionFailed\"" +
-                "}";
+    @Test
+    public void fromJsonThrowsOnNoDescription() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String errorJson = "{" +
+                    "\"code\":\"JobRunPreconditionFailed\"" +
+                    "}";
 
-        JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+            JobQueryResponseError jobQueryResponseError = new JobQueryResponseError().fromJson(errorJson);
+        });
     }
 
     //Tests_SRS_JOB_QUERY_RESPONSE_ERROR_25_003: [The method shall build the json with the values provided to this object.]

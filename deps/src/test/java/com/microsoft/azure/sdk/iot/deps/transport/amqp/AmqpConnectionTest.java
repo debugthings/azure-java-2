@@ -5,7 +5,6 @@
 
 package com.microsoft.azure.sdk.iot.deps.transport.amqp;
 
-import com.microsoft.azure.sdk.iot.deps.transport.amqp.*;
 import com.microsoft.azure.sdk.iot.deps.util.ObjectLock;
 import mockit.Deencapsulation;
 import mockit.Verifications;
@@ -18,7 +17,7 @@ import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.nio.BufferOverflowException;
@@ -27,6 +26,7 @@ import java.util.concurrent.*;
 import java.io.IOException;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for AmqpConnection.
  * Coverage : 95% method, 100% line */
@@ -84,10 +84,11 @@ public class AmqpConnectionTest
     @Mocked
     private DeliveryState mockDeliveryState;
 
-    @Test (expected = IllegalArgumentException.class)
-    public void AmqpsConnectionThrowsOnHostNameNull() throws IOException
-    {
-        new AmqpsConnection(null, mockedProvisionOperations, null, null, false);
+    @Test
+    public void AmqpsConnectionThrowsOnHostNameNull() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new AmqpsConnection(null, mockedProvisionOperations, null, null, false);
+        });
     }
 
     @Test
@@ -109,32 +110,34 @@ public class AmqpConnectionTest
         assertEquals(TEST_HOST_NAME, Deencapsulation.getField(amqpsConnection, "hostName"));
     }
 
-    @Test (expected = IOException.class)
-    public void AmqpsConnectionConstructorThrowsOnReactor() throws IOException
-    {
-        // Arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void AmqpsConnectionConstructorThrowsOnReactor() throws IOException {
+        assertThrows(IOException.class, () -> {
+            // Arrange
+            new NonStrictExpectations()
             {
-                Proton.reactor((ReactorOptions)any, (Handler)any);
-                result = new IOException();
-            }
-        };
+                {
+                    Proton.reactor((ReactorOptions)any, (Handler)any);
+                    result = new IOException();
+                }
+            };
 
-        // Act
-        AmqpsConnection amqpsConnection = new AmqpsConnection(TEST_HOST_NAME, mockedProvisionOperations, null, null,  false);
+            // Act
+            AmqpsConnection amqpsConnection = new AmqpsConnection(TEST_HOST_NAME, mockedProvisionOperations, null, null,  false);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void SetListenerNullSucceeds() throws IOException
-    {
-        // Arrange
-        AmqpsConnection amqpsConnection = new AmqpsConnection(TEST_HOST_NAME, mockedProvisionOperations, null, null,  false);
+    @Test
+    public void SetListenerNullSucceeds() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            AmqpsConnection amqpsConnection = new AmqpsConnection(TEST_HOST_NAME, mockedProvisionOperations, null, null,  false);
 
-        // Act
-        amqpsConnection.setListener(null);
+            // Act
+            amqpsConnection.setListener(null);
 
-        //assert
+            //assert
+        });
     }
 
     @Test
@@ -149,47 +152,49 @@ public class AmqpConnectionTest
         //assert
     }
 
-    @Test (expected = Exception.class)
-    public void OpenThrowExceptionReactor() throws IOException, InterruptedException
-    {
-        AmqpsConnection amqpsConnection = new AmqpsConnection(TEST_HOST_NAME, mockedProvisionOperations, null, null,  false);
+    @Test
+    public void OpenThrowExceptionReactor() throws IOException, InterruptedException {
+        assertThrows(Exception.class, () -> {
+            AmqpsConnection amqpsConnection = new AmqpsConnection(TEST_HOST_NAME, mockedProvisionOperations, null, null,  false);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                new AmqpReactor((Reactor)any);
-                result = new Exception();
-            }
-        };
+                {
+                    new AmqpReactor((Reactor)any);
+                    result = new Exception();
+                }
+            };
 
-        // Act
-        amqpsConnection.open();
+            // Act
+            amqpsConnection.open();
 
-        //assert
+            //assert
+        });
     }
     
-    @Test (expected = IOException.class)
-    public void closeThrowsOnWaitLock() throws IOException, InterruptedException
-    {
-        AmqpsConnection amqpsConnection = new AmqpsConnection(TEST_HOST_NAME, mockedProvisionOperations, null, null,  false);
+    @Test
+    public void closeThrowsOnWaitLock() throws IOException, InterruptedException {
+        assertThrows(IOException.class, () -> {
+            AmqpsConnection amqpsConnection = new AmqpsConnection(TEST_HOST_NAME, mockedProvisionOperations, null, null,  false);
 
-        Deencapsulation.setField(amqpsConnection, "isOpen", true);
-        Deencapsulation.setField(amqpsConnection, "session", mockedSession);
-        Deencapsulation.setField(amqpsConnection, "connection", mockedConnection);
-        Deencapsulation.setField(amqpsConnection, "reactor", mockedReactor);
+            Deencapsulation.setField(amqpsConnection, "isOpen", true);
+            Deencapsulation.setField(amqpsConnection, "session", mockedSession);
+            Deencapsulation.setField(amqpsConnection, "connection", mockedConnection);
+            Deencapsulation.setField(amqpsConnection, "reactor", mockedReactor);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedObjectLock.waitLock(anyLong);
-                result = new InterruptedException();
-            }
-        };
+                {
+                    mockedObjectLock.waitLock(anyLong);
+                    result = new InterruptedException();
+                }
+            };
 
-        // Act
-        amqpsConnection.close();
+            // Act
+            amqpsConnection.close();
 
-        //assert
+            //assert
+        });
     }
 
     @Test

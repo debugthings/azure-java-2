@@ -3,12 +3,10 @@
 
 package com.microsoft.azure.sdk.iot.device.auth;
 
-import com.microsoft.azure.sdk.iot.device.auth.Signature;
-import com.microsoft.azure.sdk.iot.device.auth.SignatureHelper;
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.VerificationsInOrder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

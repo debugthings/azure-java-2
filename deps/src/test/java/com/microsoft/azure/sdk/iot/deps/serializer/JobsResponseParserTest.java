@@ -6,12 +6,13 @@ package com.microsoft.azure.sdk.iot.deps.serializer;
 import com.google.gson.JsonParseException;
 import com.microsoft.azure.sdk.iot.deps.Helpers;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.util.Date;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * Unit tests for jobs response deserializer
@@ -267,182 +268,194 @@ public class JobsResponseParserTest
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_006: [If the json is null or empty, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorJsonNullThrows() throws ParseException
-    {
-        // arrange
-        String json = null;
+    @Test
+    public void constructorJsonNullThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json = null;
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_006: [If the json is null or empty, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorJsonEmptyThrows() throws ParseException
-    {
-        // arrange
-        String json = "";
+    @Test
+    public void constructorJsonEmptyThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json = "";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_007: [If the json is not valid, the createFromJson shall throws JsonParseException.] */
-    @Test (expected = JsonParseException.class)
-    public void constructorInvalidJsonThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"jobId\":\"jobName" +
-                "    \"status\":\"enqueued\",\n" +
-                "    \"type\":\"scheduleUpdateTwin\"\n" +
-                "}";
+    @Test
+    public void constructorInvalidJsonThrows() throws ParseException {
+        assertThrows(JsonParseException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"jobId\":\"jobName" +
+                    "    \"status\":\"enqueued\",\n" +
+                    "    \"type\":\"scheduleUpdateTwin\"\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_008: [If the json do not contains `jobId`, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNoJobIdThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"status\":\"enqueued\",\n" +
-                "    \"type\":\"scheduleUpdateTwin\"\n" +
-                "}";
+    @Test
+    public void constructorNoJobIdThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"status\":\"enqueued\",\n" +
+                    "    \"type\":\"scheduleUpdateTwin\"\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_008: [If the json do not contains `jobId`, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullJobIdThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"jobId\":null,\n" +
-                "    \"status\":\"enqueued\",\n" +
-                "    \"type\":\"scheduleUpdateTwin\"\n" +
-                "}";
+    @Test
+    public void constructorNullJobIdThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"jobId\":null,\n" +
+                    "    \"status\":\"enqueued\",\n" +
+                    "    \"type\":\"scheduleUpdateTwin\"\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_008: [If the json do not contains `jobId`, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorEmptyJobIdThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"jobId\":\"\",\n" +
-                "    \"status\":\"enqueued\",\n" +
-                "    \"type\":\"scheduleUpdateTwin\"\n" +
-                "}";
+    @Test
+    public void constructorEmptyJobIdThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"jobId\":\"\",\n" +
+                    "    \"status\":\"enqueued\",\n" +
+                    "    \"type\":\"scheduleUpdateTwin\"\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_009: [If the json do not contains `type`, or the `type` is invalid, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNoTypeThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"jobId\":\"jobName\",\n" +
-                "    \"status\":\"enqueued\"\n" +
-                "}";
+    @Test
+    public void constructorNoTypeThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"jobId\":\"jobName\",\n" +
+                    "    \"status\":\"enqueued\"\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_009: [If the json do not contains `type`, or the `type` is invalid, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullTypeThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"jobId\":\"jobName\",\n" +
-                "    \"status\":\"enqueued\",\n" +
-                "    \"type\":null\n" +
-                "}";
+    @Test
+    public void constructorNullTypeThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"jobId\":\"jobName\",\n" +
+                    "    \"status\":\"enqueued\",\n" +
+                    "    \"type\":null\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_009: [If the json do not contains `type`, or the `type` is invalid, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorEmptyTypeThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"jobId\":\"jobName\",\n" +
-                "    \"status\":\"enqueued\",\n" +
-                "    \"type\":\"\"\n" +
-                "}";
+    @Test
+    public void constructorEmptyTypeThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"jobId\":\"jobName\",\n" +
+                    "    \"status\":\"enqueued\",\n" +
+                    "    \"type\":\"\"\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_010: [If the json do not contains `status`, or the `status` is invalid, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNoStatusThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"jobId\":\"jobName\",\n" +
-                "    \"type\":\"scheduleUpdateTwin\"\n" +
-                "}";
+    @Test
+    public void constructorNoStatusThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"jobId\":\"jobName\",\n" +
+                    "    \"type\":\"scheduleUpdateTwin\"\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_010: [If the json do not contains `status`, or the `status` is invalid, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullStatusThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"jobId\":\"jobName\",\n" +
-                "    \"status\":null,\n" +
-                "    \"type\":\"scheduleUpdateTwin\"\n" +
-                "}";
+    @Test
+    public void constructorNullStatusThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"jobId\":\"jobName\",\n" +
+                    "    \"status\":null,\n" +
+                    "    \"type\":\"scheduleUpdateTwin\"\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_010: [If the json do not contains `status`, or the `status` is invalid, the createFromJson shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorEmptyStatusThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                "    \"jobId\":\"jobName\",\n" +
-                "    \"status\":\"\",\n" +
-                "    \"type\":\"scheduleUpdateTwin\"\n" +
-                "}";
+    @Test
+    public void constructorEmptyStatusThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                    "    \"jobId\":\"jobName\",\n" +
+                    "    \"status\":\"\",\n" +
+                    "    \"type\":\"scheduleUpdateTwin\"\n" +
+                    "}";
 
-        // act
-        JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_011: [If the json contains any of the dates `createdTime`, `startTime`, or `endTime`, the createFromJson shall parser it as ISO_8601.] */
@@ -547,84 +560,88 @@ public class JobsResponseParserTest
     }
 
     //Tests_SRS_JOBSRESPONSEPARSER_25_034: [If the json contains both of the dates createdTime and createdDateTimeUtc or startTime and startTimeUtc or endTime and endTimeUtc, the createFromJson shall throw IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorBothCreateTimeAndUTCInJsonThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                        "    \"jobId\":\"jobName\",\n" +
-                        "    \"status\":\"enqueued\",\n" +
-                        "    \"type\":\"scheduleUpdateTwin\",\n" +
-                        "    \"createdTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
-                        "    \"createdDateTimeUtc\":\"2017-06-21T10:47:33.798692Z\",\n" +
-                        "    \"startTimeUtc\":\"invalidDate\",\n" +
-                        "    \"endTime\":\"2017-06-21T20:47:33.798692Z\",\n" +
-                        "    \"maxExecutionTimeInSeconds\":120\n" +
-                        "}";
+    @Test
+    public void constructorBothCreateTimeAndUTCInJsonThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                            "    \"jobId\":\"jobName\",\n" +
+                            "    \"status\":\"enqueued\",\n" +
+                            "    \"type\":\"scheduleUpdateTwin\",\n" +
+                            "    \"createdTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
+                            "    \"createdDateTimeUtc\":\"2017-06-21T10:47:33.798692Z\",\n" +
+                            "    \"startTimeUtc\":\"invalidDate\",\n" +
+                            "    \"endTime\":\"2017-06-21T20:47:33.798692Z\",\n" +
+                            "    \"maxExecutionTimeInSeconds\":120\n" +
+                            "}";
 
-        // act
-        JobsResponseParser jobsResponseParser = JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser jobsResponseParser = JobsResponseParser.createFromJson(json);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorBothStartTimeAndUTCInJsonThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                        "    \"jobId\":\"jobName\",\n" +
-                        "    \"status\":\"enqueued\",\n" +
-                        "    \"type\":\"scheduleUpdateTwin\",\n" +
-                        "    \"createdTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
-                        "    \"startTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
-                        "    \"startTimeUtc\":\"2017-06-21T10:47:33.798692Z\",\n" +
-                        "    \"endTime\":\"2017-06-21T20:47:33.798692Z\",\n" +
-                        "    \"maxExecutionTimeInSeconds\":120\n" +
-                        "}";
+    @Test
+    public void constructorBothStartTimeAndUTCInJsonThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                            "    \"jobId\":\"jobName\",\n" +
+                            "    \"status\":\"enqueued\",\n" +
+                            "    \"type\":\"scheduleUpdateTwin\",\n" +
+                            "    \"createdTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
+                            "    \"startTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
+                            "    \"startTimeUtc\":\"2017-06-21T10:47:33.798692Z\",\n" +
+                            "    \"endTime\":\"2017-06-21T20:47:33.798692Z\",\n" +
+                            "    \"maxExecutionTimeInSeconds\":120\n" +
+                            "}";
 
-        // act
-        JobsResponseParser jobsResponseParser = JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser jobsResponseParser = JobsResponseParser.createFromJson(json);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorBothEndTimeAndUTCInJsonThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                        "    \"jobId\":\"jobName\",\n" +
-                        "    \"status\":\"enqueued\",\n" +
-                        "    \"type\":\"scheduleUpdateTwin\",\n" +
-                        "    \"createdTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
-                        "    \"startTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
-                        "    \"endTime\":\"2017-06-21T20:47:33.798692Z\",\n" +
-                        "    \"endTimeUtc\":\"2017-06-21T20:47:33.798692Z\",\n" +
-                        "    \"maxExecutionTimeInSeconds\":120\n" +
-                        "}";
+    @Test
+    public void constructorBothEndTimeAndUTCInJsonThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                            "    \"jobId\":\"jobName\",\n" +
+                            "    \"status\":\"enqueued\",\n" +
+                            "    \"type\":\"scheduleUpdateTwin\",\n" +
+                            "    \"createdTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
+                            "    \"startTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
+                            "    \"endTime\":\"2017-06-21T20:47:33.798692Z\",\n" +
+                            "    \"endTimeUtc\":\"2017-06-21T20:47:33.798692Z\",\n" +
+                            "    \"maxExecutionTimeInSeconds\":120\n" +
+                            "}";
 
-        // act
-        JobsResponseParser jobsResponseParser = JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser jobsResponseParser = JobsResponseParser.createFromJson(json);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorBothTypeAndJobTypeInJsonThrows() throws ParseException
-    {
-        // arrange
-        String json =
-                "{\n" +
-                        "    \"jobId\":\"jobName\",\n" +
-                        "    \"status\":\"enqueued\",\n" +
-                        "    \"type\":\"scheduleUpdateTwin\",\n" +
-                        "    \"jobType\":\"scheduleUpdateTwin\",\n" +
-                        "    \"createdTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
-                        "    \"startTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
-                        "    \"endTime\":\"2017-06-21T20:47:33.798692Z\",\n" +
-                        "    \"maxExecutionTimeInSeconds\":120\n" +
-                        "}";
+    @Test
+    public void constructorBothTypeAndJobTypeInJsonThrows() throws ParseException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            String json =
+                    "{\n" +
+                            "    \"jobId\":\"jobName\",\n" +
+                            "    \"status\":\"enqueued\",\n" +
+                            "    \"type\":\"scheduleUpdateTwin\",\n" +
+                            "    \"jobType\":\"scheduleUpdateTwin\",\n" +
+                            "    \"createdTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
+                            "    \"startTime\":\"2017-06-21T10:47:33.798692Z\",\n" +
+                            "    \"endTime\":\"2017-06-21T20:47:33.798692Z\",\n" +
+                            "    \"maxExecutionTimeInSeconds\":120\n" +
+                            "}";
 
-        // act
-        JobsResponseParser jobsResponseParser = JobsResponseParser.createFromJson(json);
+            // act
+            JobsResponseParser jobsResponseParser = JobsResponseParser.createFromJson(json);
+        });
     }
 
     /* Tests_SRS_JOBSRESPONSEPARSER_21_012: [If the createFromJson cannot properly parse the date in json, it shall ignore this value.] */

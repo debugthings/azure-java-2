@@ -5,19 +5,18 @@ package com.microsoft.azure.sdk.iot.device.fileupload;
 
 import com.microsoft.azure.sdk.iot.device.IotHubEventCallback;
 import com.microsoft.azure.sdk.iot.device.IotHubStatusCode;
-import com.microsoft.azure.sdk.iot.device.fileupload.FileUploadInProgress;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for file upload in progress class.
@@ -49,16 +48,17 @@ public class FileUploadInProgressTest
     }
 
     /* Codes_SRS_FILEUPLOADINPROGRESS_21_002: [If the `statusCallback` is null, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrows()
-    {
-        // arrange
-        final Map<String, Object> context = new HashMap<>();
+    @Test
+    public void constructorThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final Map<String, Object> context = new HashMap<>();
 
-        // act
-        Deencapsulation.newInstance(FileUploadInProgress.class,
-                new Class[] {IotHubEventCallback.class, Object.class},
-                (IotHubEventCallback)null, context);
+            // act
+            Deencapsulation.newInstance(FileUploadInProgress.class,
+                    new Class[] {IotHubEventCallback.class, Object.class},
+                    (IotHubEventCallback)null, context);
+        });
     }
 
     /* Codes_SRS_FILEUPLOADINPROGRESS_21_003: [The setTask shall sore the content of the `task`.] */
@@ -79,17 +79,18 @@ public class FileUploadInProgressTest
     }
 
     /* Codes_SRS_FILEUPLOADINPROGRESS_21_004: [If the `task` is null, the setTask shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setTaskThrows()
-    {
-        // arrange
-        final Map<String, Object> context = new HashMap<>();
-        FileUploadInProgress fileUploadInProgress = Deencapsulation.newInstance(FileUploadInProgress.class,
-                new Class[] {IotHubEventCallback.class, Object.class},
-                mockIotHubEventCallback, context);
+    @Test
+    public void setTaskThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final Map<String, Object> context = new HashMap<>();
+            FileUploadInProgress fileUploadInProgress = Deencapsulation.newInstance(FileUploadInProgress.class,
+                    new Class[] {IotHubEventCallback.class, Object.class},
+                    mockIotHubEventCallback, context);
 
-        // act
-        Deencapsulation.invoke(fileUploadInProgress, "setTask", new Class[] {Future.class}, (Future)null);
+            // act
+            Deencapsulation.invoke(fileUploadInProgress, "setTask", new Class[] {Future.class}, (Future)null);
+        });
     }
 
     /* Codes_SRS_FILEUPLOADINPROGRESS_21_005: [The triggerCallback shall call the execute in `statusCallback` with the provided `iotHubStatusCode` and `statusCallbackContext`.] */

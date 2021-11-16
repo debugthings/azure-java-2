@@ -60,7 +60,7 @@ import org.apache.qpid.proton.reactor.FlowController;
 import org.apache.qpid.proton.reactor.Handshaker;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -78,6 +78,7 @@ import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 /**
@@ -295,23 +296,24 @@ public class AmqpsIotHubConnectionTest {
     }
 
     // Tests_SRS_AMQPSIOTHUBCONNECTION_12_003: [The constructor shall throw TransportException if the Proton reactor creation failed.]
-    @Test (expected = TransportException.class)
-    public void constructorCreatesProtonReactorThrows() throws TransportException, IOException
-    {
-        baseExpectations();
+    @Test
+    public void constructorCreatesProtonReactorThrows() throws TransportException, IOException {
+        assertThrows(TransportException.class, () -> {
+            baseExpectations();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Proton.reactor((AmqpsIotHubConnection)any);
-                result = new IOException();
-            }
-        };
+                {
+                    Proton.reactor((AmqpsIotHubConnection)any);
+                    result = new IOException();
+                }
+            };
 
-        AmqpsIotHubConnection connection = new AmqpsIotHubConnection(mockConfig, "");
+            AmqpsIotHubConnection connection = new AmqpsIotHubConnection(mockConfig, "");
 
-        //act
-        connection.open();
+            //act
+            connection.open();
+        });
     }
 
     // Tests_SRS_AMQPSIOTHUBCONNECTION_12_001: [The constructor shall initialize the AmqpsIotHubConnection member variable with the given config.]
@@ -527,24 +529,25 @@ public class AmqpsIotHubConnectionTest {
     }
 
     // Tests_SRS_AMQPSIOTHUBCONNECTION_15_011: [If any exception is thrown while attempting to trigger the reactor, the function shall closeNow the connection and throw an IOException.]
-    @Test (expected = IOException.class)
-    public void openThrowsIfProtonReactorThrows() throws TransportException
-    {
-        // arrange
-        baseExpectations();
+    @Test
+    public void openThrowsIfProtonReactorThrows() throws TransportException {
+        assertThrows(IOException.class, () -> {
+            // arrange
+            baseExpectations();
 
-        AmqpsIotHubConnection connection = new AmqpsIotHubConnection(mockConfig, "");
+            AmqpsIotHubConnection connection = new AmqpsIotHubConnection(mockConfig, "");
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                new ReactorRunner((Reactor) any, (IotHubListener) any, anyString, anyString, anyString, (ReactorRunnerStateCallback) any);
-                result = new IOException();
-            }
-        };
+                {
+                    new ReactorRunner((Reactor) any, (IotHubListener) any, anyString, anyString, anyString, (ReactorRunnerStateCallback) any);
+                    result = new IOException();
+                }
+            };
 
-        // act
-        connection.open();
+            // act
+            connection.open();
+        });
     }
 
     // Tests_SRS_AMQPSIOTHUBCONNECTION_15_009: [The function shall trigger the Reactor (Proton) to begin running.]
@@ -692,51 +695,52 @@ public class AmqpsIotHubConnectionTest {
     }
 
     // Tests_SRS_AMQPSIOTHUBCONNECTION_12_005: [The function shall throw IOException if the executor shutdown is interrupted.]
-    @Test (expected = InterruptedException.class)
-    public void closeThrowsIfShutdownThrows() throws TransportException
-    {
-        baseExpectations();
+    @Test
+    public void closeThrowsIfShutdownThrows() throws TransportException {
+        assertThrows(InterruptedException.class, () -> {
+            baseExpectations();
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockReactorFuture.cancel(true);
-                mockExecutorService.shutdown();
-                mockExecutorService.shutdownNow();
-                result = new InterruptedException();
-            }
-        };
+                {
+                    mockReactorFuture.cancel(true);
+                    mockExecutorService.shutdown();
+                    mockExecutorService.shutdownNow();
+                    result = new InterruptedException();
+                }
+            };
 
-        final AmqpsIotHubConnection connection = new AmqpsIotHubConnection(mockConfig, "");
+            final AmqpsIotHubConnection connection = new AmqpsIotHubConnection(mockConfig, "");
 
-        Deencapsulation.setField(connection, "state", IotHubConnectionStatus.CONNECTED);
-        Deencapsulation.setField(connection, "executorService", mockExecutorService);
-        Deencapsulation.setField(connection, "connection", mockConnection);
-        Deencapsulation.setField(connection, "reactor", mockReactor);
-        setLatches(connection);
+            Deencapsulation.setField(connection, "state", IotHubConnectionStatus.CONNECTED);
+            Deencapsulation.setField(connection, "executorService", mockExecutorService);
+            Deencapsulation.setField(connection, "connection", mockConnection);
+            Deencapsulation.setField(connection, "reactor", mockReactor);
+            setLatches(connection);
 
-        connection.close();
+            connection.close();
 
-        IotHubConnectionStatus actualState = Deencapsulation.getField(connection, "state");
-        assertEquals(IotHubConnectionStatus.DISCONNECTED, actualState);
+            IotHubConnectionStatus actualState = Deencapsulation.getField(connection, "state");
+            assertEquals(IotHubConnectionStatus.DISCONNECTED, actualState);
 
-        new Verifications()
-        {
+            new Verifications()
             {
-                Deencapsulation.invoke(mockAmqpsTelemetryLinksManager, "close");
-                times = 1;
-                mockConnection.close();
-                times = 1;
-                mockExecutorService.shutdown();
-                times = 1;
-                mockExecutorService.shutdownNow();
-                times = 1;
-                mockScheduledExecutorService.shutdownNow();
-                times = 1;
-                mockReactor.free();
-                times = 1;
-            }
-        };
+                {
+                    Deencapsulation.invoke(mockAmqpsTelemetryLinksManager, "close");
+                    times = 1;
+                    mockConnection.close();
+                    times = 1;
+                    mockExecutorService.shutdown();
+                    times = 1;
+                    mockExecutorService.shutdownNow();
+                    times = 1;
+                    mockScheduledExecutorService.shutdownNow();
+                    times = 1;
+                    mockReactor.free();
+                    times = 1;
+                }
+            };
+        });
     }
 
     // Tests_SRS_AMQPSIOTHUBCONNECTION_15_033: [The event handler shall set the current handler to handle the connection events.]

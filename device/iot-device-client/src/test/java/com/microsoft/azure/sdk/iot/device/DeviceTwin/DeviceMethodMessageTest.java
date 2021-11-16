@@ -5,9 +5,10 @@ package com.microsoft.azure.sdk.iot.device.DeviceTwin;
 
 import com.microsoft.azure.sdk.iot.device.MessageType;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /* Unit tests for IotHubTransportMessage
 * 100% methods covered
@@ -50,15 +51,16 @@ public class DeviceMethodMessageTest
     /*
     **Tests_SRS_DEVICEMETHODMESSAGE_25_004: [**This method shall throw IllegalArgumentException if the methodName is null.**]**
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void setMethodNameThrowsOnNull()
-    {
-        //arrange
-        IotHubTransportMessage testDMMessage = new IotHubTransportMessage(new byte[0], MessageType.DEVICE_METHODS);
+    @Test
+    public void setMethodNameThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            IotHubTransportMessage testDMMessage = new IotHubTransportMessage(new byte[0], MessageType.DEVICE_METHODS);
 
-        //act
-        testDMMessage.setMethodName(null);
+            //act
+            testDMMessage.setMethodName(null);
 
+        });
     }
 
     /*

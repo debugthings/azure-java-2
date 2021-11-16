@@ -5,9 +5,8 @@
 
 package com.microsoft.azure.sdk.iot.service.transport.http;
 
-import com.microsoft.azure.sdk.iot.service.transport.http.HttpResponse;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import java.util.HashMap;
@@ -18,6 +17,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for HttpResponse. */
 @RunWith(JMockit.class)
@@ -111,18 +111,19 @@ public class HttpsResponseTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_HTTPSRESPONSE_12_006: [If a value could not be found for the given header field name, the function shall throw an IllegalArgumentException.]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void getHeaderFieldRejectsInvalidFieldName() throws IllegalArgumentException
-    {
-        // Arrange
-        final int status = 200;
-        final byte[] body = { 1 };
-        final byte[] errorReason = {};
-        final Map<String, List<String>> headerFields = new HashMap<>();
-        final String field = "test-field";
-        // Act
-        HttpResponse response = new HttpResponse(status, body, headerFields, errorReason);
-        response.getHeaderField(field);
+    @Test
+    public void getHeaderFieldRejectsInvalidFieldName() throws IllegalArgumentException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            final int status = 200;
+            final byte[] body = { 1 };
+            final byte[] errorReason = {};
+            final Map<String, List<String>> headerFields = new HashMap<>();
+            final String field = "test-field";
+            // Act
+            HttpResponse response = new HttpResponse(status, body, headerFields, errorReason);
+            response.getHeaderField(field);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_HTTPSRESPONSE_12_001: [The constructor shall store the input arguments so that the getters can return them later.]

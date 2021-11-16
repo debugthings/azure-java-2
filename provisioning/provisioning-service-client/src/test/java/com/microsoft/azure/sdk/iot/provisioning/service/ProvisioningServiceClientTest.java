@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.service;
 
-import com.microsoft.azure.sdk.iot.provisioning.service.*;
 import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningConnectionString;
 import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningConnectionStringBuilder;
 import com.microsoft.azure.sdk.iot.provisioning.service.configs.*;
@@ -12,12 +11,13 @@ import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningS
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Provisioning Service Client public API.
@@ -104,160 +104,167 @@ public class ProvisioningServiceClientTest
     }
 
     /* SRS_PROVISIONING_SERVICE_CLIENT_21_002: [The constructor shall throw IllegalArgumentException if the provided connectionString is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void factoryThrowsOnConnectionStringNull()
-    {
-        // arrange
-        // act
-        ProvisioningServiceClient.createFromConnectionString(null);
+    @Test
+    public void factoryThrowsOnConnectionStringNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            ProvisioningServiceClient.createFromConnectionString(null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_PROVISIONING_SERVICE_CLIENT_21_002: [The constructor shall throw IllegalArgumentException if the provided connectionString is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void factoryThrowsOnConnectionStringEmpty()
-    {
-        // arrange
-        // act
-        ProvisioningServiceClient.createFromConnectionString("");
+    @Test
+    public void factoryThrowsOnConnectionStringEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            ProvisioningServiceClient.createFromConnectionString("");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_PROVISIONING_SERVICE_CLIENT_21_003: [The constructor shall throw IllegalArgumentException if the ProvisioningConnectionString or one of the inner Managers failed to create a new instance.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void factoryThrowsOnProvisioningConnectionStringFail()
-    {
-        // arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void factoryThrowsOnProvisioningConnectionStringFail() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            new NonStrictExpectations()
             {
-                ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
-                result = new IllegalArgumentException();
-                times = 1;
-            }
-        };
+                {
+                    ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
+                    result = new IllegalArgumentException();
+                    times = 1;
+                }
+            };
 
-        // act
-        ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
+            // act
+            ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
 
-        // assert
-        assertNotNull(provisioningServiceClient);
+            // assert
+            assertNotNull(provisioningServiceClient);
+        });
     }
 
     /* SRS_PROVISIONING_SERVICE_CLIENT_21_003: [The constructor shall throw IllegalArgumentException if the ProvisioningConnectionString or one of the inner Managers failed to create a new instance.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void factoryThrowsOnContractApiHttpFail()
-    {
-        // arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void factoryThrowsOnContractApiHttpFail() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            new NonStrictExpectations()
             {
-                ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
-                result = mockedProvisioningConnectionString;
-                times = 1;
-                ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
-                result = new IllegalArgumentException();
-                times = 1;
-            }
-        };
+                {
+                    ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
+                    result = mockedProvisioningConnectionString;
+                    times = 1;
+                    ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+                    result = new IllegalArgumentException();
+                    times = 1;
+                }
+            };
 
-        // act
-        ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
+            // act
+            ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
 
-        // assert
-        assertNotNull(provisioningServiceClient);
+            // assert
+            assertNotNull(provisioningServiceClient);
+        });
     }
 
     /* SRS_PROVISIONING_SERVICE_CLIENT_21_003: [The constructor shall throw IllegalArgumentException if the ProvisioningConnectionString or one of the inner Managers failed to create a new instance.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void factoryThrowsOnIndividualEnrollmentManagerFail()
-    {
-        // arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void factoryThrowsOnIndividualEnrollmentManagerFail() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            new NonStrictExpectations()
             {
-                ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
-                result = mockedProvisioningConnectionString;
-                times = 1;
-                ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
-                result = mockedContractApiHttp;
-                times = 1;
-                Deencapsulation.invoke(IndividualEnrollmentManager.class, "createFromContractApiHttp", mockedContractApiHttp);
-                result = new IllegalArgumentException();
-                times = 1;
-            }
-        };
+                {
+                    ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
+                    result = mockedProvisioningConnectionString;
+                    times = 1;
+                    ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+                    result = mockedContractApiHttp;
+                    times = 1;
+                    Deencapsulation.invoke(IndividualEnrollmentManager.class, "createFromContractApiHttp", mockedContractApiHttp);
+                    result = new IllegalArgumentException();
+                    times = 1;
+                }
+            };
 
-        // act
-        ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
+            // act
+            ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
 
-        // assert
-        assertNotNull(provisioningServiceClient);
+            // assert
+            assertNotNull(provisioningServiceClient);
+        });
     }
 
     /* SRS_PROVISIONING_SERVICE_CLIENT_21_003: [The constructor shall throw IllegalArgumentException if the ProvisioningConnectionString or one of the inner Managers failed to create a new instance.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void factoryThrowsOnEnrollmentGroupManagerFail()
-    {
-        // arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void factoryThrowsOnEnrollmentGroupManagerFail() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            new NonStrictExpectations()
             {
-                ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
-                result = mockedProvisioningConnectionString;
-                times = 1;
-                ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
-                result = mockedContractApiHttp;
-                times = 1;
-                Deencapsulation.invoke(IndividualEnrollmentManager.class, "createFromContractApiHttp", mockedContractApiHttp);
-                result = mockedIndividualEnrollmentManager;
-                times = 1;
-                Deencapsulation.invoke(EnrollmentGroupManager.class, "createFromContractApiHttp", mockedContractApiHttp);
-                result = new IllegalArgumentException();
-                times = 1;
-            }
-        };
+                {
+                    ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
+                    result = mockedProvisioningConnectionString;
+                    times = 1;
+                    ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+                    result = mockedContractApiHttp;
+                    times = 1;
+                    Deencapsulation.invoke(IndividualEnrollmentManager.class, "createFromContractApiHttp", mockedContractApiHttp);
+                    result = mockedIndividualEnrollmentManager;
+                    times = 1;
+                    Deencapsulation.invoke(EnrollmentGroupManager.class, "createFromContractApiHttp", mockedContractApiHttp);
+                    result = new IllegalArgumentException();
+                    times = 1;
+                }
+            };
 
-        // act
-        ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
+            // act
+            ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
 
-        // assert
-        assertNotNull(provisioningServiceClient);
+            // assert
+            assertNotNull(provisioningServiceClient);
+        });
     }
 
     /* SRS_PROVISIONING_SERVICE_CLIENT_21_003: [The constructor shall throw IllegalArgumentException if the ProvisioningConnectionString or one of the inner Managers failed to create a new instance.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void factoryThrowsOnRegistrationStatusManagerFail()
-    {
-        // arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void factoryThrowsOnRegistrationStatusManagerFail() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            new NonStrictExpectations()
             {
-                ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
-                result = mockedProvisioningConnectionString;
-                times = 1;
-                ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
-                result = mockedContractApiHttp;
-                times = 1;
-                Deencapsulation.invoke(IndividualEnrollmentManager.class, "createFromContractApiHttp", mockedContractApiHttp);
-                result = mockedIndividualEnrollmentManager;
-                times = 1;
-                Deencapsulation.invoke(EnrollmentGroupManager.class, "createFromContractApiHttp", mockedContractApiHttp);
-                result = mockedEnrollmentGroupManager;
-                times = 1;
-                Deencapsulation.invoke(RegistrationStatusManager.class, "createFromContractApiHttp", mockedContractApiHttp);
-                result = new IllegalArgumentException();
-                times = 1;
-            }
-        };
+                {
+                    ProvisioningConnectionStringBuilder.createConnectionString(PROVISIONING_CONNECTION_STRING);
+                    result = mockedProvisioningConnectionString;
+                    times = 1;
+                    ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+                    result = mockedContractApiHttp;
+                    times = 1;
+                    Deencapsulation.invoke(IndividualEnrollmentManager.class, "createFromContractApiHttp", mockedContractApiHttp);
+                    result = mockedIndividualEnrollmentManager;
+                    times = 1;
+                    Deencapsulation.invoke(EnrollmentGroupManager.class, "createFromContractApiHttp", mockedContractApiHttp);
+                    result = mockedEnrollmentGroupManager;
+                    times = 1;
+                    Deencapsulation.invoke(RegistrationStatusManager.class, "createFromContractApiHttp", mockedContractApiHttp);
+                    result = new IllegalArgumentException();
+                    times = 1;
+                }
+            };
 
-        // act
-        ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
+            // act
+            ProvisioningServiceClient provisioningServiceClient = ProvisioningServiceClient.createFromConnectionString(PROVISIONING_CONNECTION_STRING);
 
-        // assert
-        assertNotNull(provisioningServiceClient);
+            // assert
+            assertNotNull(provisioningServiceClient);
+        });
     }
 
     /* SRS_PROVISIONING_SERVICE_CLIENT_21_008: [The createOrUpdateIndividualEnrollment shall create a new Provisioning enrollment by calling the createOrUpdate in the individualEnrollmentManager.] */

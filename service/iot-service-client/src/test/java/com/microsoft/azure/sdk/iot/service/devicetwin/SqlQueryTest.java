@@ -5,13 +5,13 @@
 
 package com.microsoft.azure.sdk.iot.service.devicetwin;
 
-import com.microsoft.azure.sdk.iot.service.devicetwin.SqlQuery;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
     SqlQuery Unit Tests
@@ -42,18 +42,20 @@ public class SqlQueryTest
     }
 
     //Tests_SRS_SQL_QUERY_25_001: [ The constructor shall throw IllegalArgumentException if either input string selection or fromType is null or empty ]
-    @Test (expected = IllegalArgumentException.class)
-    public void createQueryNoSelectThrows() throws IOException
-    {
-        //act
-        SqlQuery sqlQueryTest = SqlQuery.createSqlQuery(null, SqlQuery.FromType.DEVICES, null, null);
+    @Test
+    public void createQueryNoSelectThrows() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            SqlQuery sqlQueryTest = SqlQuery.createSqlQuery(null, SqlQuery.FromType.DEVICES, null, null);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void createQueryNoFROMThrows() throws IOException
-    {
-        //act
-        SqlQuery sqlQueryTest = SqlQuery.createSqlQuery(VALID_SELECTION, null, null, null);
+    @Test
+    public void createQueryNoFROMThrows() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            SqlQuery sqlQueryTest = SqlQuery.createSqlQuery(VALID_SELECTION, null, null, null);
+        });
     }
 
     //Tests_SRS_SQL_QUERY_25_003: [ The constructor shall append where to the sql query string only when provided ]

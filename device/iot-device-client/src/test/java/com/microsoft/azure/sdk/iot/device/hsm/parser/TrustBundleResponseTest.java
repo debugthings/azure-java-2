@@ -5,11 +5,11 @@
 
 package com.microsoft.azure.sdk.iot.device.hsm.parser;
 
-import com.microsoft.azure.sdk.iot.device.hsm.parser.TrustBundleResponse;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TrustBundleResponseTest
 {
@@ -57,11 +57,12 @@ public class TrustBundleResponseTest
     }
 
     //Tests_SRS_TRUSTBUNDLERESPONSE_34_002: [If the provided json does not contain any certificates, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsIfJsonMissingCertificates()
-    {
-        //act
-        TrustBundleResponse response = TrustBundleResponse.fromJson(jsonWithoutTrustedCertificates);
+    @Test
+    public void constructorThrowsIfJsonMissingCertificates() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            TrustBundleResponse response = TrustBundleResponse.fromJson(jsonWithoutTrustedCertificates);
+        });
     }
 
     //Tests_SRS_TRUSTBUNDLERESPONSE_34_003: [This constructor shall create a new TrustBundleResponse from json.]

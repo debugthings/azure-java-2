@@ -5,18 +5,18 @@ package com.microsoft.azure.sdk.iot.provisioning.service;
 
 import com.microsoft.azure.sdk.iot.deps.transport.http.HttpMethod;
 import com.microsoft.azure.sdk.iot.deps.transport.http.HttpResponse;
-import com.microsoft.azure.sdk.iot.provisioning.service.*;
 import com.microsoft.azure.sdk.iot.provisioning.service.configs.*;
 import com.microsoft.azure.sdk.iot.provisioning.service.contract.ContractApiHttp;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.*;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for EnrollmentGroup Manager.
@@ -39,14 +39,15 @@ public class EnrollmentGroupManagerTest
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_001: [The constructor shall throw IllegalArgumentException if the provided ContractApiHttp is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNull()
-    {
-        // arrange
-        // act
-        Deencapsulation.newInstance(EnrollmentGroupManager.class, new Class[]{ContractApiHttp.class}, (ContractApiHttp)null);
+    @Test
+    public void constructorThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            // act
+            Deencapsulation.newInstance(EnrollmentGroupManager.class, new Class[]{ContractApiHttp.class}, (ContractApiHttp)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_004: [The factory shall create a new instance of this.] */
@@ -64,16 +65,17 @@ public class EnrollmentGroupManagerTest
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_005: [The createOrUpdate shall throw IllegalArgumentException if the provided enrollmentGroup is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createOrUpdateThrowsOnNullEnrollment() throws ProvisioningServiceClientException
-    {
-        // arrange
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+    @Test
+    public void createOrUpdateThrowsOnNullEnrollment() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "createOrUpdate", new Class[] {EnrollmentGroup.class}, (EnrollmentGroup)null);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "createOrUpdate", new Class[] {EnrollmentGroup.class}, (EnrollmentGroup)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_006: [The createOrUpdate shall send a Http request for the path `enrollmentGroups/[enrollmentGroupId]`.] */
@@ -176,132 +178,137 @@ public class EnrollmentGroupManagerTest
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_042: [The createOrUpdate shall throw ProvisioningServiceClientServiceException if the heepResponse contains a null body.] */
-    @Test (expected = ProvisioningServiceClientServiceException.class)
+    @Test
     public void createOrUpdateRequestTrowsOnNullBody(
             @Mocked final EnrollmentGroup mockedEnrollmentGroup)
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        final String enrollmentGroupPayload = "validJson";
-        final String resultPayload = "validJson";
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new StrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientServiceException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            final String enrollmentGroupPayload = "validJson";
+            final String resultPayload = "validJson";
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new StrictExpectations()
             {
-                mockedEnrollmentGroup.getEnrollmentGroupId();
-                result = enrollmentGroupId;
-                times = 1;
-                mockedEnrollmentGroup.toJson();
-                result = enrollmentGroupPayload;
-                times = 1;
-                mockedEnrollmentGroup.getEtag();
-                result = null;
-                times = 1;
-                mockedContractApiHttp.request(HttpMethod.PUT, enrollmentGroupPath, (Map)any, enrollmentGroupPayload);
-                result = mockedHttpResponse;
-                times = 1;
-                mockedHttpResponse.getBody();
-                result = null;
-                times = 1;
-            }
-        };
+                {
+                    mockedEnrollmentGroup.getEnrollmentGroupId();
+                    result = enrollmentGroupId;
+                    times = 1;
+                    mockedEnrollmentGroup.toJson();
+                    result = enrollmentGroupPayload;
+                    times = 1;
+                    mockedEnrollmentGroup.getEtag();
+                    result = null;
+                    times = 1;
+                    mockedContractApiHttp.request(HttpMethod.PUT, enrollmentGroupPath, (Map)any, enrollmentGroupPayload);
+                    result = mockedHttpResponse;
+                    times = 1;
+                    mockedHttpResponse.getBody();
+                    result = null;
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "createOrUpdate", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "createOrUpdate", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_009: [The createOrUpdate shall throw ProvisioningServiceClientTransportException if the request failed. Threw by the callee.] */
-    @Test (expected = ProvisioningServiceClientTransportException.class)
+    @Test
     public void createOrUpdateRequestTransportFailed(
             @Mocked final EnrollmentGroup mockedEnrollmentGroup)
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        final String enrollmentGroupPayload = "validJson";
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new NonStrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientTransportException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            final String enrollmentGroupPayload = "validJson";
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new NonStrictExpectations()
             {
-                mockedEnrollmentGroup.getEnrollmentGroupId();
-                result = enrollmentGroupId;
-                mockedEnrollmentGroup.toJson();
-                result = enrollmentGroupPayload;
-                mockedEnrollmentGroup.getEtag();
-                result = null;
-                mockedContractApiHttp.request(HttpMethod.PUT, enrollmentGroupPath, (Map)any, enrollmentGroupPayload);
-                result = new ProvisioningServiceClientTransportException();
-                times = 1;
-            }
-        };
+                {
+                    mockedEnrollmentGroup.getEnrollmentGroupId();
+                    result = enrollmentGroupId;
+                    mockedEnrollmentGroup.toJson();
+                    result = enrollmentGroupPayload;
+                    mockedEnrollmentGroup.getEtag();
+                    result = null;
+                    mockedContractApiHttp.request(HttpMethod.PUT, enrollmentGroupPath, (Map)any, enrollmentGroupPayload);
+                    result = new ProvisioningServiceClientTransportException();
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "createOrUpdate", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "createOrUpdate", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_010: [The createOrUpdate shall throw ProvisioningServiceClientException if the Device Provisioning Service could not successfully execute the request. Threw by the callee.] */
-    @Test (expected = ProvisioningServiceClientInternalServerErrorException.class)
+    @Test
     public void createOrUpdateServiceReportedFail(
             @Mocked final EnrollmentGroup mockedEnrollmentGroup)
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        final String enrollmentGroupPayload = "validJson";
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new NonStrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientInternalServerErrorException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            final String enrollmentGroupPayload = "validJson";
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new NonStrictExpectations()
             {
-                mockedEnrollmentGroup.getEnrollmentGroupId();
-                result = enrollmentGroupId;
-                mockedEnrollmentGroup.toJson();
-                result = enrollmentGroupPayload;
-                mockedEnrollmentGroup.getEtag();
-                result = null;
-                mockedContractApiHttp.request(HttpMethod.PUT, enrollmentGroupPath, (Map)any, enrollmentGroupPayload);
-                result = new ProvisioningServiceClientInternalServerErrorException();
-                times = 1;
-            }
-        };
+                {
+                    mockedEnrollmentGroup.getEnrollmentGroupId();
+                    result = enrollmentGroupId;
+                    mockedEnrollmentGroup.toJson();
+                    result = enrollmentGroupPayload;
+                    mockedEnrollmentGroup.getEtag();
+                    result = null;
+                    mockedContractApiHttp.request(HttpMethod.PUT, enrollmentGroupPath, (Map)any, enrollmentGroupPayload);
+                    result = new ProvisioningServiceClientInternalServerErrorException();
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "createOrUpdate", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "createOrUpdate", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_020: [The get shall throw IllegalArgumentException if the provided enrollmentGroupId is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void getThrowsOnNullEnrollmentGroupId() throws ProvisioningServiceClientException
-    {
-        // arrange
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+    @Test
+    public void getThrowsOnNullEnrollmentGroupId() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, (String)null);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, (String)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_020: [The get shall throw IllegalArgumentException if the provided enrollmentGroupId is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void getThrowsOnEmptyEnrollmentGroupId() throws ProvisioningServiceClientException
-    {
-        // arrange
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+    @Test
+    public void getThrowsOnEmptyEnrollmentGroupId() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, (String)"");
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, (String)"");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_021: [The get shall send a Http request for the path `enrollmentGroups/[enrollmentGroupId]`.] */
@@ -340,91 +347,95 @@ public class EnrollmentGroupManagerTest
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_043: [The get shall throw ProvisioningServiceClientServiceException if the heepResponse contains a null body.] */
-    @Test (expected = ProvisioningServiceClientServiceException.class)
+    @Test
     public void getRequestThrowsOnNullBody()
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new StrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientServiceException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new StrictExpectations()
             {
-                mockedContractApiHttp.request(HttpMethod.GET, enrollmentGroupPath, null, "");
-                result = mockedHttpResponse;
-                times = 1;
-                mockedHttpResponse.getBody();
-                result = null;
-                times = 1;
-            }
-        };
+                {
+                    mockedContractApiHttp.request(HttpMethod.GET, enrollmentGroupPath, null, "");
+                    result = mockedHttpResponse;
+                    times = 1;
+                    mockedHttpResponse.getBody();
+                    result = null;
+                    times = 1;
+                }
+            };
 
-        // act
-        EnrollmentGroup response = Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, enrollmentGroupId);
+            // act
+            EnrollmentGroup response = Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, enrollmentGroupId);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_023: [The get shall throw ProvisioningServiceClientTransportException if the request failed. Threw by the callee.] */
-    @Test (expected = ProvisioningServiceClientTransportException.class)
+    @Test
     public void getRequestTransportFailed()
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new StrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientTransportException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new StrictExpectations()
             {
-                mockedContractApiHttp.request(HttpMethod.GET, enrollmentGroupPath, null, "");
-                result = new ProvisioningServiceClientTransportException();
-                times = 1;
-            }
-        };
+                {
+                    mockedContractApiHttp.request(HttpMethod.GET, enrollmentGroupPath, null, "");
+                    result = new ProvisioningServiceClientTransportException();
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, enrollmentGroupId);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, enrollmentGroupId);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_024: [The get shall throw ProvisioningServiceClientException if the Device Provisioning Service could not successfully execute the request. Threw by the callee.] */
-    @Test (expected = ProvisioningServiceClientException.class)
+    @Test
     public void getRequestServiceReportedFail()
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new StrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new StrictExpectations()
             {
-                mockedContractApiHttp.request(HttpMethod.GET, enrollmentGroupPath, null, "");
-                result = new ProvisioningServiceClientBadFormatException();
-                times = 1;
-            }
-        };
+                {
+                    mockedContractApiHttp.request(HttpMethod.GET, enrollmentGroupPath, null, "");
+                    result = new ProvisioningServiceClientBadFormatException();
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, enrollmentGroupId);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "get", new Class[] {String.class}, enrollmentGroupId);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_026: [The delete shall throw IllegalArgumentException if the provided enrollmentGroup is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void deleteEnrollmentThrowsOnNullEnrollment() throws ProvisioningServiceClientException
-    {
-        // arrange
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+    @Test
+    public void deleteEnrollmentThrowsOnNullEnrollment() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {EnrollmentGroup.class}, (EnrollmentGroup)null);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {EnrollmentGroup.class}, (EnrollmentGroup)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_027: [The delete shall send a Http request for the path `enrollmentGroups/[enrollmentGroupId]`.] */
@@ -499,91 +510,95 @@ public class EnrollmentGroupManagerTest
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_030: [The delete shall throw ProvisioningServiceClientTransportException if the request failed. Threw by the callee.] */
-    @Test (expected = ProvisioningServiceClientTransportException.class)
+    @Test
     public void deleteEnrollmentRequestTransportFailed(
             @Mocked final EnrollmentGroup mockedEnrollmentGroup)
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String eTag = "validETag";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new NonStrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientTransportException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String eTag = "validETag";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new NonStrictExpectations()
             {
-                mockedEnrollmentGroup.getEnrollmentGroupId();
-                result = enrollmentGroupId;
-                mockedEnrollmentGroup.getEtag();
-                result = eTag;
-                mockedContractApiHttp.request(HttpMethod.DELETE, enrollmentGroupPath, (Map)any, "");
-                result = new ProvisioningServiceClientTransportException();
-                times = 1;
-            }
-        };
+                {
+                    mockedEnrollmentGroup.getEnrollmentGroupId();
+                    result = enrollmentGroupId;
+                    mockedEnrollmentGroup.getEtag();
+                    result = eTag;
+                    mockedContractApiHttp.request(HttpMethod.DELETE, enrollmentGroupPath, (Map)any, "");
+                    result = new ProvisioningServiceClientTransportException();
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_031: [The delete shall throw ProvisioningServiceClientException if the Device Provisioning Service could not successfully execute the request. Threw by the callee.] */
-    @Test (expected = ProvisioningServiceClientException.class)
+    @Test
     public void deleteEnrollmentServiceReportedFail(
             @Mocked final EnrollmentGroup mockedEnrollmentGroup)
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String eTag = "validETag";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new NonStrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String eTag = "validETag";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new NonStrictExpectations()
             {
-                mockedEnrollmentGroup.getEnrollmentGroupId();
-                result = enrollmentGroupId;
-                mockedEnrollmentGroup.getEtag();
-                result = eTag;
-                mockedContractApiHttp.request(HttpMethod.DELETE, enrollmentGroupPath, (Map)any, "");
-                result = new ProvisioningServiceClientBadFormatException();
-                times = 1;
-            }
-        };
+                {
+                    mockedEnrollmentGroup.getEnrollmentGroupId();
+                    result = enrollmentGroupId;
+                    mockedEnrollmentGroup.getEtag();
+                    result = eTag;
+                    mockedContractApiHttp.request(HttpMethod.DELETE, enrollmentGroupPath, (Map)any, "");
+                    result = new ProvisioningServiceClientBadFormatException();
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {EnrollmentGroup.class}, mockedEnrollmentGroup);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_032: [The delete shall throw IllegalArgumentException if the provided enrollmentGroupId is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void deleteEnrollmentGroupIdAndETagThrowsOnNullEnrollmentGroupId() throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String eTag = "validEtag";
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+    @Test
+    public void deleteEnrollmentGroupIdAndETagThrowsOnNullEnrollmentGroupId() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String eTag = "validEtag";
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {String.class, String.class}, (String)null, eTag);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {String.class, String.class}, (String)null, eTag);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_032: [The delete shall throw IllegalArgumentException if the provided enrollmentGroupId is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void deleteEnrollmentGroupIdAndETagThrowsOnEmptyEnrollmentGroupId() throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String eTag = "validEtag";
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+    @Test
+    public void deleteEnrollmentGroupIdAndETagThrowsOnEmptyEnrollmentGroupId() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String eTag = "validEtag";
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {String.class, String.class}, (String)"", eTag);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {String.class, String.class}, (String)"", eTag);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_033: [The delete shall send a Http request for the path `enrollmentGroups/[enrollmentGroupId]`.] */
@@ -662,81 +677,85 @@ public class EnrollmentGroupManagerTest
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_036: [The delete shall throw ProvisioningServiceClientTransportException if the request failed. Threw by the callee.] */
-    @Test (expected = ProvisioningServiceClientTransportException.class)
+    @Test
     public void deleteEnrollmentGroupIdAndETagRequestTransportFailed()
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String eTag = "validETag";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new StrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientTransportException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String eTag = "validETag";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new StrictExpectations()
             {
-                mockedContractApiHttp.request(HttpMethod.DELETE, enrollmentGroupPath, (Map)any, "");
-                result = new ProvisioningServiceClientTransportException();
-                times = 1;
-            }
-        };
+                {
+                    mockedContractApiHttp.request(HttpMethod.DELETE, enrollmentGroupPath, (Map)any, "");
+                    result = new ProvisioningServiceClientTransportException();
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {String.class, String.class}, enrollmentGroupId, eTag);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {String.class, String.class}, enrollmentGroupId, eTag);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_037: [The delete shall throw ProvisioningServiceClientException if the Device Provisioning Service could not successfully execute the request. Threw by the callee.] */
-    @Test (expected = ProvisioningServiceClientException.class)
+    @Test
     public void deleteEnrollmentGroupIdAndETagRequestServiceReportedFail()
-            throws ProvisioningServiceClientException
-    {
-        // arrange
-        final String enrollmentGroupId = "enrollmentGroupId-1";
-        final String eTag = "validETag";
-        final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
-        new StrictExpectations()
-        {
+            throws ProvisioningServiceClientException {
+        assertThrows(ProvisioningServiceClientException.class, () -> {
+            // arrange
+            final String enrollmentGroupId = "enrollmentGroupId-1";
+            final String eTag = "validETag";
+            final String enrollmentGroupPath = "enrollmentGroups/" + enrollmentGroupId;
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+            new StrictExpectations()
             {
-                mockedContractApiHttp.request(HttpMethod.DELETE, enrollmentGroupPath, (Map)any, "");
-                result = new ProvisioningServiceClientBadFormatException();
-                times = 1;
-            }
-        };
+                {
+                    mockedContractApiHttp.request(HttpMethod.DELETE, enrollmentGroupPath, (Map)any, "");
+                    result = new ProvisioningServiceClientBadFormatException();
+                    times = 1;
+                }
+            };
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {String.class, String.class}, enrollmentGroupId, eTag);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "delete", new Class[] {String.class, String.class}, enrollmentGroupId, eTag);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_038: [The createQuery shall throw IllegalArgumentException if the provided querySpecification is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createQueryThrowsOnNullQuerySpecification() throws ProvisioningServiceClientException
-    {
-        // arrange
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+    @Test
+    public void createQueryThrowsOnNullQuerySpecification() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "createQuery", new Class[] {QuerySpecification.class, Integer.class},
-                null, 0);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "createQuery", new Class[] {QuerySpecification.class, Integer.class},
+                    null, 0);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_039: [The createQuery shall throw IllegalArgumentException if the provided pageSize is negative.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createQueryThrowsOnNegativePageSize(@Mocked final QuerySpecification mockedQuerySpecification) throws ProvisioningServiceClientException
-    {
-        // arrange
-        EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
+    @Test
+    public void createQueryThrowsOnNegativePageSize(@Mocked final QuerySpecification mockedQuerySpecification) throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            EnrollmentGroupManager enrollmentGroupManager = createEnrollmentGroupManager();
 
-        // act
-        Deencapsulation.invoke(enrollmentGroupManager, "createQuery", new Class[] {QuerySpecification.class, Integer.class},
-                mockedQuerySpecification, -10);
+            // act
+            Deencapsulation.invoke(enrollmentGroupManager, "createQuery", new Class[] {QuerySpecification.class, Integer.class},
+                    mockedQuerySpecification, -10);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_ENROLLMENT_GROUP_MANAGER_21_040: [The createQuery shall create Query iterator with a Http path `enrollmentGroups`.] */

@@ -10,13 +10,14 @@ import com.microsoft.azure.sdk.iot.deps.serializer.ParserUtility;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.Verifications;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.provisioning.service.Helpers;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service TwinCollection
@@ -169,29 +170,31 @@ public class TwinCollectionTest
     }
 
     /* SRS_TWIN_COLLECTION_21_004: [The putAll shall throw IllegalArgumentException if the provided Map is null, empty or invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putAllThrowsOnNull()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putAllThrowsOnNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.putAll(null);
+            // act
+            twinCollection.putAll(null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_004: [The putAll shall throw IllegalArgumentException if the provided Map is null, empty or invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putAllThrowsOnEmptyMap()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putAllThrowsOnEmptyMap() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.putAll(new HashMap<>());
+            // act
+            twinCollection.putAll(new HashMap<>());
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_005: [The putAll shall copy all entries in the provided Map to the TwinCollection.] */
@@ -324,61 +327,65 @@ public class TwinCollectionTest
     }
 
     /* SRS_TWIN_COLLECTION_21_010: [The put shall throw IllegalArgumentException if the provided key is null, empty, or invalid, or if the value is invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putThrowsOnKeyNull()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putThrowsOnKeyNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.put(null, "NewNiceCar");
+            // act
+            twinCollection.put(null, "NewNiceCar");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_010: [The put shall throw IllegalArgumentException if the provided key is null, empty, or invalid, or if the value is invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putThrowsOnKeyEmpty()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putThrowsOnKeyEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.put("", "NewNiceCar");
+            // act
+            twinCollection.put("", "NewNiceCar");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_010: [The put shall throw IllegalArgumentException if the provided key is null, empty, or invalid, or if the value is invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putThrowsOnValueInvalidArray()
-    {
-        // arrange
-        TwinCollection twinCollection = new TwinCollection();
+    @Test
+    public void putThrowsOnValueInvalidArray() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.put(VALID_KEY_NAME, new int[]{1,2,3});
+            // act
+            twinCollection.put(VALID_KEY_NAME, new int[]{1,2,3});
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_010: [The put shall throw IllegalArgumentException if the provided key is null, empty, or invalid, or if the value is invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void putThrowsOnValueInvalidType()
-    {
-        // arrange
-        final class UserType
-        {
-            int a = 10;
-            final String b = VALID_VALUE_NAME;
-        }
+    @Test
+    public void putThrowsOnValueInvalidType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final class UserType
+            {
+                int a = 10;
+                final String b = VALID_VALUE_NAME;
+            }
 
-        TwinCollection twinCollection = new TwinCollection();
+            TwinCollection twinCollection = new TwinCollection();
 
-        // act
-        twinCollection.put(VALID_KEY_NAME, new UserType());
+            // act
+            twinCollection.put(VALID_KEY_NAME, new UserType());
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_011: [The constructor shall convert the provided rawCollection in a valid TwinCollection.] */
@@ -409,17 +416,18 @@ public class TwinCollectionTest
     }
 
     /* SRS_TWIN_COLLECTION_21_013: [The constructor shall throw IllegalArgumentException if the entity contains the key `$version` and its value is not a integer.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructor2LevelsWithInvalidVersionFailed()
-    {
-        // arrange
-        final Map<String, Object> property = new HashMap<>(PROPERTIES_SAMPLE);
-        property.put("$version", "invalidString");
+    @Test
+    public void constructor2LevelsWithInvalidVersionFailed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final Map<String, Object> property = new HashMap<>(PROPERTIES_SAMPLE);
+            property.put("$version", "invalidString");
 
-        // act
-        Deencapsulation.invoke(TwinCollection.class, "createFromRawCollection", property);
+            // act
+            Deencapsulation.invoke(TwinCollection.class, "createFromRawCollection", property);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_014: [If the entity contains the key `$metadata`, the constructor shall create a TwinMetadata with the value of this entity.] */
@@ -487,57 +495,58 @@ public class TwinCollectionTest
     }
 
     /* SRS_TWIN_COLLECTION_21_024: [The constructor shall throw IllegalArgumentException if the metadata is inconsistent with the TwinCollection.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorInconsistentMetadataFailed()
-    {
-        // arrange
-        final String inconsistentJson =
-                "    {  \n" +
-                "      \"Brand\":\"NiceCar\",\n" +
-                "      \"MaxSpeed\":{  \n" +
-                "        \"Value\":500,\n" +
-                "        \"NewValue\":300,\n" +
-                "        \"Inner1\":{" +
-                "          \"Inner2\":\"FinalInnerValue\"" +
-                "        }\n" +
-                "      },\n" +
-                "      \"$metadata\":{  \n" +
-                "        \"$lastUpdated\":\"2017-09-21T02:07:44.238Z\",\n" +
-                "        \"$lastUpdatedVersion\":1,\n" +
-                "        \"Brand\":{" +
-                "          \"$lastUpdated\":\"2017-08-09T02:07:44.238Z\",\n" +
-                "          \"$lastUpdatedVersion\":2" +
-                "        },\n" +
-                "        \"MaxSpeed\":{  \n" +
-                "          \"$lastUpdated\":\"2017-10-21T02:07:44.238Z\",\n" +
-                "          \"$lastUpdatedVersion\":3,\n" +
-                "          \"Value\":{  \n" +
-                "            \"$lastUpdated\":\"2017-11-21T02:07:44.238Z\",\n" +
-                "            \"$lastUpdatedVersion\":4\n" +
-                "          },\n" +
-                "          \"WrongEntity\":{  \n" +
-                "            \"$lastUpdated\":\"2017-09-21T02:07:44.238Z\",\n" +
-                "            \"$lastUpdatedVersion\":5\n" +
-                "          },\n" +
-                "          \"Inner1\":{  \n" +
-                "            \"$lastUpdated\":\"2017-09-21T02:07:44.238Z\",\n" +
-                "            \"$lastUpdatedVersion\":6,\n" +
-                "            \"Inner2\":{  \n" +
-                "              \"$lastUpdated\":\"2017-09-21T02:07:44.238Z\",\n" +
-                "              \"$lastUpdatedVersion\":7\n" +
-                "            }\n" +
-                "          }\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"$version\":" + VERSION + "\n" +
-                "    }\n";
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().create();
-        TwinCollection rawMap = gson.fromJson(inconsistentJson, TwinCollection.class);
+    @Test
+    public void constructorInconsistentMetadataFailed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final String inconsistentJson =
+                    "    {  \n" +
+                    "      \"Brand\":\"NiceCar\",\n" +
+                    "      \"MaxSpeed\":{  \n" +
+                    "        \"Value\":500,\n" +
+                    "        \"NewValue\":300,\n" +
+                    "        \"Inner1\":{" +
+                    "          \"Inner2\":\"FinalInnerValue\"" +
+                    "        }\n" +
+                    "      },\n" +
+                    "      \"$metadata\":{  \n" +
+                    "        \"$lastUpdated\":\"2017-09-21T02:07:44.238Z\",\n" +
+                    "        \"$lastUpdatedVersion\":1,\n" +
+                    "        \"Brand\":{" +
+                    "          \"$lastUpdated\":\"2017-08-09T02:07:44.238Z\",\n" +
+                    "          \"$lastUpdatedVersion\":2" +
+                    "        },\n" +
+                    "        \"MaxSpeed\":{  \n" +
+                    "          \"$lastUpdated\":\"2017-10-21T02:07:44.238Z\",\n" +
+                    "          \"$lastUpdatedVersion\":3,\n" +
+                    "          \"Value\":{  \n" +
+                    "            \"$lastUpdated\":\"2017-11-21T02:07:44.238Z\",\n" +
+                    "            \"$lastUpdatedVersion\":4\n" +
+                    "          },\n" +
+                    "          \"WrongEntity\":{  \n" +
+                    "            \"$lastUpdated\":\"2017-09-21T02:07:44.238Z\",\n" +
+                    "            \"$lastUpdatedVersion\":5\n" +
+                    "          },\n" +
+                    "          \"Inner1\":{  \n" +
+                    "            \"$lastUpdated\":\"2017-09-21T02:07:44.238Z\",\n" +
+                    "            \"$lastUpdatedVersion\":6,\n" +
+                    "            \"Inner2\":{  \n" +
+                    "              \"$lastUpdated\":\"2017-09-21T02:07:44.238Z\",\n" +
+                    "              \"$lastUpdatedVersion\":7\n" +
+                    "            }\n" +
+                    "          }\n" +
+                    "        }\n" +
+                    "      },\n" +
+                    "      \"$version\":" + VERSION + "\n" +
+                    "    }\n";
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().create();
+            TwinCollection rawMap = gson.fromJson(inconsistentJson, TwinCollection.class);
 
-        // act
-        Deencapsulation.invoke(TwinCollection.class, "createFromRawCollection", rawMap);
+            // act
+            Deencapsulation.invoke(TwinCollection.class, "createFromRawCollection", rawMap);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_TWIN_COLLECTION_21_016: [The toJsonElement shall return a JsonElement with the information in this class in a JSON format.] */

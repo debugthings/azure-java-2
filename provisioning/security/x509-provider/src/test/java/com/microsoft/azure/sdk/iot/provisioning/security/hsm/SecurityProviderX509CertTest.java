@@ -7,14 +7,13 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.security.hsm;
 
- import com.microsoft.azure.sdk.iot.provisioning.security.hsm.SecurityProviderX509Cert;
  import mockit.*;
  import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
  import org.bouncycastle.openssl.PEMKeyPair;
  import org.bouncycastle.openssl.PEMParser;
  import org.bouncycastle.util.io.pem.PemObject;
  import org.bouncycastle.util.io.pem.PemReader;
- import org.junit.Test;
+ import org.junit.jupiter.api.Test;
 
  import java.io.ByteArrayInputStream;
  import java.io.IOException;
@@ -27,6 +26,7 @@ package com.microsoft.azure.sdk.iot.provisioning.security.hsm;
  import java.security.cert.X509Certificate;
 
  import static org.junit.Assert.assertEquals;
+ import static org.junit.jupiter.api.Assertions.assertThrows;
 
  public class SecurityProviderX509CertTest
 {
@@ -114,20 +114,21 @@ package com.microsoft.azure.sdk.iot.provisioning.security.hsm;
     }
 
     // Tests_SRS_SecurityClientDiceEmulator_34_002: [If any exception is encountered while attempting to create the private key instance, this function shall throw a CertificateException.]
-    @Test (expected = CertificateException.class)
-    public void parsePrivateKeyExceptionsWrappedInCertificateException() throws CertificateException, IOException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void parsePrivateKeyExceptionsWrappedInCertificateException() throws CertificateException, IOException {
+        assertThrows(CertificateException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                new StringReader(expectedPrivateKeyString);
-                result = new IOException();
-            }
-        };
+                {
+                    new StringReader(expectedPrivateKeyString);
+                    result = new IOException();
+                }
+            };
 
-        //act
-        PrivateKey actualPrivateKey = Deencapsulation.invoke(SecurityProviderX509Cert.class, "parsePrivateKey", new Class[] {String.class}, expectedPrivateKeyString);
+            //act
+            PrivateKey actualPrivateKey = Deencapsulation.invoke(SecurityProviderX509Cert.class, "parsePrivateKey", new Class[] {String.class}, expectedPrivateKeyString);
+        });
     }
 
     // Tests_SRS_SecurityClientDiceEmulator_34_003: [This function shall return an X509Certificate instance created by the provided PEM formatted publicKeyCertificateString.]
@@ -160,22 +161,23 @@ package com.microsoft.azure.sdk.iot.provisioning.security.hsm;
     }
 
     // Tests_SRS_SecurityClientDiceEmulator_34_004: [If any exception is encountered while attempting to create the public key certificate instance, this function shall throw a CertificateException.]
-    @Test (expected = CertificateException.class)
-    public void parsePublicKeyCertificateExceptionsWrappedInCertificateException() throws CertificateException, IOException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void parsePublicKeyCertificateExceptionsWrappedInCertificateException() throws CertificateException, IOException {
+        assertThrows(CertificateException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                new PemReader(new StringReader(expectedPublicKeyCertificateString));
-                result = new IOException();
-            }
-        };
+                {
+                    new PemReader(new StringReader(expectedPublicKeyCertificateString));
+                    result = new IOException();
+                }
+            };
 
-        //act
-        X509Certificate actualPublicKeyCertificate = Deencapsulation.invoke(SecurityProviderX509Cert.class, "parsePublicKeyCertificate", new Class[] {String.class}, expectedPublicKeyCertificateString);
+            //act
+            X509Certificate actualPublicKeyCertificate = Deencapsulation.invoke(SecurityProviderX509Cert.class, "parsePublicKeyCertificate", new Class[] {String.class}, expectedPublicKeyCertificateString);
 
-        //assert
-        assertEquals(mockedX509Certificate, actualPublicKeyCertificate);
+            //assert
+            assertEquals(mockedX509Certificate, actualPublicKeyCertificate);
+        });
     }
 }

@@ -5,9 +5,8 @@
 
 package com.microsoft.azure.sdk.iot.provisioning.device.internal.parser;
 
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.parser.ProvisioningErrorParser;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;

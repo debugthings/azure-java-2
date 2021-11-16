@@ -5,12 +5,11 @@ package com.microsoft.azure.sdk.iot.provisioning.service;
 
 import com.microsoft.azure.sdk.iot.deps.transport.http.HttpMethod;
 import com.microsoft.azure.sdk.iot.deps.transport.http.HttpResponse;
-import com.microsoft.azure.sdk.iot.provisioning.service.*;
 import com.microsoft.azure.sdk.iot.provisioning.service.configs.*;
 import com.microsoft.azure.sdk.iot.provisioning.service.contract.ContractApiHttp;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.*;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -18,6 +17,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Query iterator.
@@ -38,88 +38,93 @@ public class QueryTest
     private HttpResponse mockedHttpResponse;
 
     /* SRS_QUERY_21_001: [The constructor shall throw IllegalArgumentException if the provided contractApiHttp is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnContractApiHttpNull()
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = null;
-        final String targetPath = "enrollments";
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final int pageSize = 10;
+    @Test
+    public void constructorThrowsOnContractApiHttpNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = null;
+            final String targetPath = "enrollments";
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final int pageSize = 10;
 
-        // act
-        Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, pageSize);
+            // act
+            Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, pageSize);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_002: [The constructor shall throw IllegalArgumentException if the provided targetPath is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnTargetPathNull()
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = null;
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final int pageSize = 10;
+    @Test
+    public void constructorThrowsOnTargetPathNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = null;
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final int pageSize = 10;
 
-        // act
-        Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, pageSize);
+            // act
+            Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, pageSize);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_002: [The constructor shall throw IllegalArgumentException if the provided targetPath is null or empty.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnTargetPathEmpty()
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = "";
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final int pageSize = 10;
+    @Test
+    public void constructorThrowsOnTargetPathEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = "";
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final int pageSize = 10;
 
-        // act
-        Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, pageSize);
+            // act
+            Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, pageSize);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_003: [The constructor shall throw IllegalArgumentException if the provided querySpecification is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnQuerySpecificationNull()
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = "enrollments";
-        final QuerySpecification querySpecification = null;
-        final int pageSize = 10;
+    @Test
+    public void constructorThrowsOnQuerySpecificationNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = "enrollments";
+            final QuerySpecification querySpecification = null;
+            final int pageSize = 10;
 
-        // act
-        Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, pageSize);
+            // act
+            Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, pageSize);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_004: [The constructor shall throw IllegalArgumentException if the provided pageSize is negative.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnPageSizeNegative()
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = "enrollments";
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final int pageSize = -10;
+    @Test
+    public void constructorThrowsOnPageSizeNegative() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = "enrollments";
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final int pageSize = -10;
 
-        // act
-        Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, pageSize);
+            // act
+            Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, pageSize);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_005: [The constructor shall store the provided `contractApiHttp` and `pageSize`.] */
@@ -226,46 +231,47 @@ public class QueryTest
     }
 
     /* SRS_QUERY_21_011: [The next shall throw NoSuchElementException if the hasNext is false.] */
-    @Test (expected = NoSuchElementException.class)
-    public void nextThrowsOnFalseHasNext() throws ProvisioningServiceClientException
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = "enrollments";
-        final String queryPath = targetPath + "/query";
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final String querySpecificationJson = "validJson";
-        final int pageSize = 10;
-        final Map<String, String> headersResult = new HashMap<String, String>()
-        {
+    @Test
+    public void nextThrowsOnFalseHasNext() throws ProvisioningServiceClientException {
+        assertThrows(NoSuchElementException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = "enrollments";
+            final String queryPath = targetPath + "/query";
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final String querySpecificationJson = "validJson";
+            final int pageSize = 10;
+            final Map<String, String> headersResult = new HashMap<String, String>()
             {
-                put("x-ms-item-type", "enrollment");
-            }
-        };
+                {
+                    put("x-ms-item-type", "enrollment");
+                }
+            };
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedQuerySpecification.toJson();
-                result = querySpecificationJson;
-                mockedContractApiHttp.request(HttpMethod.POST, queryPath, (Map)any, querySpecificationJson);
-                result = mockedHttpResponse;
-                mockedHttpResponse.getBody();
-                result = "result".getBytes(StandardCharsets.UTF_8);
-                mockedHttpResponse.getHeaderFields();
-                result = headersResult;
-            }
-        };
-        Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, pageSize);
+                {
+                    mockedQuerySpecification.toJson();
+                    result = querySpecificationJson;
+                    mockedContractApiHttp.request(HttpMethod.POST, queryPath, (Map)any, querySpecificationJson);
+                    result = mockedHttpResponse;
+                    mockedHttpResponse.getBody();
+                    result = "result".getBytes(StandardCharsets.UTF_8);
+                    mockedHttpResponse.getHeaderFields();
+                    result = headersResult;
+                }
+            };
+            Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, pageSize);
 
-        query.next();
-        assertFalse(query.hasNext());
+            query.next();
+            assertFalse(query.hasNext());
 
-        // act
-        query.next();
+            // act
+            query.next();
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_012: [If the pageSize is not 0, the next shall send the Http request with `x-ms-max-item-count=[pageSize]` in the header.] */
@@ -364,33 +370,34 @@ public class QueryTest
     }
 
     /* SRS_QUERY_21_015: [The next shall throw IllegalArgumentException if the Http request throws any ProvisioningServiceClientException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void nextThrowsOnRequestFailed() throws ProvisioningServiceClientException
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = "enrollments";
-        final String queryPath = targetPath + "/query";
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final String querySpecificationJson = "validJson";
+    @Test
+    public void nextThrowsOnRequestFailed() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = "enrollments";
+            final String queryPath = targetPath + "/query";
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final String querySpecificationJson = "validJson";
 
-        new StrictExpectations()
-        {
+            new StrictExpectations()
             {
-                mockedQuerySpecification.toJson();
-                result = querySpecificationJson;
-                mockedContractApiHttp.request(HttpMethod.POST, queryPath, (Map)any, querySpecificationJson);
-                result = new ProvisioningServiceClientBadFormatException();
-                times = 1;
-            }
-        };
-        Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, 0);
+                {
+                    mockedQuerySpecification.toJson();
+                    result = querySpecificationJson;
+                    mockedContractApiHttp.request(HttpMethod.POST, queryPath, (Map)any, querySpecificationJson);
+                    result = new ProvisioningServiceClientBadFormatException();
+                    times = 1;
+                }
+            };
+            Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, 0);
 
-        // act
-        query.next();
+            // act
+            query.next();
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_016: [The next shall create and return a new instance of the QueryResult using the `x-ms-item-type` as type, `x-ms-continuation` as the next continuationToken, and the message body.] */
@@ -537,36 +544,37 @@ public class QueryTest
     }
 
     /* SRS_QUERY_21_024: [The next shall throw IllegalArgumentException if the heepResponse contains a null body.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void nextThrowsOnNullBody() throws ProvisioningServiceClientException
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = "enrollments";
-        final String queryPath = targetPath + "/query";
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final String querySpecificationJson = "validJson";
-        final Map<String, String> headersSend = new HashMap<>();
+    @Test
+    public void nextThrowsOnNullBody() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = "enrollments";
+            final String queryPath = targetPath + "/query";
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final String querySpecificationJson = "validJson";
+            final Map<String, String> headersSend = new HashMap<>();
 
-        new StrictExpectations()
-        {
+            new StrictExpectations()
             {
-                mockedQuerySpecification.toJson();
-                result = querySpecificationJson;
-                mockedContractApiHttp.request(HttpMethod.POST, queryPath, headersSend, querySpecificationJson);
-                result = mockedHttpResponse;
-                mockedHttpResponse.getBody();
-                result = null;
-                times = 1;
-            }
-        };
-        Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, 0);
+                {
+                    mockedQuerySpecification.toJson();
+                    result = querySpecificationJson;
+                    mockedContractApiHttp.request(HttpMethod.POST, queryPath, headersSend, querySpecificationJson);
+                    result = mockedHttpResponse;
+                    mockedHttpResponse.getBody();
+                    result = null;
+                    times = 1;
+                }
+            };
+            Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, 0);
 
-        // act
-        query.next();
+            // act
+            query.next();
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_017: [The next shall set hasNext as true if the continuationToken is not null, or false if it is null.] */
@@ -616,55 +624,57 @@ public class QueryTest
     }
 
     /* SRS_QUERY_21_018: [The next shall throw NoSuchElementException if the provided continuationToken is null or empty.] */
-    @Test (expected = NoSuchElementException.class)
-    public void nextThrowsOnNullContinuationToken() throws ProvisioningServiceClientException
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = "enrollments";
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final String querySpecificationJson = "validJson";
+    @Test
+    public void nextThrowsOnNullContinuationToken() throws ProvisioningServiceClientException {
+        assertThrows(NoSuchElementException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = "enrollments";
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final String querySpecificationJson = "validJson";
 
-        new StrictExpectations()
-        {
+            new StrictExpectations()
             {
-                mockedQuerySpecification.toJson();
-                result = querySpecificationJson;
-            }
-        };
-        Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, 0);
+                {
+                    mockedQuerySpecification.toJson();
+                    result = querySpecificationJson;
+                }
+            };
+            Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, 0);
 
-        // act
-        query.next(null);
+            // act
+            query.next(null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_018: [The next shall throw NoSuchElementException if the provided continuationToken is null or empty.] */
-    @Test (expected = NoSuchElementException.class)
-    public void nextThrowsOnEmptyContinuationToken() throws ProvisioningServiceClientException
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = "enrollments";
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final String querySpecificationJson = "validJson";
+    @Test
+    public void nextThrowsOnEmptyContinuationToken() throws ProvisioningServiceClientException {
+        assertThrows(NoSuchElementException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = "enrollments";
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final String querySpecificationJson = "validJson";
 
-        new StrictExpectations()
-        {
+            new StrictExpectations()
             {
-                mockedQuerySpecification.toJson();
-                result = querySpecificationJson;
-            }
-        };
-        Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, 0);
+                {
+                    mockedQuerySpecification.toJson();
+                    result = querySpecificationJson;
+                }
+            };
+            Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, 0);
 
-        // act
-        query.next("");
+            // act
+            query.next("");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_019: [The next shall store the provided continuationToken.] */
@@ -736,30 +746,31 @@ public class QueryTest
     }
 
     /* SRS_QUERY_21_022: [The setPageSize shall throw IllegalArgumentException if the provided pageSize is negative.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void setPageSizeThrowsOnNegativePageSize()
-    {
-        // arrange
-        final ContractApiHttp contractApiHttp = mockedContractApiHttp;
-        final String targetPath = "enrollments";
-        final QuerySpecification querySpecification = mockedQuerySpecification;
-        final String querySpecificationJson = "validJson";
-        final int pageSize = 10;
+    @Test
+    public void setPageSizeThrowsOnNegativePageSize() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final ContractApiHttp contractApiHttp = mockedContractApiHttp;
+            final String targetPath = "enrollments";
+            final QuerySpecification querySpecification = mockedQuerySpecification;
+            final String querySpecificationJson = "validJson";
+            final int pageSize = 10;
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                mockedQuerySpecification.toJson();
-                result = querySpecificationJson;
-            }
-        };
-        Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
-                contractApiHttp, targetPath, querySpecification, pageSize);
+                {
+                    mockedQuerySpecification.toJson();
+                    result = querySpecificationJson;
+                }
+            };
+            Query query = Deencapsulation.newInstance(Query.class, new Class[]{ContractApiHttp.class, String.class, QuerySpecification.class, Integer.class},
+                    contractApiHttp, targetPath, querySpecification, pageSize);
 
-        // act
-        query.setPageSize(-10);
+            // act
+            query.setPageSize(-10);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_21_023: [The setPageSize shall store the new pageSize value.] */

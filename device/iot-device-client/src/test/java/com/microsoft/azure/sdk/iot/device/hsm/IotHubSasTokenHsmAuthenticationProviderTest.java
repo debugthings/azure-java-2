@@ -7,15 +7,15 @@ package com.microsoft.azure.sdk.iot.device.hsm;
 
 import com.microsoft.azure.sdk.iot.device.auth.IotHubSasToken;
 import com.microsoft.azure.sdk.iot.device.auth.IotHubSasTokenAuthenticationProvider;
-import com.microsoft.azure.sdk.iot.device.hsm.HsmException;
-import com.microsoft.azure.sdk.iot.device.hsm.IotHubSasTokenHsmAuthenticationProvider;
 import com.microsoft.azure.sdk.iot.device.auth.SignatureProvider;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class IotHubSasTokenHsmAuthenticationProviderTest
 {
@@ -178,10 +178,11 @@ public class IotHubSasTokenHsmAuthenticationProviderTest
     }
 
     // Tests_SRS_MODULEAUTHENTICATIONWITHHSM_34_002: [If the provided signature provider is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void staticConstructorThrowsForNullSignatureProvider() throws IOException, TransportException
-    {
-        //act
-        IotHubSasTokenHsmAuthenticationProvider.create(null, expectedDeviceId, expectedModuleId, expectedHostname, expectedGatewayHostname, "gen1", expectedTimeToLive, expectedBufferPercent);
+    @Test
+    public void staticConstructorThrowsForNullSignatureProvider() throws IOException, TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            IotHubSasTokenHsmAuthenticationProvider.create(null, expectedDeviceId, expectedModuleId, expectedHostname, expectedGatewayHostname, "gen1", expectedTimeToLive, expectedBufferPercent);
+        });
     }
 }

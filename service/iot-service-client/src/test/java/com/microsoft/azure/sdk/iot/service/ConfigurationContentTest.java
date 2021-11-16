@@ -1,9 +1,8 @@
 package com.microsoft.azure.sdk.iot.service;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.ConfigurationContentParser;
-import com.microsoft.azure.sdk.iot.service.ConfigurationContent;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;

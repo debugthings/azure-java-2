@@ -6,15 +6,14 @@
 package com.microsoft.azure.sdk.iot.service;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.*;
-import com.microsoft.azure.sdk.iot.service.Module;
-import com.microsoft.azure.sdk.iot.service.DeviceConnectionState;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
 import com.microsoft.azure.sdk.iot.service.auth.SymmetricKey;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ModuleTest
 {
@@ -62,38 +61,42 @@ public class ModuleTest
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_002: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void createFromId_deviceId_null()
-    {
-        // Act
-        Module.createFromId(null, "xxx", new SymmetricKey());
+    @Test
+    public void createFromId_deviceId_null() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Module.createFromId(null, "xxx", new SymmetricKey());
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_002: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void createFromId_deviceId_empty()
-    {
-        // Act
-        Module.createFromId("", "xxx", new SymmetricKey());
+    @Test
+    public void createFromId_deviceId_empty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Module.createFromId("", "xxx", new SymmetricKey());
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_002: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void createFromId_moduleId_null()
-    {
-        // Act
-        Module.createFromId("xxx", null, new SymmetricKey());
+    @Test
+    public void createFromId_moduleId_null() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Module.createFromId("xxx", null, new SymmetricKey());
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_002: [The function shall throw IllegalArgumentException if the input string is empty or null]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void createFromId_moduleId_empty()
-    {
-        // Act
-        Module.createFromId(null, "", new SymmetricKey());
+    @Test
+    public void createFromId_moduleId_empty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Module.createFromId(null, "", new SymmetricKey());
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_003: [The function shall create a new instance
@@ -117,47 +120,52 @@ public class ModuleTest
 
     // Codes_SRS_SERVICE_SDK_JAVA_MODULE_28_004: [The function shall throw IllegalArgumentException if the provided deviceId, moduleId or authenticationType is empty or null.]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void createModuleThrowsIllegalArgumentExceptionWhenDeviceIdIsNull()
-    {
-        // Act
-        Module.createModule(null, "module-xxx", AuthenticationType.CERTIFICATE_AUTHORITY);
+    @Test
+    public void createModuleThrowsIllegalArgumentExceptionWhenDeviceIdIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Module.createModule(null, "module-xxx", AuthenticationType.CERTIFICATE_AUTHORITY);
+        });
     }
 
     // Codes_SRS_SERVICE_SDK_JAVA_MODULE_28_004: [The function shall throw IllegalArgumentException if the provided deviceId, moduleId or authenticationType is empty or null.]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void createModuleThrowsIllegalArgumentExceptionWhenDeviceIdIsEmpty()
-    {
-        // Act
-        Module.createModule("", "module-xxx", AuthenticationType.CERTIFICATE_AUTHORITY);
+    @Test
+    public void createModuleThrowsIllegalArgumentExceptionWhenDeviceIdIsEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Module.createModule("", "module-xxx", AuthenticationType.CERTIFICATE_AUTHORITY);
+        });
     }
 
     // Codes_SRS_SERVICE_SDK_JAVA_MODULE_28_004: [The function shall throw IllegalArgumentException if the provided deviceId, moduleId or authenticationType is empty or null.]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void createModuleThrowsIllegalArgumentExceptionWhenModuleIdIsNull()
-    {
-        // Act
-        Module.createModule("device-xxx", null, AuthenticationType.CERTIFICATE_AUTHORITY);
+    @Test
+    public void createModuleThrowsIllegalArgumentExceptionWhenModuleIdIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Module.createModule("device-xxx", null, AuthenticationType.CERTIFICATE_AUTHORITY);
+        });
     }
 
     // Codes_SRS_SERVICE_SDK_JAVA_MODULE_28_004: [The function shall throw IllegalArgumentException if the provided deviceId, moduleId or authenticationType is empty or null.]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void createModuleThrowsIllegalArgumentExceptionWhenModuleIdIsEmpty()
-    {
-        // Act
-        Module.createModule("device-xxx", "", AuthenticationType.CERTIFICATE_AUTHORITY);
+    @Test
+    public void createModuleThrowsIllegalArgumentExceptionWhenModuleIdIsEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Module.createModule("device-xxx", "", AuthenticationType.CERTIFICATE_AUTHORITY);
+        });
     }
 
     // Codes_SRS_SERVICE_SDK_JAVA_MODULE_28_004: [The function shall throw IllegalArgumentException if the provided deviceId, moduleId or authenticationType is empty or null.]
     // Assert
-    @Test(expected = IllegalArgumentException.class)
-    public void createModuleThrowsIllegalArgumentExceptionWhenAuthenticationTypeIsNull()
-    {
-        // Act
-        Module.createModule("device-xxx", "module-xxx", null);
+    @Test
+    public void createModuleThrowsIllegalArgumentExceptionWhenAuthenticationTypeIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Module.createModule("device-xxx", "module-xxx", null);
+        });
     }
 
 
@@ -181,21 +189,23 @@ public class ModuleTest
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_006: [The function shall throw IllegalArgumentException if the input string is empty or null]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorIllegalArgumentExceptionWhenModuleIdIsNull()
-    {
-        // Act
-        Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, SymmetricKey.class},
-                "device-xxx", null, null);
+    @Test
+    public void constructorIllegalArgumentExceptionWhenModuleIdIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, SymmetricKey.class},
+                    "device-xxx", null, null);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_006: [The function shall throw IllegalArgumentException if the input string is empty or null]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorIllegalArgumentExceptionWhenDeviceIdIsNull()
-    {
-        // Act
-        Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, SymmetricKey.class},
-                null, "moduleid", null);
+    @Test
+    public void constructorIllegalArgumentExceptionWhenDeviceIdIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, SymmetricKey.class},
+                    null, "moduleid", null);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_007: [The constructor shall initialize all properties to default values]
@@ -225,30 +235,33 @@ public class ModuleTest
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_008: [The function shall throw IllegalArgumentException if the input string is empty or null]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructor2IllegalArgumentExceptionWhenModuleIdIsNull()
-    {
-        // Act
-        Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, AuthenticationType.class},
-                "device-xxx", null, AuthenticationType.SAS);
+    @Test
+    public void constructor2IllegalArgumentExceptionWhenModuleIdIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, AuthenticationType.class},
+                    "device-xxx", null, AuthenticationType.SAS);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_008: [The function shall throw IllegalArgumentException if the input string is empty or null]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructor2IllegalArgumentExceptionWhenDeviceIdIsNull()
-    {
-        // Act
-        Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, AuthenticationType.class},
-                null, "moduleid", AuthenticationType.SAS);
+    @Test
+    public void constructor2IllegalArgumentExceptionWhenDeviceIdIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, AuthenticationType.class},
+                    null, "moduleid", AuthenticationType.SAS);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_008: [The function shall throw IllegalArgumentException if the input string is empty or null]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructor2IllegalArgumentExceptionWhenAuthTypeIsNull()
-    {
-        // Act
-        Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, AuthenticationType.class},
-                "deviceId", "moduleid", null);
+    @Test
+    public void constructor2IllegalArgumentExceptionWhenAuthTypeIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Act
+            Deencapsulation.newInstance(Module.class, new Class[]{String.class, String.class, AuthenticationType.class},
+                    "deviceId", "moduleid", null);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_009: [The constructor shall initialize all properties to default values]
@@ -419,18 +432,19 @@ public class ModuleTest
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_MODULE_28_011: [If the provided parser is missing a value for its moduleId, an IllegalArgumentException shall be thrown.]
-    @Test(expected = IllegalArgumentException.class)
-    public void conversionFromDeviceParserWithNoModuleId()
-    {
-        // arrange
-        DeviceParser parserSAS = new DeviceParser();
-        parserSAS.setAuthenticationParser(Deencapsulation.newInstance(AuthenticationParser.class));
-        parserSAS.getAuthenticationParser().setType(AuthenticationTypeParser.SAS);
-        parserSAS.getAuthenticationParser().setSymmetricKey(new SymmetricKeyParser(SAMPLE_KEY, SAMPLE_KEY));
-        parserSAS.setDeviceId("deviceSAS");
+    @Test
+    public void conversionFromDeviceParserWithNoModuleId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            DeviceParser parserSAS = new DeviceParser();
+            parserSAS.setAuthenticationParser(Deencapsulation.newInstance(AuthenticationParser.class));
+            parserSAS.getAuthenticationParser().setType(AuthenticationTypeParser.SAS);
+            parserSAS.getAuthenticationParser().setSymmetricKey(new SymmetricKeyParser(SAMPLE_KEY, SAMPLE_KEY));
+            parserSAS.setDeviceId("deviceSAS");
 
-        // act
-        reflectivelyInvokeDeviceParserConstructor(parserSAS);
+            // act
+            reflectivelyInvokeDeviceParserConstructor(parserSAS);
+        });
     }
 
     /**

@@ -9,16 +9,16 @@ package com.microsoft.azure.sdk.iot.provisioning.device.internal.contract;
 
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.ProvisioningDeviceClientConfig;
 import com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClientTransportProtocol;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.ProvisioningDeviceClientContract;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.http.ContractAPIHttp;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.ProvisioningDeviceClientException;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
     Unit tests for ProvisioningDeviceClientContract
@@ -58,14 +58,15 @@ public class ProvisioningDeviceClientContractTest
 
     }
 
-    @Test (expected = ProvisioningDeviceClientException.class)
-    public void createContractThrowsIfLowerLayerThrowsHttp() throws Exception
-    {
-        //arrange
+    @Test
+    public void createContractThrowsIfLowerLayerThrowsHttp() throws Exception {
+        assertThrows(ProvisioningDeviceClientException.class, () -> {
+            //arrange
 
-        //act
-        ProvisioningDeviceClientContract clientContract = ProvisioningDeviceClientContract.createProvisioningContract(null);
+            //act
+            ProvisioningDeviceClientContract clientContract = ProvisioningDeviceClientContract.createProvisioningContract(null);
 
-        //assert
+            //assert
+        });
     }
 }

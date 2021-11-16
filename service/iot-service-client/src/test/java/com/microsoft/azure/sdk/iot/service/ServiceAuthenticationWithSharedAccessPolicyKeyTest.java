@@ -5,31 +5,30 @@
 
 package com.microsoft.azure.sdk.iot.service;
 
-import com.microsoft.azure.sdk.iot.service.IotHubConnectionString;
-import com.microsoft.azure.sdk.iot.service.IotHubConnectionStringBuilder;
-import com.microsoft.azure.sdk.iot.service.ServiceAuthenticationWithSharedAccessPolicyKey;
 import mockit.Deencapsulation;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(JMockit.class)
 public class ServiceAuthenticationWithSharedAccessPolicyKeyTest
 {
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICEAUTHENTICATIONWITHSHAREDACCESSKEY_12_002: [The function shall throw IllegalArgumentException if the input object is null]
     // Assert
-    @Test (expected = IllegalArgumentException.class)
-    public void populate_input_null() throws Exception
-    {
-        // Arrange
-        String newPolicyName = "XXX";
-        String newPolicyKey = "YYY";
-        ServiceAuthenticationWithSharedAccessPolicyKey auth = new ServiceAuthenticationWithSharedAccessPolicyKey(newPolicyName, newPolicyKey);
-        // Act        
-        Deencapsulation.invoke(auth, "populate", IotHubConnectionString.class);
+    @Test
+    public void populate_input_null() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            String newPolicyName = "XXX";
+            String newPolicyKey = "YYY";
+            ServiceAuthenticationWithSharedAccessPolicyKey auth = new ServiceAuthenticationWithSharedAccessPolicyKey(newPolicyName, newPolicyKey);
+            // Act
+            Deencapsulation.invoke(auth, "populate", IotHubConnectionString.class);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_SERVICEAUTHENTICATIONWITHSHAREDACCESSKEY_12_003: [The function shall save the policyName and policyKey to the target object]

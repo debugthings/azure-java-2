@@ -17,6 +17,11 @@ import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -68,19 +73,19 @@ public class DigitalTwinClientComponentTests extends IntegrationTest
         });
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() throws IOException {
         registryManager = RegistryManager.createFromConnectionString(IOTHUB_CONNECTION_STRING);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws URISyntaxException, IOException, IotHubException {
         this.deviceClient = createDeviceClient(protocol);
         deviceClient.open();
         digitalTwinClient = DigitalTwinClient.createFromConnectionString(IOTHUB_CONNECTION_STRING);
     }
 
-    @After
+    @AfterEach
     public void cleanUp() {
         try {
             deviceClient.closeNow();
@@ -101,7 +106,7 @@ public class DigitalTwinClientComponentTests extends IntegrationTest
         return new DeviceClient(deviceConnectionString, protocol, options);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanUpAfterClass()
     {
         registryManager.close();

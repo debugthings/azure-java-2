@@ -11,8 +11,8 @@ import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
 import com.microsoft.azure.sdk.iot.device.ModuleClient;
 import com.microsoft.azure.sdk.iot.service.Message;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.ClientType;
@@ -37,7 +37,7 @@ public class ReceiveMessagesTests extends ReceiveMessagesCommon
         super(protocol, authenticationType, clientType);
     }
 
-    @Before
+    @BeforeEach
     @SuppressWarnings("EmptyMethod")
     public void setupTest() throws Exception
     {

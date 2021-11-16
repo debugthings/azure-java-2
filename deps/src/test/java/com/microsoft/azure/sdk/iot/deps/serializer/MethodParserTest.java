@@ -6,7 +6,7 @@ package com.microsoft.azure.sdk.iot.deps.serializer;
 import com.google.gson.JsonElement;
 import com.microsoft.azure.sdk.iot.deps.Helpers;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +17,7 @@ import static java.util.Arrays.asList;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static com.microsoft.azure.sdk.iot.deps.Helpers.assertMap;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Method serializer
@@ -366,14 +367,15 @@ public class MethodParserTest
     }
 
     /* Tests_SRS_METHODPARSER_21_035: [If the operation is not `response`, the getStatus shall throws IllegalArgumentException.] */
-    @Test(expected = IllegalArgumentException.class)
-    public void getResultsFailed()
-    {
-        // Arrange
-        MethodParser methodParser = new MethodParser();
+    @Test
+    public void getResultsFailed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            MethodParser methodParser = new MethodParser();
 
-        // Act
-        methodParser.getStatus();
+            // Act
+            methodParser.getStatus();
+        });
     }
 
     /* Tests_SRS_METHODPARSER_21_014: [The toJsonElement shall create a String with the full information in the method collection using json format, by using the toJsonElement.] */
@@ -488,14 +490,15 @@ public class MethodParserTest
     }
 
     /* Tests_SRS_METHODPARSER_21_036: [If the method operation is `none`, the toJsonElement shall throw IllegalArgumentException.] */
-    @Test(expected = IllegalArgumentException.class)
-    public void toJsonElementFailed()
-    {
-        // Arrange
-        MethodParser methodParser = new MethodParser();
+    @Test
+    public void toJsonElementFailed() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // Arrange
+            MethodParser methodParser = new MethodParser();
 
-        // Act
-        methodParser.toJsonElement();
+            // Act
+            methodParser.toJsonElement();
+        });
     }
 
     @SuppressWarnings("SameParameterValue") // Since this is a helper method, the params can be passed any value.

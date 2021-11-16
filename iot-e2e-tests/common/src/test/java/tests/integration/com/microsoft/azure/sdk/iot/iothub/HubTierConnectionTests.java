@@ -8,6 +8,10 @@ import com.microsoft.azure.sdk.iot.device.transport.IotHubConnectionStatus;
 import com.microsoft.azure.sdk.iot.service.*;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
 import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.littleshoot.proxy.HttpProxyServer;
@@ -107,7 +111,7 @@ public class HubTierConnectionTests extends IntegrationTest
         ));
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void classSetup()
     {
         try
@@ -121,7 +125,7 @@ public class HubTierConnectionTests extends IntegrationTest
         }
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void startProxy()
     {
         proxyServer = DefaultHttpProxyServer.bootstrap()
@@ -130,13 +134,13 @@ public class HubTierConnectionTests extends IntegrationTest
                 .start();
     }
 
-    @AfterClass
+    @AfterAll
     public static void stopProxy()
     {
         proxyServer.stop();
     }
 
-    @Before
+    @BeforeEach
     public void SetProxyIfApplicable()
     {
         if (testInstance.useHttpProxy)

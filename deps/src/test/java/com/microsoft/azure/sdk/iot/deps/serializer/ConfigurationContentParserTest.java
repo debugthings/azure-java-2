@@ -1,8 +1,7 @@
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
 import com.google.gson.JsonElement;
-import com.microsoft.azure.sdk.iot.deps.serializer.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,23 +10,26 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ConfigurationContentParserTest
 {
     //Tests_SRS_CONFIGURATION_CONTENT_PARSER_28_001: [If the provided json is null, empty, an IllegalArgumentException shall be thrown.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullJson()
-    {
-        //act
-        new ConfigurationContentParser(null);
+    @Test
+    public void constructorThrowsForNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ConfigurationContentParser(null);
+        });
     }
 
     //Tests_SRS_CONFIGURATION_CONTENT_PARSER_28_001: [If the provided json is null, empty, an IllegalArgumentException shall be thrown.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyJson()
-    {
-        //act
-        new ConfigurationContentParser("");
+    @Test
+    public void constructorThrowsForEmptyJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ConfigurationContentParser("");
+        });
     }
 
     //Tests_SRS_CONFIGURATION_CONTENT_PARSER_28_002: [The constructor shall take the provided json and convert
@@ -54,14 +56,15 @@ public class ConfigurationContentParserTest
 
     //Tests_SRS_CONFIGURATION_CONTENT_PARSER_28_003: [If the provided json cannot be parsed into a ConfigurationContentParser
     // object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForInvalidJson()
-    {
-        //arrange
-        String json = "{";
+    @Test
+    public void constructorThrowsForInvalidJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{";
 
-        //act
-        new ConfigurationContentParser(json);
+            //act
+            new ConfigurationContentParser(json);
+        });
     }
 
     //Tests_SRS_CONFIGURATION_METRICS_PARSER_28_005: [This method shall return the value of this object's modulesContent.]

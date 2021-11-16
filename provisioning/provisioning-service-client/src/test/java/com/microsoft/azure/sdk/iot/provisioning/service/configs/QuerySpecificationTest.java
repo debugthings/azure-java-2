@@ -5,10 +5,11 @@ package com.microsoft.azure.sdk.iot.provisioning.service.configs;
 
 import com.google.gson.JsonElement;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.provisioning.service.Helpers;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service query Specification serializer
@@ -22,39 +23,42 @@ public class QuerySpecificationTest
     private static final String VALID_CONTINUATION_TOKEN = "{\"token\":\"+RID:Defghij6KLMNOPQ==#RS:1#TRC:2#FPC:AUAAAAAAAAAJQABAAAAAAAk=\",\"range\":{\"min\":\"0123456789abcd\",\"max\":\"FF\"}}";
 
     /* SRS_QUERY_SPECIFICATION_21_001: [The constructor shall throw IllegalArgumentException if the provided query is null, empty, or invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullQuery()
-    {
-        // arrange
+    @Test
+    public void constructorThrowsOnNullQuery() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        new QuerySpecification(null);
+            // act
+            new QuerySpecification(null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_SPECIFICATION_21_001: [The constructor shall throw IllegalArgumentException if the provided query is null, empty, or invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyQuery()
-    {
-        // arrange
+    @Test
+    public void constructorThrowsOnEmptyQuery() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        new QuerySpecification("");
+            // act
+            new QuerySpecification("");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_SPECIFICATION_21_001: [The constructor shall throw IllegalArgumentException if the provided query is null, empty, or invalid.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnInvalidQuery()
-    {
-        // arrange
+    @Test
+    public void constructorThrowsOnInvalidQuery() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        new QuerySpecification("Invalid query");
+            // act
+            new QuerySpecification("Invalid query");
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_QUERY_SPECIFICATION_21_002: [The constructor shall store the provided `query`.] */

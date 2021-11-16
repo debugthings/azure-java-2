@@ -4,13 +4,13 @@
 package com.microsoft.azure.sdk.iot.service.jobs;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.JobsStatisticsParser;
-import com.microsoft.azure.sdk.iot.service.jobs.JobStatistics;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for job statistics
@@ -22,14 +22,15 @@ public class JobStatisticsTest
     JobsStatisticsParser mockedJobsStatisticsParser;
 
     /* Tests_SRS_JOBSTATISTICS_21_001: [The constructor shall throw IllegalArgumentException if the input jobsStatisticsParser is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullJobId()
-    {
-        //arrange
-        final JobsStatisticsParser jobsStatisticsParser = null;
+    @Test
+    public void constructorThrowsOnNullJobId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final JobsStatisticsParser jobsStatisticsParser = null;
 
-        //act
-        JobStatistics jobStatistics = Deencapsulation.newInstance(JobStatistics.class, new Class[] {JobsStatisticsParser.class}, jobsStatisticsParser);
+            //act
+            JobStatistics jobStatistics = Deencapsulation.newInstance(JobStatistics.class, new Class[] {JobsStatisticsParser.class}, jobsStatisticsParser);
+        });
     }
 
     /* Tests_SRS_JOBSTATISTICS_21_002: [The constructor shall locally store all statistics information in jobsStatisticsParser.] */

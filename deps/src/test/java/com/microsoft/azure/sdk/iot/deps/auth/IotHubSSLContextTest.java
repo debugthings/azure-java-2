@@ -3,8 +3,6 @@
 
 package com.microsoft.azure.sdk.iot.deps.auth;
 
-import com.microsoft.azure.sdk.iot.deps.auth.IotHubCertificateManager;
-import com.microsoft.azure.sdk.iot.deps.auth.IotHubSSLContext;
 import mockit.*;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -12,7 +10,7 @@ import org.bouncycastle.openssl.PEMKeyPair;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.*;
 import java.io.ByteArrayInputStream;
@@ -30,6 +28,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * Unit tests for IotHubSSLContext
@@ -430,20 +429,21 @@ public class IotHubSSLContextTest
     }
 
     // Tests_SRS_IOTHUBSSLCONTEXT_34_032: [If any exception is encountered while attempting to create the private key instance, this function shall throw a CertificateException.]
-    @Test (expected = CertificateException.class)
-    public void parsePrivateKeyExceptionsWrappedInCertificateException() throws CertificateException, IOException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void parsePrivateKeyExceptionsWrappedInCertificateException() throws CertificateException, IOException {
+        assertThrows(CertificateException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                new StringReader(expectedPrivateKeyString);
-                result = new IOException();
-            }
-        };
+                {
+                    new StringReader(expectedPrivateKeyString);
+                    result = new IOException();
+                }
+            };
 
-        //act
-        PrivateKey actualPrivateKey = Deencapsulation.invoke(IotHubSSLContext.class, "parsePrivateKey", new Class[] {String.class}, expectedPrivateKeyString);
+            //act
+            PrivateKey actualPrivateKey = Deencapsulation.invoke(IotHubSSLContext.class, "parsePrivateKey", new Class[] {String.class}, expectedPrivateKeyString);
+        });
     }
 
     // Tests_Codes_SRS_IOTHUBSSLCONTEXT_34_033: [This function shall return the X509Certificate cert chain specified by the PEM formatted publicKeyCertificateString.]
@@ -521,23 +521,24 @@ public class IotHubSSLContextTest
     }
 
     // Tests_SRS_IOTHUBSSLCONTEXT_34_034: [If any exception is encountered while attempting to create the public key certificate instance, this function shall throw a CertificateException.]
-    @Test (expected = CertificateException.class)
-    public void parsePublicKeyCertificateExceptionsWrappedInCertificateException() throws CertificateException, IOException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void parsePublicKeyCertificateExceptionsWrappedInCertificateException() throws CertificateException, IOException {
+        assertThrows(CertificateException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                new PemReader(new StringReader(expectedPublicKeyCertificateString));
-                result = new IOException();
-            }
-        };
+                {
+                    new PemReader(new StringReader(expectedPublicKeyCertificateString));
+                    result = new IOException();
+                }
+            };
 
-        //act
-        X509Certificate actualPublicKeyCertificate = Deencapsulation.invoke(IotHubSSLContext.class, "parsePublicKeyCertificate", new Class[] {String.class}, expectedPublicKeyCertificateString);
+            //act
+            X509Certificate actualPublicKeyCertificate = Deencapsulation.invoke(IotHubSSLContext.class, "parsePublicKeyCertificate", new Class[] {String.class}, expectedPublicKeyCertificateString);
 
-        //assert
-        assertEquals(mockedX509Certificate, actualPublicKeyCertificate);
+            //assert
+            assertEquals(mockedX509Certificate, actualPublicKeyCertificate);
+        });
     }
 
     //Tests_SRS_IOTHUBSSLCONTEXT_34_027: [This constructor shall save the provided ssl context.]
@@ -553,10 +554,11 @@ public class IotHubSSLContextTest
     }
 
     //Tests_SRS_IOTHUBSSLCONTEXT_34_028: [If the provided sslContext is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullSSLContext()
-    {
-        //act
-        new IotHubSSLContext(null);
+    @Test
+    public void constructorThrowsForNullSSLContext() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new IotHubSSLContext(null);
+        });
     }
 }

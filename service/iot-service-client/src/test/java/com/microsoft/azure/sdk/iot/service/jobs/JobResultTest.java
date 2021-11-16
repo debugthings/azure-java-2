@@ -10,12 +10,8 @@ import com.microsoft.azure.sdk.iot.deps.serializer.MethodParser;
 import com.microsoft.azure.sdk.iot.deps.twin.TwinState;
 import com.microsoft.azure.sdk.iot.deps.twin.TwinCollection;
 import com.microsoft.azure.sdk.iot.service.devicetwin.MethodResult;
-import com.microsoft.azure.sdk.iot.service.jobs.JobResult;
-import com.microsoft.azure.sdk.iot.service.jobs.JobStatistics;
-import com.microsoft.azure.sdk.iot.service.jobs.JobStatus;
-import com.microsoft.azure.sdk.iot.service.jobs.JobType;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import java.io.IOException;
@@ -25,6 +21,7 @@ import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for job statistics
@@ -152,14 +149,15 @@ public class JobResultTest
         };
     }
     /* Tests_SRS_JOBRESULT_21_001: [The constructor shall throw IllegalArgumentException if the input body is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullJson()
-    {
-        //arrange
-        final byte[] resultBytes = null;
+    @Test
+    public void constructorThrowsOnNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final byte[] resultBytes = null;
 
-        //act
-        Deencapsulation.newInstance(JobResult.class, new Class[] {byte[].class}, resultBytes);
+            //act
+            Deencapsulation.newInstance(JobResult.class, new Class[] {byte[].class}, resultBytes);
+        });
     }
 
     /* Tests_SRS_JOBRESULT_21_002: [The constructor shall parse the body using the JobsResponseParser.] */
@@ -192,22 +190,23 @@ public class JobResultTest
     }
 
     /* Tests_SRS_JOBRESULT_21_003: [The constructor shall throw JsonParseException if the input body contains a invalid json.] */
-    @Test (expected = JsonParseException.class)
-    public void constructorThrowsOnInvalidJson()
-    {
-        //arrange
-        final String json = "{invalidJson:";
+    @Test
+    public void constructorThrowsOnInvalidJson() {
+        assertThrows(JsonParseException.class, () -> {
+            //arrange
+            final String json = "{invalidJson:";
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                JobsResponseParser.createFromJson(json);
-                result = new JsonParseException("");
-            }
-        };
+                {
+                    JobsResponseParser.createFromJson(json);
+                    result = new JsonParseException("");
+                }
+            };
 
-        //act
-        JobResult jobResult = Deencapsulation.newInstance(JobResult.class, new Class[] {byte[].class}, json.getBytes(StandardCharsets.UTF_8));
+            //act
+            JobResult jobResult = Deencapsulation.newInstance(JobResult.class, new Class[] {byte[].class}, json.getBytes(StandardCharsets.UTF_8));
+        });
     }
 
     /* Tests_SRS_JOBRESULT_21_004: [The constructor shall locally store all results information in the provided body.] */

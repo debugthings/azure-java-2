@@ -11,11 +11,10 @@ import com.microsoft.azure.sdk.iot.device.exceptions.ModuleClientException;
 import com.microsoft.azure.sdk.iot.device.transport.ExponentialBackoffWithJitter;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubConnectionStatus;
 import com.microsoft.azure.sdk.iot.device.transport.NoRetry;
-import com.microsoft.azure.sdk.iot.service.Device;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.*;
@@ -167,7 +166,7 @@ public class SendMessagesErrInjTests extends SendMessagesCommon
         IotHubServicesCommon.sendMessagesExpectingConnectionStatusChangeUpdate(testInstance.identity.getClient(), testInstance.protocol, AMQP_C2D_LINK_DROP_MESSAGES_TO_SEND, RETRY_MILLISECONDS, SEND_TIMEOUT_MILLISECONDS, IotHubConnectionStatus.DISCONNECTED_RETRYING, 100, testInstance.authenticationType);
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void sendMessagesWithThrottling() throws Exception
     {
@@ -186,7 +185,7 @@ public class SendMessagesErrInjTests extends SendMessagesCommon
 
     }
 
-    @Ignore
+    @Disabled
     @Test
     @ContinuousIntegrationTest
     public void sendMessagesWithThrottlingNoRetry() throws Exception
@@ -206,7 +205,7 @@ public class SendMessagesErrInjTests extends SendMessagesCommon
 
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void sendMessagesWithAuthenticationError() throws Exception
     {
@@ -224,7 +223,7 @@ public class SendMessagesErrInjTests extends SendMessagesCommon
                 false);
     }
 
-    @Ignore
+    @Disabled
     @Test
     @ContinuousIntegrationTest
     public void sendMessagesWithQuotaExceeded() throws Exception

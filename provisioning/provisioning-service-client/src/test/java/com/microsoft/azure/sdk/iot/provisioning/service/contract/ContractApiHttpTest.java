@@ -8,13 +8,11 @@ import com.microsoft.azure.sdk.iot.deps.transport.http.HttpRequest;
 import com.microsoft.azure.sdk.iot.deps.transport.http.HttpResponse;
 import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningConnectionString;
 import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningSasToken;
-import com.microsoft.azure.sdk.iot.provisioning.service.contract.SDKUtils;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientException;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientExceptionManager;
-import com.microsoft.azure.sdk.iot.provisioning.service.contract.ContractApiHttp;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientTransportException;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -25,6 +23,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Device Provisioning Service Contract APIs for HTTP.
@@ -102,28 +101,30 @@ public class ContractApiHttpTest
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_002: [The constructor shall throw IllegalArgumentException if the connection string is null.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void privateConstructorThrowsOnNullConnectionString()
-    {
-        // arrange
+    @Test
+    public void privateConstructorThrowsOnNullConnectionString() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        // act
-        Deencapsulation.newInstance(ContractApiHttp.class, new Class[]{ProvisioningConnectionString.class}, (ProvisioningConnectionString)null);
+            // act
+            Deencapsulation.newInstance(ContractApiHttp.class, new Class[]{ProvisioningConnectionString.class}, (ProvisioningConnectionString)null);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_003: [The createFromConnectionString shall throw IllegalArgumentException if the input string is null, threw by the constructor.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void createFromConnectionStringThrowsOnNullConnectionString() throws ProvisioningServiceClientException
-    {
-        // arrange
-        final ProvisioningConnectionString provisioningConnectionString = null;
+    @Test
+    public void createFromConnectionStringThrowsOnNullConnectionString() throws ProvisioningServiceClientException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final ProvisioningConnectionString provisioningConnectionString = null;
 
-        // act
-        ContractApiHttp.createFromConnectionString(provisioningConnectionString);
+            // act
+            ContractApiHttp.createFromConnectionString(provisioningConnectionString);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_004: [The createFromConnectionString shall create a new ContractApiHttp instance and return it.] */
@@ -184,29 +185,30 @@ public class ContractApiHttpTest
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_006: [If the request get problem to create the SAS token, it shall throw IllegalArgumentException.*/
-    @Test (expected = IllegalArgumentException.class)
-    public void requestThrowsOnSasToken() throws ProvisioningServiceClientException, IOException
-    {
-        // arrange
+    @Test
+    public void requestThrowsOnSasToken() throws ProvisioningServiceClientException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                new ProvisioningSasToken(mockedProvisioningConnectionString);
-                result = new IllegalArgumentException("");
-            }
-        };
+                {
+                    new ProvisioningSasToken(mockedProvisioningConnectionString);
+                    result = new IllegalArgumentException("");
+                }
+            };
 
-        ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+            ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
 
-        // act
-        contractApiHttp.request(
-                HttpMethod.PUT,
-                VALID_PATH,
-                VALID_HEADER,
-                VALID_PAYLOAD);
+            // act
+            contractApiHttp.request(
+                    HttpMethod.PUT,
+                    VALID_PATH,
+                    VALID_HEADER,
+                    VALID_PAYLOAD);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_007: [The request shall create a HTTP URL based on the Device Registration path.*/
@@ -236,95 +238,98 @@ public class ContractApiHttpTest
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_008: [If the provided path is null or empty, the request shall throw IllegalArgumentException.*/
-    @Test (expected = IllegalArgumentException.class)
-    public void requestThrowsOnNullPath() throws ProvisioningServiceClientException, IOException
-    {
-        // arrange
+    @Test
+    public void requestThrowsOnNullPath() throws ProvisioningServiceClientException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                new ProvisioningSasToken(mockedProvisioningConnectionString);
-                result = mockedProvisioningSasToken;
-                mockedProvisioningSasToken.toString();
-                result = VALID_SASTOKEN;
-                mockedProvisioningConnectionString.getHostName();
-                result = VALID_HOST_NAME;
-            }
-        };
+                {
+                    new ProvisioningSasToken(mockedProvisioningConnectionString);
+                    result = mockedProvisioningSasToken;
+                    mockedProvisioningSasToken.toString();
+                    result = VALID_SASTOKEN;
+                    mockedProvisioningConnectionString.getHostName();
+                    result = VALID_HOST_NAME;
+                }
+            };
 
-        ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+            ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
 
-        // act
-        contractApiHttp.request(
-                HttpMethod.PUT,
-                null,
-                VALID_HEADER,
-                VALID_PAYLOAD);
+            // act
+            contractApiHttp.request(
+                    HttpMethod.PUT,
+                    null,
+                    VALID_HEADER,
+                    VALID_PAYLOAD);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_009: [If the provided path contains not valid characters, the request shall throw IllegalArgumentException.*/
-    @Test (expected = IllegalArgumentException.class)
-    public void requestThrowsOnEmptyPath() throws ProvisioningServiceClientException, IOException
-    {
-        // arrange
+    @Test
+    public void requestThrowsOnEmptyPath() throws ProvisioningServiceClientException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                new ProvisioningSasToken(mockedProvisioningConnectionString);
-                result = mockedProvisioningSasToken;
-                mockedProvisioningSasToken.toString();
-                result = VALID_SASTOKEN;
-                mockedProvisioningConnectionString.getHostName();
-                result = VALID_HOST_NAME;
-            }
-        };
+                {
+                    new ProvisioningSasToken(mockedProvisioningConnectionString);
+                    result = mockedProvisioningSasToken;
+                    mockedProvisioningSasToken.toString();
+                    result = VALID_SASTOKEN;
+                    mockedProvisioningConnectionString.getHostName();
+                    result = VALID_HOST_NAME;
+                }
+            };
 
-        ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+            ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
 
-        // act
-        contractApiHttp.request(
-                HttpMethod.PUT,
-                "",
-                VALID_HEADER,
-                VALID_PAYLOAD);
+            // act
+            contractApiHttp.request(
+                    HttpMethod.PUT,
+                    "",
+                    VALID_HEADER,
+                    VALID_PAYLOAD);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_009: [If the provided path contains not valid characters, the request shall throw IllegalArgumentException.*/
-    @Test (expected = IllegalArgumentException.class)
-    public void requestThrowsOnWrongPath() throws ProvisioningServiceClientException, IOException
-    {
-        // arrange
+    @Test
+    public void requestThrowsOnWrongPath() throws ProvisioningServiceClientException, IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                new ProvisioningSasToken(mockedProvisioningConnectionString);
-                result = mockedProvisioningSasToken;
-                mockedProvisioningSasToken.toString();
-                result = VALID_SASTOKEN;
-                mockedProvisioningConnectionString.getHostName();
-                result = VALID_HOST_NAME;
-                new URL((String)any);
-                result = new MalformedURLException();
-            }
-        };
+                {
+                    new ProvisioningSasToken(mockedProvisioningConnectionString);
+                    result = mockedProvisioningSasToken;
+                    mockedProvisioningSasToken.toString();
+                    result = VALID_SASTOKEN;
+                    mockedProvisioningConnectionString.getHostName();
+                    result = VALID_HOST_NAME;
+                    new URL((String)any);
+                    result = new MalformedURLException();
+                }
+            };
 
-        ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+            ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
 
-        // act
-        contractApiHttp.request(
-                HttpMethod.PUT,
-                VALID_PATH,
-                VALID_HEADER,
-                VALID_PAYLOAD);
+            // act
+            contractApiHttp.request(
+                    HttpMethod.PUT,
+                    VALID_PATH,
+                    VALID_HEADER,
+                    VALID_PAYLOAD);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_010: [The request shall create a new HttpRequest.*/
@@ -370,36 +375,37 @@ public class ContractApiHttpTest
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_011: [If the request get problem creating the HttpRequest, it shall throw ProvisioningServiceClientTransportException.*/
-    @Test (expected = ProvisioningServiceClientTransportException.class)
-    public void requestThrowsOnHttpRequestFailed() throws ProvisioningServiceClientException, IOException
-    {
-        // arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void requestThrowsOnHttpRequestFailed() throws ProvisioningServiceClientException, IOException {
+        assertThrows(ProvisioningServiceClientTransportException.class, () -> {
+            // arrange
+            new NonStrictExpectations()
             {
-                new ProvisioningSasToken(mockedProvisioningConnectionString);
-                result = mockedProvisioningSasToken;
-                mockedProvisioningSasToken.toString();
-                result = VALID_SASTOKEN;
-                mockedProvisioningConnectionString.getHostName();
-                result = VALID_HOST_NAME;
-                new URL((String)any);
-                result = mockedURL;
-                new HttpRequest(mockedURL, HttpMethod.PUT, VALID_PAYLOAD.getBytes(StandardCharsets.UTF_8));
-                result = new IOException();
-            }
-        };
+                {
+                    new ProvisioningSasToken(mockedProvisioningConnectionString);
+                    result = mockedProvisioningSasToken;
+                    mockedProvisioningSasToken.toString();
+                    result = VALID_SASTOKEN;
+                    mockedProvisioningConnectionString.getHostName();
+                    result = VALID_HOST_NAME;
+                    new URL((String)any);
+                    result = mockedURL;
+                    new HttpRequest(mockedURL, HttpMethod.PUT, VALID_PAYLOAD.getBytes(StandardCharsets.UTF_8));
+                    result = new IOException();
+                }
+            };
 
-        ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+            ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
 
-        // act
-        contractApiHttp.request(
-                HttpMethod.PUT,
-                VALID_PATH,
-                VALID_HEADER,
-                VALID_PAYLOAD);
+            // act
+            contractApiHttp.request(
+                    HttpMethod.PUT,
+                    VALID_PATH,
+                    VALID_HEADER,
+                    VALID_PAYLOAD);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_012: [The request shall fill the http header with the standard parameters.] */
@@ -500,78 +506,80 @@ public class ContractApiHttpTest
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_015: [If the HttpRequest failed send the message, the request shall throw ProvisioningServiceClientTransportException, threw by the callee.*/
-    @Test (expected = ProvisioningServiceClientException.class)
-    public void requestThrowsOnSendHttpRequestFailed() throws ProvisioningServiceClientException, IOException
-    {
-        // arrange
+    @Test
+    public void requestThrowsOnSendHttpRequestFailed() throws ProvisioningServiceClientException, IOException {
+        assertThrows(ProvisioningServiceClientException.class, () -> {
+            // arrange
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                new ProvisioningSasToken(mockedProvisioningConnectionString);
-                result = mockedProvisioningSasToken;
-                mockedProvisioningSasToken.toString();
-                result = VALID_SASTOKEN;
-                mockedProvisioningConnectionString.getHostName();
-                result = VALID_HOST_NAME;
-                new URL((String)any);
-                result = mockedURL;
-                new HttpRequest(mockedURL, HttpMethod.PUT, VALID_PAYLOAD.getBytes(StandardCharsets.UTF_8));
-                result = mockedHttpRequest;
-                mockedHttpRequest.send();
-                result = new ProvisioningServiceClientException();
-            }
-        };
+                {
+                    new ProvisioningSasToken(mockedProvisioningConnectionString);
+                    result = mockedProvisioningSasToken;
+                    mockedProvisioningSasToken.toString();
+                    result = VALID_SASTOKEN;
+                    mockedProvisioningConnectionString.getHostName();
+                    result = VALID_HOST_NAME;
+                    new URL((String)any);
+                    result = mockedURL;
+                    new HttpRequest(mockedURL, HttpMethod.PUT, VALID_PAYLOAD.getBytes(StandardCharsets.UTF_8));
+                    result = mockedHttpRequest;
+                    mockedHttpRequest.send();
+                    result = new ProvisioningServiceClientException();
+                }
+            };
 
-        ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+            ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
 
-        // act
-        contractApiHttp.request(
-                HttpMethod.PUT,
-                VALID_PATH,
-                VALID_HEADER,
-                VALID_PAYLOAD);
+            // act
+            contractApiHttp.request(
+                    HttpMethod.PUT,
+                    VALID_PATH,
+                    VALID_HEADER,
+                    VALID_PAYLOAD);
 
-        // assert
+            // assert
+        });
     }
 
     /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_016: [If the Device Provisioning Service respond to the HttpRequest with any error code, the request shall throw the appropriated ProvisioningServiceClientException, by calling ProvisioningServiceClientExceptionManager.responseVerification().*/
-    @Test (expected = ProvisioningServiceClientException.class)
-    public void requestThrowsOnDeviceProvisioningServiceError() throws ProvisioningServiceClientException, IOException
-    {
-        // arrange
+    @Test
+    public void requestThrowsOnDeviceProvisioningServiceError() throws ProvisioningServiceClientException, IOException {
+        assertThrows(ProvisioningServiceClientException.class, () -> {
+            // arrange
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                new ProvisioningSasToken(mockedProvisioningConnectionString);
-                result = mockedProvisioningSasToken;
-                mockedProvisioningSasToken.toString();
-                result = VALID_SASTOKEN;
-                mockedProvisioningConnectionString.getHostName();
-                result = VALID_HOST_NAME;
-                new URL((String)any);
-                result = mockedURL;
-                new HttpRequest(mockedURL, HttpMethod.PUT, VALID_PAYLOAD.getBytes(StandardCharsets.UTF_8));
-                result = mockedHttpRequest;
-                mockedHttpRequest.send();
-                result = mockedHttpResponse;
-                mockedHttpResponse.getStatus();
-                result = 401;
-                mockedHttpResponse.getErrorReason();
-                result = VALID_SUCCESS_MESSAGE.getBytes(StandardCharsets.UTF_8);
-            }
-        };
+                {
+                    new ProvisioningSasToken(mockedProvisioningConnectionString);
+                    result = mockedProvisioningSasToken;
+                    mockedProvisioningSasToken.toString();
+                    result = VALID_SASTOKEN;
+                    mockedProvisioningConnectionString.getHostName();
+                    result = VALID_HOST_NAME;
+                    new URL((String)any);
+                    result = mockedURL;
+                    new HttpRequest(mockedURL, HttpMethod.PUT, VALID_PAYLOAD.getBytes(StandardCharsets.UTF_8));
+                    result = mockedHttpRequest;
+                    mockedHttpRequest.send();
+                    result = mockedHttpResponse;
+                    mockedHttpResponse.getStatus();
+                    result = 401;
+                    mockedHttpResponse.getErrorReason();
+                    result = VALID_SUCCESS_MESSAGE.getBytes(StandardCharsets.UTF_8);
+                }
+            };
 
-        ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
+            ContractApiHttp contractApiHttp = ContractApiHttp.createFromConnectionString(mockedProvisioningConnectionString);
 
-        // act
-        contractApiHttp.request(
-                HttpMethod.PUT,
-                VALID_PATH,
-                VALID_HEADER,
-                VALID_PAYLOAD);
+            // act
+            contractApiHttp.request(
+                    HttpMethod.PUT,
+                    VALID_PATH,
+                    VALID_HEADER,
+                    VALID_PAYLOAD);
 
-        // assert
+            // assert
+        });
     }
 }

@@ -5,8 +5,7 @@
 
 package com.microsoft.azure.sdk.iot.device.edge;
 
-import com.microsoft.azure.sdk.iot.device.edge.MethodResult;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 

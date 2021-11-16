@@ -9,12 +9,8 @@ import com.microsoft.azure.sdk.iot.device.edge.MethodResult;
 import com.microsoft.azure.sdk.iot.device.exceptions.HubOrDeviceIdNotFoundException;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsIotHubConnection;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsMethod;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsSingleMessage;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsTransportManager;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -24,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for https transport manager.
@@ -66,14 +63,15 @@ public class HttpsTransportManagerTest
     }
 
     /* Tests_SRS_HTTPSTRANSPORTMANAGER_21_002: [If the provided `config` is null, the constructor shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorNullConfig()
-    {
-        // arrange
-        final DeviceClientConfig config = null;
+    @Test
+    public void constructorNullConfig() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final DeviceClientConfig config = null;
 
-        // act
-        Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, config);
+            // act
+            Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, config);
+        });
     }
 
     /* Tests_SRS_HTTPSTRANSPORTMANAGER_21_003: [The open shall create and store a new transport connection `HttpsIotHubConnection`.] */
@@ -179,26 +177,27 @@ public class HttpsTransportManagerTest
     }
 
     /* Tests_SRS_HTTPSTRANSPORTMANAGER_21_008: [If send failed to parse the message, it shall bypass the exception.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void sendParseHttpsJsonMessageThrows()
-    {
-        // arrange
-        final HttpsIotHubConnection httpsIotHubConnection = mockConn;
-        final String uriPath = "/files/notifications";
-        new NonStrictExpectations()
-        {
+    @Test
+    public void sendParseHttpsJsonMessageThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final HttpsIotHubConnection httpsIotHubConnection = mockConn;
+            final String uriPath = "/files/notifications";
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(HttpsIotHubConnection.class, new Class[] {DeviceClientConfig.class}, mockConfig);
-                result = httpsIotHubConnection;
-                Deencapsulation.invoke(HttpsSingleMessage.class, "parseHttpsJsonMessage", new Class[] {Message.class}, mockTransportMsg);
-                result = new IllegalArgumentException();
-            }
-        };
-        HttpsTransportManager httpsTransportManager = Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, mockConfig);
-        Deencapsulation.invoke(httpsTransportManager, "open");
+                {
+                    Deencapsulation.newInstance(HttpsIotHubConnection.class, new Class[] {DeviceClientConfig.class}, mockConfig);
+                    result = httpsIotHubConnection;
+                    Deencapsulation.invoke(HttpsSingleMessage.class, "parseHttpsJsonMessage", new Class[] {Message.class}, mockTransportMsg);
+                    result = new IllegalArgumentException();
+                }
+            };
+            HttpsTransportManager httpsTransportManager = Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, mockConfig);
+            Deencapsulation.invoke(httpsTransportManager, "open");
 
-        // act
-        Deencapsulation.invoke(httpsTransportManager, "send", new Class[] {IotHubTransportMessage.class, Map.class}, mockTransportMsg, new HashMap<String, String>());
+            // act
+            Deencapsulation.invoke(httpsTransportManager, "send", new Class[] {IotHubTransportMessage.class, Map.class}, mockTransportMsg, new HashMap<String, String>());
+        });
     }
 
     /* Tests_SRS_HTTPSTRANSPORTMANAGER_21_009: [If the IotHubMethod is `GET`, the send shall set the httpsMethod as `GET`.] */
@@ -278,28 +277,29 @@ public class HttpsTransportManagerTest
     }
 
     /* Tests_SRS_HTTPSTRANSPORTMANAGER_21_011: [If the IotHubMethod is not `GET` or `POST`, the send shall throws IllegalArgumentException.] */
-    @Test (expected = IllegalArgumentException.class)
-    public void sendInvalidMethodThrows()
-    {
-        // arrange
-        final HttpsIotHubConnection httpsIotHubConnection = mockConn;
-        final String uriPath = "/files/notifications";
-        new NonStrictExpectations()
-        {
+    @Test
+    public void sendInvalidMethodThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            final HttpsIotHubConnection httpsIotHubConnection = mockConn;
+            final String uriPath = "/files/notifications";
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(HttpsIotHubConnection.class, new Class[] {DeviceClientConfig.class}, mockConfig);
-                result = httpsIotHubConnection;
-                Deencapsulation.invoke(HttpsSingleMessage.class, "parseHttpsJsonMessage", new Class[] {Message.class}, mockTransportMsg);
-                result = mockHttpsMessage;
-                mockTransportMsg.getIotHubMethod();
-                result = null;
-            }
-        };
-        HttpsTransportManager httpsTransportManager = Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, mockConfig);
-        Deencapsulation.invoke(httpsTransportManager, "open");
+                {
+                    Deencapsulation.newInstance(HttpsIotHubConnection.class, new Class[] {DeviceClientConfig.class}, mockConfig);
+                    result = httpsIotHubConnection;
+                    Deencapsulation.invoke(HttpsSingleMessage.class, "parseHttpsJsonMessage", new Class[] {Message.class}, mockTransportMsg);
+                    result = mockHttpsMessage;
+                    mockTransportMsg.getIotHubMethod();
+                    result = null;
+                }
+            };
+            HttpsTransportManager httpsTransportManager = Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, mockConfig);
+            Deencapsulation.invoke(httpsTransportManager, "open");
 
-        // act
-        Deencapsulation.invoke(httpsTransportManager, "send", new Class[] {IotHubTransportMessage.class, Map.class}, mockTransportMsg, new HashMap<String, String>());
+            // act
+            Deencapsulation.invoke(httpsTransportManager, "send", new Class[] {IotHubTransportMessage.class, Map.class}, mockTransportMsg, new HashMap<String, String>());
+        });
     }
 
     /* Tests_SRS_HTTPSTRANSPORTMANAGER_21_012: [The send shall set the httpsPath with the uriPath in the message.] */
@@ -342,32 +342,33 @@ public class HttpsTransportManagerTest
     }
 
     /* Tests_SRS_HTTPSTRANSPORTMANAGER_21_014: [If `sendHttpsMessage` failed, the send shall bypass the exception.] */
-    @Test (expected = IOException.class)
-    public void sendSendHttpsMessageThrows() throws IOException, TransportException
-    {
-        // arrange
-        final HttpsIotHubConnection httpsIotHubConnection = mockConn;
-        final String uriPath = "/files/notifications";
-        new NonStrictExpectations()
-        {
+    @Test
+    public void sendSendHttpsMessageThrows() throws IOException, TransportException {
+        assertThrows(IOException.class, () -> {
+            // arrange
+            final HttpsIotHubConnection httpsIotHubConnection = mockConn;
+            final String uriPath = "/files/notifications";
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(HttpsIotHubConnection.class, new Class[] {DeviceClientConfig.class}, mockConfig);
-                result = httpsIotHubConnection;
-                Deencapsulation.invoke(HttpsSingleMessage.class, "parseHttpsJsonMessage", new Class[] {Message.class}, mockTransportMsg);
-                result = mockHttpsMessage;
-                mockTransportMsg.getIotHubMethod();
-                result = IotHubMethod.POST;
-                mockTransportMsg.getUriPath();
-                result = uriPath;
-                httpsIotHubConnection.sendHttpsMessage(mockHttpsMessage, (HttpsMethod)any, (String)any, (Map) any);
-                result = new IOException();
-            }
-        };
-        HttpsTransportManager httpsTransportManager = Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, mockConfig);
-        Deencapsulation.invoke(httpsTransportManager, "open");
+                {
+                    Deencapsulation.newInstance(HttpsIotHubConnection.class, new Class[] {DeviceClientConfig.class}, mockConfig);
+                    result = httpsIotHubConnection;
+                    Deencapsulation.invoke(HttpsSingleMessage.class, "parseHttpsJsonMessage", new Class[] {Message.class}, mockTransportMsg);
+                    result = mockHttpsMessage;
+                    mockTransportMsg.getIotHubMethod();
+                    result = IotHubMethod.POST;
+                    mockTransportMsg.getUriPath();
+                    result = uriPath;
+                    httpsIotHubConnection.sendHttpsMessage(mockHttpsMessage, (HttpsMethod)any, (String)any, (Map) any);
+                    result = new IOException();
+                }
+            };
+            HttpsTransportManager httpsTransportManager = Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, mockConfig);
+            Deencapsulation.invoke(httpsTransportManager, "open");
 
-        // act
-        Deencapsulation.invoke(httpsTransportManager, "send", new Class[] {IotHubTransportMessage.class, Map.class}, mockTransportMsg, new HashMap<String, String>());
+            // act
+            Deencapsulation.invoke(httpsTransportManager, "send", new Class[] {IotHubTransportMessage.class, Map.class}, mockTransportMsg, new HashMap<String, String>());
+        });
     }
 
     /* Tests_SRS_HTTPSTRANSPORTMANAGER_21_015: [The receive shall receive and bypass message from `HttpsIotHubConnection`, by calling `receiveMessage`.] */
@@ -403,26 +404,27 @@ public class HttpsTransportManagerTest
     }
 
     /* Tests_SRS_HTTPSTRANSPORTMANAGER_21_016: [If `receiveMessage` failed, the receive shall bypass the exception.] */
-    @Test (expected = IOException.class)
-    public void receiveReceiveMessageThrows() throws TransportException
-    {
-        // arrange
-        final HttpsIotHubConnection httpsIotHubConnection = mockConn;
-        final String uriPath = "/files/notifications";
-        new NonStrictExpectations()
-        {
+    @Test
+    public void receiveReceiveMessageThrows() throws TransportException {
+        assertThrows(IOException.class, () -> {
+            // arrange
+            final HttpsIotHubConnection httpsIotHubConnection = mockConn;
+            final String uriPath = "/files/notifications";
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(HttpsIotHubConnection.class, new Class[] {DeviceClientConfig.class}, mockConfig);
-                result = httpsIotHubConnection;
-                httpsIotHubConnection.receiveMessage();
-                result = new IOException();
-            }
-        };
-        HttpsTransportManager httpsTransportManager = Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, mockConfig);
-        Deencapsulation.invoke(httpsTransportManager, "open");
+                {
+                    Deencapsulation.newInstance(HttpsIotHubConnection.class, new Class[] {DeviceClientConfig.class}, mockConfig);
+                    result = httpsIotHubConnection;
+                    httpsIotHubConnection.receiveMessage();
+                    result = new IOException();
+                }
+            };
+            HttpsTransportManager httpsTransportManager = Deencapsulation.newInstance(HttpsTransportManager.class, new Class[] {DeviceClientConfig.class}, mockConfig);
+            Deencapsulation.invoke(httpsTransportManager, "open");
 
-        // act
-        Deencapsulation.invoke(httpsTransportManager, "receive");
+            // act
+            Deencapsulation.invoke(httpsTransportManager, "receive");
+        });
     }
 
     //Tests_SRS_HTTPSTRANSPORTMANAGER_34_017: [This function shall call invokeMethod with the provided request and
@@ -535,75 +537,78 @@ public class HttpsTransportManagerTest
 
 
     //Tests_SRS_HTTPSTRANSPORTMANAGER_34_019: [If the provided method request is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void invokeMethodThrowsForNullRequest() throws TransportException, IOException, URISyntaxException
-    {
-        //arrange
-        final HttpsTransportManager transportManager = new HttpsTransportManager(mockConfig);
-        final String expectedDeviceId = "myDevice";
+    @Test
+    public void invokeMethodThrowsForNullRequest() throws TransportException, IOException, URISyntaxException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final HttpsTransportManager transportManager = new HttpsTransportManager(mockConfig);
+            final String expectedDeviceId = "myDevice";
 
-        //act
-        transportManager.invokeMethod(null, expectedDeviceId, "");
+            //act
+            transportManager.invokeMethod(null, expectedDeviceId, "");
+        });
     }
 
     //Tests_SRS_HTTPSTRANSPORTMANAGER_34_020: [If the provided uri is null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void invokeMethodThrowsForNullUri() throws TransportException, IOException, URISyntaxException
-    {
-        //arrange
-        final HttpsTransportManager transportManager = new HttpsTransportManager(mockConfig);
-        final String expectedDeviceId = "myDevice";
+    @Test
+    public void invokeMethodThrowsForNullUri() throws TransportException, IOException, URISyntaxException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final HttpsTransportManager transportManager = new HttpsTransportManager(mockConfig);
+            final String expectedDeviceId = "myDevice";
 
-        //act
-        Deencapsulation.invoke(transportManager, "invokeMethod", new Class[] {MethodRequest.class, URI.class}, mockedMethodRequest, (URI) null);
+            //act
+            Deencapsulation.invoke(transportManager, "invokeMethod", new Class[] {MethodRequest.class, URI.class}, mockedMethodRequest, (URI) null);
+        });
     }
 
 
     //Tests_SRS_HTTPSTRANSPORTMANAGER_34_026 [If the http response contains an error code, this function shall throw the associated exception.]
-    @Test (expected = HubOrDeviceIdNotFoundException.class)
-    public void invokeMethodOnDeviceThrowsIfIotHubRespondsWithErrorCode() throws TransportException, IOException, URISyntaxException
-    {
-        //arrange
-        final HttpsTransportManager transportManager = new HttpsTransportManager(mockConfig);
-        final String expectedDeviceId = "myDevice";
-        final String expectedSenderDeviceId = "mySenderDevice";
-        final String expectedSenderModuleId = "mySenderModule";
-        final String expectedMethodRequestJson = "someJson";
-        final String expectedResponseBody = "some body";
+    @Test
+    public void invokeMethodOnDeviceThrowsIfIotHubRespondsWithErrorCode() throws TransportException, IOException, URISyntaxException {
+        assertThrows(HubOrDeviceIdNotFoundException.class, () -> {
+            //arrange
+            final HttpsTransportManager transportManager = new HttpsTransportManager(mockConfig);
+            final String expectedDeviceId = "myDevice";
+            final String expectedSenderDeviceId = "mySenderDevice";
+            final String expectedSenderModuleId = "mySenderModule";
+            final String expectedMethodRequestJson = "someJson";
+            final String expectedResponseBody = "some body";
 
-        //assert
-        new Expectations(HttpsTransportManager.class)
-        {
+            //assert
+            new Expectations(HttpsTransportManager.class)
             {
-                mockedMethodRequest.toJson();
-                result = expectedMethodRequestJson;
+                {
+                    mockedMethodRequest.toJson();
+                    result = expectedMethodRequestJson;
 
-                new IotHubTransportMessage(expectedMethodRequestJson);
-                result = mockedTransportMessage;
+                    new IotHubTransportMessage(expectedMethodRequestJson);
+                    result = mockedTransportMessage;
 
-                mockedTransportMessage.setIotHubMethod(IotHubMethod.POST);
+                    mockedTransportMessage.setIotHubMethod(IotHubMethod.POST);
 
-                mockedTransportMessage.setUriPath("/twins/" + expectedDeviceId + "/methods");
+                    mockedTransportMessage.setUriPath("/twins/" + expectedDeviceId + "/methods");
 
-                mockConfig.getDeviceId();
-                result = expectedSenderDeviceId;
+                    mockConfig.getDeviceId();
+                    result = expectedSenderDeviceId;
 
-                mockConfig.getModuleId();
-                result = expectedSenderModuleId;
+                    mockConfig.getModuleId();
+                    result = expectedSenderModuleId;
 
-                transportManager.send(mockedTransportMessage, (Map) any);
-                result = mockResponseMessage;
+                    transportManager.send(mockedTransportMessage, (Map) any);
+                    result = mockResponseMessage;
 
-                mockResponseMessage.getStatus();
-                result = IotHubStatusCode.HUB_OR_DEVICE_ID_NOT_FOUND;
+                    mockResponseMessage.getStatus();
+                    result = IotHubStatusCode.HUB_OR_DEVICE_ID_NOT_FOUND;
 
-                mockResponseMessage.getBytes();
-                result = expectedResponseBody.getBytes(StandardCharsets.UTF_8);
-            }
-        };
+                    mockResponseMessage.getBytes();
+                    result = expectedResponseBody.getBytes(StandardCharsets.UTF_8);
+                }
+            };
 
-        //act
-        transportManager.invokeMethod(mockedMethodRequest, expectedDeviceId, "");
+            //act
+            transportManager.invokeMethod(mockedMethodRequest, expectedDeviceId, "");
+        });
     }
 
     //Tests_SRS_HTTPSTRANSPORTMANAGER_34_028 [This function shall set the uri path of the provided message to the

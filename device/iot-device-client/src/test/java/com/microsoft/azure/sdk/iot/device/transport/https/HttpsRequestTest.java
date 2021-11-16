@@ -6,13 +6,9 @@ package com.microsoft.azure.sdk.iot.device.transport.https;
 import com.microsoft.azure.sdk.iot.device.ProxySettings;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.device.transport.TransportUtils;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsConnection;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsMethod;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsRequest;
-import com.microsoft.azure.sdk.iot.device.transport.https.HttpsResponse;
 import mockit.*;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -23,6 +19,7 @@ import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Unit tests for HttpsRequest. */
 @SuppressWarnings("EmptyMethod")
@@ -462,15 +459,17 @@ public class HttpsRequestTest
     }
 
     //Tests_SRS_HTTPSREQUEST_25_015: [The function shall throw IllegalArgumentException if argument is null.]
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void setSSLContextThrowsOnNull(@Mocked final HttpsConnection mockConn) throws TransportException, MalformedURLException {
-        final HttpsMethod httpsMethod = HttpsMethod.POST;
-        final byte[] body = new byte[0];
-        final URL mockUrl = new URL("https://www.microsoft.com");
+        assertThrows(IllegalArgumentException.class, () -> {
+            final HttpsMethod httpsMethod = HttpsMethod.POST;
+            final byte[] body = new byte[0];
+            final URL mockUrl = new URL("https://www.microsoft.com");
 
-        HttpsRequest request =
-                new HttpsRequest(mockUrl, httpsMethod, body, "");
-        request.setSSLContext(null);
+            HttpsRequest request =
+                    new HttpsRequest(mockUrl, httpsMethod, body, "");
+            request.setSSLContext(null);
+        });
     }
 
     // Tests_SRS_HTTPSREQUEST_34_020: [The function shall return the request headers saved in this object's connection instance.]

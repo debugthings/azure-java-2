@@ -17,6 +17,9 @@ import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import junit.framework.TestCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.Tools;
@@ -210,7 +213,7 @@ public class TransportClientTests extends IntegrationTest
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() throws IOException
     {
         if (registryManager != null)
@@ -224,7 +227,7 @@ public class TransportClientTests extends IntegrationTest
         }
     }
 
-    @After
+    @AfterEach
     public void tearDownTest()
     {
         testInstance.dispose();

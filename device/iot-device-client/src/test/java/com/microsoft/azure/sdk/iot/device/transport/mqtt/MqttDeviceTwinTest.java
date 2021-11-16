@@ -8,14 +8,12 @@ import com.microsoft.azure.sdk.iot.device.Message;
 import com.microsoft.azure.sdk.iot.device.MessageType;
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportMessage;
-import com.microsoft.azure.sdk.iot.device.transport.mqtt.Mqtt;
-import com.microsoft.azure.sdk.iot.device.transport.mqtt.MqttDeviceTwin;
 import mockit.*;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -25,6 +23,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceOperations.*;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /* Unit tests for MqttDeviceTwin
  * Code coverage: 100% methods, 94% lines
@@ -85,22 +84,23 @@ public class MqttDeviceTwinTest
     /*
     **Tests_SRS_MQTTDEVICETWIN_25_019: [start method shall subscribe to twin response topic ($iothub/twin/res/#) if connected and throw IoException otherwise.]
      */
-    @Test (expected = IOException.class)
-    public void startThrowsExceptionIfSubscribesFails(@Mocked final Mqtt mockMqtt) throws TransportException
-    {
-        //arrange
-        new StrictExpectations()
-        {
+    @Test
+    public void startThrowsExceptionIfSubscribesFails(@Mocked final Mqtt mockMqtt) throws TransportException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            new StrictExpectations()
             {
-                Deencapsulation.invoke(mockMqtt, "subscribe", resTopic);
-                result = mockIOException;
-            }
-        };
+                {
+                    Deencapsulation.invoke(mockMqtt, "subscribe", resTopic);
+                    result = mockIOException;
+                }
+            };
 
-        MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+            MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
 
-        //act
-        testTwin.start();
+            //act
+            testTwin.start();
+        });
     }
 
     /*
@@ -145,47 +145,48 @@ public class MqttDeviceTwinTest
     /*
     **Tests_SRS_MQTTDEVICETWIN_25_025: [send method shall throw an IllegalArgumentException if message contains a null or empty request id if the operation is of type DEVICE_OPERATION_TWIN_GET_REQUEST.]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void sendThrowsIllegalArgumentExceptionForGetTwinOnCorrectTopicIfReqIdIsNullOrEmpty(@Mocked final Mqtt mockMqtt, @Mocked final IotHubTransportMessage mockMessage) throws TransportException
-    {
-        final byte[] actualPayload = {0x61, 0x62, 0x63};
-        final String expectedTopic = "$iothub/twin/GET/?$rid=" + mockReqId;
-        try
-        {
-            //arrange
-            MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-            testTwin.start();
-            new NonStrictExpectations()
+    @Test
+    public void sendThrowsIllegalArgumentExceptionForGetTwinOnCorrectTopicIfReqIdIsNullOrEmpty(@Mocked final Mqtt mockMqtt, @Mocked final IotHubTransportMessage mockMessage) throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final byte[] actualPayload = {0x61, 0x62, 0x63};
+            final String expectedTopic = "$iothub/twin/GET/?$rid=" + mockReqId;
+            try
             {
+                //arrange
+                MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+                testTwin.start();
+                new NonStrictExpectations()
                 {
-                    mockMessage.getBytes();
-                    result = actualPayload;
-                    mockMessage.getMessageType();
-                    result = MessageType.DEVICE_TWIN;
-                    mockMessage.getDeviceOperationType();
-                    result = DEVICE_OPERATION_TWIN_GET_REQUEST;
-                    mockMessage.getRequestId();
-                    result = null;
-                }
-            };
+                    {
+                        mockMessage.getBytes();
+                        result = actualPayload;
+                        mockMessage.getMessageType();
+                        result = MessageType.DEVICE_TWIN;
+                        mockMessage.getDeviceOperationType();
+                        result = DEVICE_OPERATION_TWIN_GET_REQUEST;
+                        mockMessage.getRequestId();
+                        result = null;
+                    }
+                };
 
-            //act
-            testTwin.send(mockMessage);
-        }
-        finally
-        {
-            //assert
-            new Verifications()
+                //act
+                testTwin.send(mockMessage);
+            }
+            finally
             {
+                //assert
+                new Verifications()
                 {
-                    mockMessage.getBytes();
-                    times = 1;
-                    Deencapsulation.invoke(mockMqtt, "publish", expectedTopic, actualPayload, mockMessage);
-                    times = 0;
+                    {
+                        mockMessage.getBytes();
+                        times = 1;
+                        Deencapsulation.invoke(mockMqtt, "publish", expectedTopic, actualPayload, mockMessage);
+                        times = 0;
 
-                }
-            };
-        }
+                    }
+                };
+            }
+        });
     }
     /*
     **Tests_SRS_MQTTDEVICETWIN_25_026: [send method shall build the update reported properties request topic of the format mentioned in spec ($iothub/twin/PATCH/properties/reported/?$rid={request id}&$version={base version}) if the operation is of type DEVICE_OPERATION_TWIN_UPDATE_REPORTED_PROPERTIES_REQUEST.]
@@ -231,47 +232,48 @@ public class MqttDeviceTwinTest
     /*
     **Tests_SRS_MQTTDEVICETWIN_25_027: [send method shall throw an IllegalArgumentException if message contains a null or empty request id if the operation is of type DEVICE_OPERATION_TWIN_UPDATE_REPORTED_PROPERTIES_REQUEST.]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void sendThrowsIllegalArgumentExceptionForUpdateReportedPropertiesOnCorrectTopicIfReqIdIsNullOrEmpty(@Mocked final Mqtt mockMqtt, @Mocked final IotHubTransportMessage mockMessage) throws TransportException
-    {
-        final byte[] actualPayload = {0x61, 0x62, 0x63};
-        final String expectedTopic = "$iothub/twin/PATCH/properties/reported/?$rid=" + mockReqId + "&$version=" + mockVersion;
-        try
-        {
-            //arrange
-            MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-            testTwin.start();
-            new NonStrictExpectations()
+    @Test
+    public void sendThrowsIllegalArgumentExceptionForUpdateReportedPropertiesOnCorrectTopicIfReqIdIsNullOrEmpty(@Mocked final Mqtt mockMqtt, @Mocked final IotHubTransportMessage mockMessage) throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final byte[] actualPayload = {0x61, 0x62, 0x63};
+            final String expectedTopic = "$iothub/twin/PATCH/properties/reported/?$rid=" + mockReqId + "&$version=" + mockVersion;
+            try
             {
+                //arrange
+                MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+                testTwin.start();
+                new NonStrictExpectations()
                 {
-                    mockMessage.getBytes();
-                    result = actualPayload;
-                    mockMessage.getMessageType();
-                    result = MessageType.DEVICE_TWIN;
-                    mockMessage.getDeviceOperationType();
-                    result = DEVICE_OPERATION_TWIN_UPDATE_REPORTED_PROPERTIES_REQUEST;
-                    mockMessage.getRequestId();
-                    result = null;
-                }
-            };
+                    {
+                        mockMessage.getBytes();
+                        result = actualPayload;
+                        mockMessage.getMessageType();
+                        result = MessageType.DEVICE_TWIN;
+                        mockMessage.getDeviceOperationType();
+                        result = DEVICE_OPERATION_TWIN_UPDATE_REPORTED_PROPERTIES_REQUEST;
+                        mockMessage.getRequestId();
+                        result = null;
+                    }
+                };
 
-            //act
-            testTwin.send(mockMessage);
-        }
-        finally
-        {
-             //assert
-            new Verifications()
+                //act
+                testTwin.send(mockMessage);
+            }
+            finally
             {
+                 //assert
+                new Verifications()
                 {
-                    mockMessage.getBytes();
-                    times = 1;
-                    Deencapsulation.invoke(mockMqtt, "publish", expectedTopic, actualPayload, mockMessage);
-                    times = 0;
+                    {
+                        mockMessage.getBytes();
+                        times = 1;
+                        Deencapsulation.invoke(mockMqtt, "publish", expectedTopic, actualPayload, mockMessage);
+                        times = 0;
 
-                }
-            };
-        }
+                    }
+                };
+            }
+        });
     }
     /*
     **Tests_SRS_MQTTDEVICETWIN_25_029: [send method shall build the subscribe to desired properties request topic of the format mentioned in spec ($iothub/twin/PATCH/properties/desired/?$version={new version}) if the operation is of type DEVICE_OPERATION_TWIN_SUBSCRIBE_DESIRED_PROPERTIES_REQUEST.]
@@ -403,31 +405,32 @@ public class MqttDeviceTwinTest
     /*
     **Tests_SRS_MQTTDEVICETWIN_25_021: [send method shall throw an IllegalArgumentException if the message is null.]
      */
-    @Test (expected = IllegalArgumentException.class)
-    public void sendThrowsIllegalArgumentExceptionIfMessageIsNull(@Mocked final Mqtt mockMqtt, @Mocked final IotHubTransportMessage mockMessage) throws TransportException
-    {
-        final byte[] actualPayload = {0x61, 0x62, 0x63};
-        final String expectedTopic = "$iothub/twin/PATCH/properties/reported/?$rid=" + mockReqId + "&$version=" + mockVersion;
-        try
-        {
-            //arrange
-            MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-
-            //act
-            testTwin.send(null);
-        }
-        finally{
-            //assert
-            new Verifications()
+    @Test
+    public void sendThrowsIllegalArgumentExceptionIfMessageIsNull(@Mocked final Mqtt mockMqtt, @Mocked final IotHubTransportMessage mockMessage) throws TransportException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final byte[] actualPayload = {0x61, 0x62, 0x63};
+            final String expectedTopic = "$iothub/twin/PATCH/properties/reported/?$rid=" + mockReqId + "&$version=" + mockVersion;
+            try
             {
+                //arrange
+                MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+
+                //act
+                testTwin.send(null);
+            }
+            finally{
+                //assert
+                new Verifications()
                 {
-                    mockMessage.getBytes();
-                    times = 0;
-                    Deencapsulation.invoke(mockMqtt, "publish", expectedTopic, actualPayload, mockMessage);
-                    times = 0;
-                }
-            };
-        }
+                    {
+                        mockMessage.getBytes();
+                        times = 0;
+                        Deencapsulation.invoke(mockMqtt, "publish", expectedTopic, actualPayload, mockMessage);
+                        times = 0;
+                    }
+                };
+            }
+        });
     }
     @Test
     public void sendDoesNotThrowsIoExceptionIfMessageIsEmpty(@Mocked final Mqtt mockMqtt, @Mocked final IotHubTransportMessage mockMessage) throws TransportException
@@ -578,56 +581,58 @@ public class MqttDeviceTwinTest
     /*
     **SRS_MQTTDEVICETWIN_25_039: [If the topic is of type response topic and if status is either a non 3 digit number or not found then receive shall throw TransportException ]
      */
-    @Test (expected = TransportException.class)
-    public void receiveParsesResponseTopicMandatoryStatusNotFoundException() throws TransportException
-    {
-        final byte[] actualPayload = "GetTwinResponseDataContainingDesiredAndReportedPropertiesDocument".getBytes(StandardCharsets.UTF_8);
-        final String expectedTopic = "$iothub/twin/res/" + "?$rid=" + mockReqId;
-        IotHubTransportMessage receivedMessage = null;
+    @Test
+    public void receiveParsesResponseTopicMandatoryStatusNotFoundException() throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            final byte[] actualPayload = "GetTwinResponseDataContainingDesiredAndReportedPropertiesDocument".getBytes(StandardCharsets.UTF_8);
+            final String expectedTopic = "$iothub/twin/res/" + "?$rid=" + mockReqId;
+            IotHubTransportMessage receivedMessage = null;
 
-        try
-        {
-            //arrange
-            MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-            Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
-            testreceivedMessages.add(new MutablePair<>(expectedTopic, actualPayload));
-            Deencapsulation.setField(testTwin, "receivedMessages", testreceivedMessages);
+            try
+            {
+                //arrange
+                MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+                Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
+                testreceivedMessages.add(new MutablePair<>(expectedTopic, actualPayload));
+                Deencapsulation.setField(testTwin, "receivedMessages", testreceivedMessages);
 
-            //act
-            receivedMessage = (IotHubTransportMessage) testTwin.receive();
-        }
-        finally
-        {
-            //assert
-            assertNull(receivedMessage);
-        }
+                //act
+                receivedMessage = (IotHubTransportMessage) testTwin.receive();
+            }
+            finally
+            {
+                //assert
+                assertNull(receivedMessage);
+            }
+        });
     }
     /*
     **Tests_SRS_MQTTDEVICETWIN_25_039: [If the topic is of type response topic and if status is either a non 3 digit number or not found then receive shall throw TransportException ]
      */
-    @Test (expected = TransportException.class)
-    public void receiveParsesResponseTopicInvalidStatusThrowsException() throws TransportException
-    {
-        final byte[] actualPayload = "GetTwinResponseDataContainingDesiredAndReportedPropertiesDocument".getBytes(StandardCharsets.UTF_8);
-        final String expectedTopic = "$iothub/twin/res/" + "abc/" + "?$rid=" + mockReqId;
-        IotHubTransportMessage receivedMessage = null;
-        try
-        {
-            //arrange
-            MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-            Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
-            testreceivedMessages.add(new MutablePair<>(expectedTopic, actualPayload));
-            Deencapsulation.setField(testTwin, "receivedMessages", testreceivedMessages);
-            Deencapsulation.setField(testTwin, "stateLock", new Object());
+    @Test
+    public void receiveParsesResponseTopicInvalidStatusThrowsException() throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            final byte[] actualPayload = "GetTwinResponseDataContainingDesiredAndReportedPropertiesDocument".getBytes(StandardCharsets.UTF_8);
+            final String expectedTopic = "$iothub/twin/res/" + "abc/" + "?$rid=" + mockReqId;
+            IotHubTransportMessage receivedMessage = null;
+            try
+            {
+                //arrange
+                MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+                Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
+                testreceivedMessages.add(new MutablePair<>(expectedTopic, actualPayload));
+                Deencapsulation.setField(testTwin, "receivedMessages", testreceivedMessages);
+                Deencapsulation.setField(testTwin, "stateLock", new Object());
 
-            //act
-            receivedMessage = testTwin.receive();
-        }
-        finally
-        {
-            //assert
-            assertNull(receivedMessage);
-        }
+                //act
+                receivedMessage = testTwin.receive();
+            }
+            finally
+            {
+                //assert
+                assertNull(receivedMessage);
+            }
+        });
     }
 
     /*
@@ -988,57 +993,59 @@ public class MqttDeviceTwinTest
     /*
     **Tests_SRS_MQTTDEVICETWIN_25_043: [If the topic is not of type response for desired properties then this method shall throw TransportException]
      */
-    @Test (expected = TransportException.class)
-    public void receiveThrowsTransportExceptionOnAnythingOtherThenPatchDesiredProp() throws TransportException
-    {
-        final byte[] actualPayload = "NotificationResponseDataContainingDesiredPropertiesDocument".getBytes(StandardCharsets.UTF_8);
-        final String expectedTopic = "$iothub/twin/PATCH/properties/" + "?$version=" + mockVersion ;
-        IotHubTransportMessage receivedMessage = null;
-        try
-        {
-            //arrange
-            MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-            Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
-            testreceivedMessages.add(new MutablePair<>(expectedTopic, actualPayload));
-            Deencapsulation.setField(testTwin, "receivedMessages", testreceivedMessages);
-            Deencapsulation.setField(testTwin, "stateLock", new Object());
+    @Test
+    public void receiveThrowsTransportExceptionOnAnythingOtherThenPatchDesiredProp() throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            final byte[] actualPayload = "NotificationResponseDataContainingDesiredPropertiesDocument".getBytes(StandardCharsets.UTF_8);
+            final String expectedTopic = "$iothub/twin/PATCH/properties/" + "?$version=" + mockVersion ;
+            IotHubTransportMessage receivedMessage = null;
+            try
+            {
+                //arrange
+                MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+                Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
+                testreceivedMessages.add(new MutablePair<>(expectedTopic, actualPayload));
+                Deencapsulation.setField(testTwin, "receivedMessages", testreceivedMessages);
+                Deencapsulation.setField(testTwin, "stateLock", new Object());
 
-            //act
-            receivedMessage = testTwin.receive();
-        }
-        finally
-        {
-            //assert
-            assertNull(receivedMessage);
-        }
+                //act
+                receivedMessage = testTwin.receive();
+            }
+            finally
+            {
+                //assert
+                assertNull(receivedMessage);
+            }
+        });
     }
 
     /*
     **Tests_SRS_MQTTDEVICETWIN_25_037: [This method shall parse topic to look for only either twin response topic or twin patch topic and thorw TransportException other wise.]
      */
-    @Test (expected = TransportException.class)
-    public void receiveThrowsTransportExceptionOnAnythingOtherThenPatchOrResTopic() throws TransportException
-    {
-        final byte[] actualPayload = "NotificationResponseDataContainingDesiredPropertiesDocument".getBytes(StandardCharsets.UTF_8);
-        final String expectedTopic = "$iothub/twin/NOTPATCH_NOTRES/properties/" + "?$version=" + mockVersion ;
-        IotHubTransportMessage receivedMessage = null;
-        try
-        {
-            //arrange
-            MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
-            Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
-            testreceivedMessages.add(new MutablePair<>(expectedTopic, actualPayload));
-            Deencapsulation.setField(testTwin, "receivedMessages", testreceivedMessages);
-            Deencapsulation.setField(testTwin, "stateLock", new Object());
+    @Test
+    public void receiveThrowsTransportExceptionOnAnythingOtherThenPatchOrResTopic() throws TransportException {
+        assertThrows(TransportException.class, () -> {
+            final byte[] actualPayload = "NotificationResponseDataContainingDesiredPropertiesDocument".getBytes(StandardCharsets.UTF_8);
+            final String expectedTopic = "$iothub/twin/NOTPATCH_NOTRES/properties/" + "?$version=" + mockVersion ;
+            IotHubTransportMessage receivedMessage = null;
+            try
+            {
+                //arrange
+                MqttDeviceTwin testTwin = new MqttDeviceTwin("", mockedConnectOptions, new HashMap<Integer, Message>(), new ConcurrentLinkedQueue<Pair<String, byte[]>>());
+                Queue<Pair<String, byte[]>> testreceivedMessages = new ConcurrentLinkedQueue<>();
+                testreceivedMessages.add(new MutablePair<>(expectedTopic, actualPayload));
+                Deencapsulation.setField(testTwin, "receivedMessages", testreceivedMessages);
+                Deencapsulation.setField(testTwin, "stateLock", new Object());
 
-            //act
-            receivedMessage = testTwin.receive();
-        }
-        finally
-        {
-            //assert
-            assertNull(receivedMessage);
-        }
+                //act
+                receivedMessage = testTwin.receive();
+            }
+            finally
+            {
+                //assert
+                assertNull(receivedMessage);
+            }
+        });
     }
 
     /*

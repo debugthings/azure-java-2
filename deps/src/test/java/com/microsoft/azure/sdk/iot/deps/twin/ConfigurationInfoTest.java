@@ -5,11 +5,9 @@ package com.microsoft.azure.sdk.iot.deps.twin;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.microsoft.azure.sdk.iot.deps.twin.ConfigurationInfo;
-import com.microsoft.azure.sdk.iot.deps.twin.ConfigurationStatus;
 
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 

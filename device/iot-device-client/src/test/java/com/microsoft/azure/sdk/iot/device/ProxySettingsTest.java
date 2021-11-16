@@ -5,16 +5,16 @@
 
 package com.microsoft.azure.sdk.iot.device;
 
-import com.microsoft.azure.sdk.iot.device.ProxySettings;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProxySettingsTest
 {
@@ -35,27 +35,29 @@ public class ProxySettingsTest
         assertEquals(mockProxy, actualProxy);
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForDirectProxy()
-    {
-        //arrange
-        new Expectations()
-        {
+    @Test
+    public void constructorThrowsForDirectProxy() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            new Expectations()
             {
-                mockProxy.type();
-                result = Proxy.Type.DIRECT;
-            }
-        };
+                {
+                    mockProxy.type();
+                    result = Proxy.Type.DIRECT;
+                }
+            };
 
-        //act
-        new ProxySettings(mockProxy);
+            //act
+            new ProxySettings(mockProxy);
+        });
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullProxy()
-    {
-        //act
-        new ProxySettings(null);
+    @Test
+    public void constructorThrowsForNullProxy() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ProxySettings(null);
+        });
     }
 
     @Test

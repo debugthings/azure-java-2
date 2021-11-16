@@ -4,19 +4,17 @@
 package com.microsoft.azure.sdk.iot.service;
 
 import com.microsoft.azure.sdk.iot.deps.serializer.*;
-import com.microsoft.azure.sdk.iot.service.DeviceStatus;
-import com.microsoft.azure.sdk.iot.service.ExportImportDevice;
-import com.microsoft.azure.sdk.iot.service.ImportMode;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationMechanism;
 import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
 import com.microsoft.azure.sdk.iot.service.auth.SymmetricKey;
 import com.microsoft.azure.sdk.iot.service.auth.X509Thumbprint;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Code coverage:
@@ -176,70 +174,77 @@ public class ExportImportDeviceTest
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_053: [If the provided parser does not have values for the properties deviceId or authentication, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void conversionFromDeviceParserMissingDeviceIdThrows()
-    {
-        // arrange
-        ExportImportDeviceParser parser = new ExportImportDeviceParser();
-        parser.setAuthentication(Deencapsulation.newInstance(AuthenticationParser.class));
-        parser.getAuthenticationFinal().setType(AuthenticationTypeParser.CERTIFICATE_AUTHORITY);
-        Deencapsulation.setField(parser, "Id", null);
+    @Test
+    public void conversionFromDeviceParserMissingDeviceIdThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            ExportImportDeviceParser parser = new ExportImportDeviceParser();
+            parser.setAuthentication(Deencapsulation.newInstance(AuthenticationParser.class));
+            parser.getAuthenticationFinal().setType(AuthenticationTypeParser.CERTIFICATE_AUTHORITY);
+            Deencapsulation.setField(parser, "Id", null);
 
-        // act
-        reflectivelyInvokeExportImportDeviceParserConstructor(parser);
+            // act
+            reflectivelyInvokeExportImportDeviceParserConstructor(parser);
+        });
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_053: [If the provided parser does not have values for the properties deviceId or authentication, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void conversionFromDeviceParserMissingAuthenticationThrows()
-    {
-        // arrange
-        ExportImportDeviceParser parser = new ExportImportDeviceParser();
-        Deencapsulation.setField(parser, "Authentication", null);
-        parser.setId("deviceCA");
+    @Test
+    public void conversionFromDeviceParserMissingAuthenticationThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            ExportImportDeviceParser parser = new ExportImportDeviceParser();
+            Deencapsulation.setField(parser, "Authentication", null);
+            parser.setId("deviceCA");
 
-        // act
-        reflectivelyInvokeExportImportDeviceParserConstructor(parser);
+            // act
+            reflectivelyInvokeExportImportDeviceParserConstructor(parser);
+        });
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_056: [If the provided authentication is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void cannotSetIdNull()
-    {
-        //act
-        new ExportImportDevice().setId(null);
+    @Test
+    public void cannotSetIdNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ExportImportDevice().setId(null);
+        });
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_055: [If the provided id is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void cannotSetAuthenticationNull()
-    {
-        //act
-        new ExportImportDevice().setAuthentication(null);
+    @Test
+    public void cannotSetAuthenticationNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ExportImportDevice().setAuthentication(null);
+        });
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_057: [If either the provided deviceId or authenticationType is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorRejectsNullDeviceId()
-    {
-        //act
-        new ExportImportDevice(null, AuthenticationType.CERTIFICATE_AUTHORITY);
+    @Test
+    public void constructorRejectsNullDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ExportImportDevice(null, AuthenticationType.CERTIFICATE_AUTHORITY);
+        });
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_057: [If either the provided deviceId or authenticationType is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorRejectsEmptyDeviceId()
-    {
-        //act
-        new ExportImportDevice("", AuthenticationType.CERTIFICATE_AUTHORITY);
+    @Test
+    public void constructorRejectsEmptyDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ExportImportDevice("", AuthenticationType.CERTIFICATE_AUTHORITY);
+        });
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_057: [If either the provided deviceId or authenticationType is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorRejectsNullAuthenticationType()
-    {
-        //act
-        new ExportImportDevice("someDevice", null);
+    @Test
+    public void constructorRejectsNullAuthenticationType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ExportImportDevice("someDevice", null);
+        });
     }
 
     //Codes_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_058: [If the provided parser uses SAS authentication and is missing one or both symmetric keys, two new keys will be generated.]
@@ -288,67 +293,71 @@ public class ExportImportDeviceTest
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_060: [If this device uses sas authentication, but does not have a primary and secondary symmetric key saved, an IllegalStateException shall be thrown.]
-    @Test (expected = IllegalStateException.class)
-    public void toParserIllegalStateThrownWhenUsingSASAuthenticationWithoutSymmetricKeySaved()
-    {
-        //arrange
-        ExportImportDevice device = new ExportImportDevice();
-        device.setId("someDevice");
-        AuthenticationMechanism authentication = new AuthenticationMechanism(AuthenticationType.SAS);
-        Deencapsulation.setField(authentication, "symmetricKey", null);
-        device.setAuthentication(authentication);
+    @Test
+    public void toParserIllegalStateThrownWhenUsingSASAuthenticationWithoutSymmetricKeySaved() {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            ExportImportDevice device = new ExportImportDevice();
+            device.setId("someDevice");
+            AuthenticationMechanism authentication = new AuthenticationMechanism(AuthenticationType.SAS);
+            Deencapsulation.setField(authentication, "symmetricKey", null);
+            device.setAuthentication(authentication);
 
-        //act
-        reflectivelyInvokeToExportImportDeviceParser(device);
+            //act
+            reflectivelyInvokeToExportImportDeviceParser(device);
+        });
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_060: [If this device uses sas authentication, but does not have a primary and secondary symmetric key saved, an IllegalStateException shall be thrown.]
-    @Test (expected = IllegalStateException.class)
-    public void toParserIllegalStateThrownWhenUsingSASAuthenticationWithoutPrimaryKeySaved()
-    {
-        //arrange
-        ExportImportDevice device = new ExportImportDevice();
-        device.setId("someDevice");
-        AuthenticationMechanism authentication = new AuthenticationMechanism(AuthenticationType.SAS);
-        SymmetricKey symmetricKey = new SymmetricKey();
-        Deencapsulation.setField(symmetricKey, "primaryKey", null);
-        Deencapsulation.setField(authentication, "symmetricKey", symmetricKey);
-        device.setAuthentication(authentication);
+    @Test
+    public void toParserIllegalStateThrownWhenUsingSASAuthenticationWithoutPrimaryKeySaved() {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            ExportImportDevice device = new ExportImportDevice();
+            device.setId("someDevice");
+            AuthenticationMechanism authentication = new AuthenticationMechanism(AuthenticationType.SAS);
+            SymmetricKey symmetricKey = new SymmetricKey();
+            Deencapsulation.setField(symmetricKey, "primaryKey", null);
+            Deencapsulation.setField(authentication, "symmetricKey", symmetricKey);
+            device.setAuthentication(authentication);
 
-        //act
-        reflectivelyInvokeToExportImportDeviceParser(device);
+            //act
+            reflectivelyInvokeToExportImportDeviceParser(device);
+        });
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_061: [If this device uses self signed authentication, but does not have a primary and secondary thumbprint saved, an IllegalStateException shall be thrown.]
-    @Test (expected = IllegalStateException.class)
-    public void toParserIllegalStateThrownWhenUsingSelfSignedAuthenticationWithoutThumbprintSaved()
-    {
-        //arrange
-        ExportImportDevice device = new ExportImportDevice();
-        device.setId("someDevice");
-        AuthenticationMechanism authentication = new AuthenticationMechanism(AuthenticationType.SELF_SIGNED);
-        Deencapsulation.setField(authentication, "thumbprint", null);
-        device.setAuthentication(authentication);
+    @Test
+    public void toParserIllegalStateThrownWhenUsingSelfSignedAuthenticationWithoutThumbprintSaved() {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            ExportImportDevice device = new ExportImportDevice();
+            device.setId("someDevice");
+            AuthenticationMechanism authentication = new AuthenticationMechanism(AuthenticationType.SELF_SIGNED);
+            Deencapsulation.setField(authentication, "thumbprint", null);
+            device.setAuthentication(authentication);
 
-        //act
-        reflectivelyInvokeToExportImportDeviceParser(device);
+            //act
+            reflectivelyInvokeToExportImportDeviceParser(device);
+        });
     }
 
     //Tests_SRS_SERVICE_SDK_JAVA_IMPORT_EXPORT_DEVICE_34_061: [If this device uses self signed authentication, but does not have a primary and secondary thumbprint saved, an IllegalStateException shall be thrown.]
-    @Test (expected = IllegalStateException.class)
-    public void toParserIllegalStateThrownWhenUsingSelfSignedAuthenticationWithoutPrimaryThumbprintSaved()
-    {
-        //arrange
-        ExportImportDevice device = new ExportImportDevice();
-        device.setId("someDevice");
-        AuthenticationMechanism authentication = new AuthenticationMechanism(AuthenticationType.SELF_SIGNED);
-        X509Thumbprint thumbprint = Deencapsulation.newInstance(X509Thumbprint.class);
-        Deencapsulation.setField(thumbprint, "primaryThumbprint", null);
-        Deencapsulation.setField(authentication, "thumbprint", thumbprint);
-        device.setAuthentication(authentication);
+    @Test
+    public void toParserIllegalStateThrownWhenUsingSelfSignedAuthenticationWithoutPrimaryThumbprintSaved() {
+        assertThrows(IllegalStateException.class, () -> {
+            //arrange
+            ExportImportDevice device = new ExportImportDevice();
+            device.setId("someDevice");
+            AuthenticationMechanism authentication = new AuthenticationMechanism(AuthenticationType.SELF_SIGNED);
+            X509Thumbprint thumbprint = Deencapsulation.newInstance(X509Thumbprint.class);
+            Deencapsulation.setField(thumbprint, "primaryThumbprint", null);
+            Deencapsulation.setField(authentication, "thumbprint", thumbprint);
+            device.setAuthentication(authentication);
 
-        //act
-        reflectivelyInvokeToExportImportDeviceParser(device);
+            //act
+            reflectivelyInvokeToExportImportDeviceParser(device);
+        });
     }
 
     /**

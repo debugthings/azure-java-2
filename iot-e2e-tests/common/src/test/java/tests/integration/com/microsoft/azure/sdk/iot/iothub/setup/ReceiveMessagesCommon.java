@@ -13,7 +13,7 @@ import com.microsoft.azure.sdk.iot.service.auth.AuthenticationType;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.Assert;
 import org.junit.runners.Parameterized;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.Tools;
@@ -177,7 +177,7 @@ public class ReceiveMessagesCommon extends IntegrationTest
         testInstance.setup();
     }
 
-    @After
+    @AfterEach
     public void tearDownTest()
     {
         testInstance.dispose();

@@ -28,9 +28,9 @@ import com.microsoft.azure.sdk.iot.service.devicetwin.Query;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import junit.framework.AssertionFailedError;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runners.Parameterized;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.*;
 
@@ -202,7 +202,7 @@ public class ProvisioningCommon extends IntegrationTest
         }
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         registryManager = RegistryManager.createFromConnectionString(iotHubConnectionString, RegistryManagerOptions.builder().httpReadTimeout(HTTP_READ_TIMEOUT).build());
@@ -210,7 +210,7 @@ public class ProvisioningCommon extends IntegrationTest
         this.testInstance = new ProvisioningTestInstance(this.testInstance.protocol, this.testInstance.attestationType);
     }
 
-    @After
+    @AfterEach
     public void tearDown()
     {
         if (registryManager != null)

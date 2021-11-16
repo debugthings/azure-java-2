@@ -3,9 +3,8 @@
 
 package com.microsoft.azure.sdk.iot.deps.auth;
 
-import com.microsoft.azure.sdk.iot.deps.auth.IotHubCertificateManager;
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.security.cert.Certificate;
@@ -14,6 +13,7 @@ import java.security.cert.CertificateFactory;
 import java.util.Collection;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for IotHubCertificateManager
@@ -289,81 +289,86 @@ public class IotHubCertificateManagerTests
     }
 
     //Tests_SRS_IOTHUBCERTIFICATEMANAGER_34_006: [**This method shall throw IllegalArgumentException if parameter is null or empty.**]**
-    @Test (expected = IllegalArgumentException.class)
-    public void setValidCertThrowsIfCertIsEmpty()
-    {
-        //arrange
-        IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
-        String invalidCertString = "";
+    @Test
+    public void setValidCertThrowsIfCertIsEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
+            String invalidCertString = "";
 
-        //act
-        Deencapsulation.invoke(testCertManager, "setCertificates", invalidCertString);
+            //act
+            Deencapsulation.invoke(testCertManager, "setCertificates", invalidCertString);
+        });
     }
 
     //Tests_SRS_IOTHUBCERTIFICATEMANAGER_34_006: [**This method shall throw IllegalArgumentException if parameter is null or empty.**]**
-    @Test (expected = IllegalArgumentException.class)
-    public void setValidCertThrowsIfCertIsNull()
-    {
-        //arrange
-        IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
-        String invalidCertString = null;
+    @Test
+    public void setValidCertThrowsIfCertIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
+            String invalidCertString = null;
 
-        //act
-        Deencapsulation.invoke(testCertManager, "setCertificates", invalidCertString);
+            //act
+            Deencapsulation.invoke(testCertManager, "setCertificates", invalidCertString);
+        });
     }
 
     //Tests_SRS_IOTHUBCERTIFICATEMANAGER_34_007: [**This method shall throw IllegalArgumentException if the cert path is null or empty.**]**
-    @Test (expected = IllegalArgumentException.class)
-    public void setValidPathThrowsIfNull() throws IOException
-    {
-        //arrange
-        IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
-        String invalidCertPath = "";
+    @Test
+    public void setValidPathThrowsIfNull() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
+            String invalidCertPath = "";
 
-        //act
-        Deencapsulation.invoke(testCertManager, "setCertificatesPath", invalidCertPath);
+            //act
+            Deencapsulation.invoke(testCertManager, "setCertificatesPath", invalidCertPath);
+        });
     }
 
     //Tests_SRS_IOTHUBCERTIFICATEMANAGER_34_007: [**This method shall throw IllegalArgumentException if the cert path is null or empty.**]**
-    @Test (expected = IllegalArgumentException.class)
-    public void setValidPathThrowsIfEmpty() throws IOException
-    {
-        //arrange
-        IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
-        String invalidCertPath = null;
+    @Test
+    public void setValidPathThrowsIfEmpty() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
+            String invalidCertPath = null;
 
-        //act
-        Deencapsulation.invoke(testCertManager, "setCertificatesPath", invalidCertPath);
+            //act
+            Deencapsulation.invoke(testCertManager, "setCertificatesPath", invalidCertPath);
+        });
     }
 
     //Tests_SRS_IOTHUBCERTIFICATEMANAGER_34_008: [**If no certificates were parsed from the provided certificate file path, this function shall throw an IllegalArgumentException.**]**
-    @Test (expected = IllegalArgumentException.class)
-    public void setValidPathThrowsIfNoCertificatesParsed() throws IOException
-    {
-        //arrange
-        File testCertFile = null;
-        try
-        {
-            IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
-            String validCertPath = "TestCertFile.crt";
-            testCertFile = new File(validCertPath);
-            testCertFile.setWritable(true);
-            if (!testCertFile.exists())
+    @Test
+    public void setValidPathThrowsIfNoCertificatesParsed() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            File testCertFile = null;
+            try
             {
-                //create empty file with no certificates
-                testCertFile.createNewFile();
-            }
-            testCertFile.setReadOnly();
+                IotHubCertificateManager testCertManager = Deencapsulation.newInstance(IotHubCertificateManager.class);
+                String validCertPath = "TestCertFile.crt";
+                testCertFile = new File(validCertPath);
+                testCertFile.setWritable(true);
+                if (!testCertFile.exists())
+                {
+                    //create empty file with no certificates
+                    testCertFile.createNewFile();
+                }
+                testCertFile.setReadOnly();
 
-            //act
-            Deencapsulation.invoke(testCertManager, "setCertificatesPath", validCertPath);
-        }
-        finally
-        {
-            if (testCertFile != null)
-            {
-                testCertFile.delete();
+                //act
+                Deencapsulation.invoke(testCertManager, "setCertificatesPath", validCertPath);
             }
-        }
+            finally
+            {
+                if (testCertFile != null)
+                {
+                    testCertFile.delete();
+                }
+            }
+        });
     }
 }

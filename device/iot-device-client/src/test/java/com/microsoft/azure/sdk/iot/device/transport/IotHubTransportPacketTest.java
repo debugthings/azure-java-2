@@ -7,10 +7,9 @@ import com.microsoft.azure.sdk.iot.device.IotHubEventCallback;
 import com.microsoft.azure.sdk.iot.device.IotHubResponseCallback;
 import com.microsoft.azure.sdk.iot.device.IotHubStatusCode;
 import com.microsoft.azure.sdk.iot.device.Message;
-import com.microsoft.azure.sdk.iot.device.transport.IotHubTransportPacket;
 import mockit.Deencapsulation;
 import mockit.Mocked;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +20,7 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for IotHubTransportPacket.
@@ -178,26 +178,29 @@ public class IotHubTransportPacketTest
     }
 
     // Tests_SRS_IOTHUBTRANSPORTPACKET_34_011: [If message is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullMessage()
-    {
-        //act
-        new IotHubTransportPacket(null, mockCallback, new Object(), IotHubStatusCode.OK_EMPTY, 1, null);
+    @Test
+    public void constructorThrowsForNullMessage() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new IotHubTransportPacket(null, mockCallback, new Object(), IotHubStatusCode.OK_EMPTY, 1, null);
+        });
     }
 
     // Tests_SRS_IOTHUBTRANSPORTPACKET_34_010: [If startTimeMillis is 0 or negative, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForZeroMillisecondsStartTime()
-    {
-        //act
-        new IotHubTransportPacket(mockMsg, mockCallback, new Object(), IotHubStatusCode.OK_EMPTY, 0, null);
+    @Test
+    public void constructorThrowsForZeroMillisecondsStartTime() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new IotHubTransportPacket(mockMsg, mockCallback, new Object(), IotHubStatusCode.OK_EMPTY, 0, null);
+        });
     }
 
     // Tests_SRS_IOTHUBTRANSPORTPACKET_34_010: [If startTimeMillis is 0 or negative, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNegativeMillisecondsStartTime()
-    {
-        //act
-        new IotHubTransportPacket(mockMsg, mockCallback, new Object(), IotHubStatusCode.OK_EMPTY, -1, null);
+    @Test
+    public void constructorThrowsForNegativeMillisecondsStartTime() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new IotHubTransportPacket(mockMsg, mockCallback, new Object(), IotHubStatusCode.OK_EMPTY, -1, null);
+        });
     }
 }

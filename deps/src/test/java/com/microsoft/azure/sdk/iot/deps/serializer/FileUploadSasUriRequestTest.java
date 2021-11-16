@@ -4,7 +4,7 @@
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
 import mockit.Deencapsulation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.microsoft.azure.sdk.iot.deps.Helpers;
 
 import static org.junit.Assert.assertEquals;

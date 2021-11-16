@@ -6,7 +6,7 @@ package tests.unit.samples.com.microsoft.azure.sdk.iot.device;
 import com.google.gson.Gson;
 import com.microsoft.azure.sdk.iot.device.DeviceTwin.Property;
 import com.microsoft.azure.sdk.iot.device.Message;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import samples.com.microsoft.azure.sdk.iot.device.PnpConvention;
 import samples.com.microsoft.azure.sdk.iot.device.WritablePropertyResponse;
 
@@ -17,6 +17,7 @@ import java.util.Set;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PnpConventionTests
 {
@@ -106,15 +107,16 @@ public class PnpConventionTests
         assertTrue(writablePropertyString.contains(actualProperty));
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void createWritablePropertythrowsNull()
-    {
-        // arrange
-        HashMap<String, Object> propertyMap = new HashMap<>();
-        propertyMap.put(null, null);
+    @Test
+    public void createWritablePropertythrowsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            HashMap<String, Object> propertyMap = new HashMap<>();
+            propertyMap.put(null, null);
 
-        // act
-        PnpConvention.createWritablePropertyResponse(propertyMap, 1, 100L, null);
+            // act
+            PnpConvention.createWritablePropertyResponse(propertyMap, 1, 100L, null);
+        });
     }
 
     @Test
@@ -146,14 +148,15 @@ public class PnpConventionTests
         assertTrue(writablePropertyString.contains(actualProperty));
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void createComponentWritablePropertythrowsNull()
-    {
-        // arrange
-        HashMap<String, Object> propertyMap = new HashMap<>();
-        propertyMap.put(null, null);
+    @Test
+    public void createComponentWritablePropertythrowsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            // arrange
+            HashMap<String, Object> propertyMap = new HashMap<>();
+            propertyMap.put(null, null);
 
-        // act
-        PnpConvention.createComponentWritablePropertyResponse(propertyMap, "testComponent", 1, 100L, null);
+            // act
+            PnpConvention.createComponentWritablePropertyResponse(propertyMap, "testComponent", 1, 100L, null);
+        });
     }
 }

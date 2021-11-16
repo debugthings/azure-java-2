@@ -6,9 +6,8 @@
 package com.microsoft.azure.sdk.iot.device.auth;
 
 import com.microsoft.azure.sdk.iot.deps.auth.IotHubSSLContext;
-import com.microsoft.azure.sdk.iot.device.auth.IotHubAuthenticationProvider;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -17,6 +16,7 @@ import java.security.cert.CertificateException;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class IotHubAuthenticationProviderTest
 {
@@ -116,39 +116,42 @@ public class IotHubAuthenticationProviderTest
     }
 
     // Tests_SRS_AUTHENTICATIONPROVIDER_34_006: [If the provided hostname is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullHostname()
-    {
-        //act
-        IotHubAuthenticationProvider iotHubAuthenticationProvider = new IotHubAuthenticationProviderMock(null, expectedGatewayHostname, expectedDeviceId, expectedModuleId);
+    @Test
+    public void constructorThrowsForNullHostname() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            IotHubAuthenticationProvider iotHubAuthenticationProvider = new IotHubAuthenticationProviderMock(null, expectedGatewayHostname, expectedDeviceId, expectedModuleId);
+        });
     }
 
     // Tests_SRS_AUTHENTICATIONPROVIDER_34_007: [If the provided device id is null, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullDeviceId()
-    {
-        //act
-        IotHubAuthenticationProvider iotHubAuthenticationProvider = new IotHubAuthenticationProviderMock(expectedHostname, expectedGatewayHostname, null, expectedModuleId);
+    @Test
+    public void constructorThrowsForNullDeviceId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            IotHubAuthenticationProvider iotHubAuthenticationProvider = new IotHubAuthenticationProviderMock(expectedHostname, expectedGatewayHostname, null, expectedModuleId);
+        });
     }
 
     //Codes_SRS_AUTHENTICATIONPROVIDER_34_012: [If a CertificateException, NoSuchAlgorithmException, KeyManagementException, or KeyStoreException is thrown during this function, this function shall throw an IOException.]
     //Codes_SRS_AUTHENTICATIONPROVIDER_34_010: [If this object's ssl context has not been generated yet or if it needs to be re-generated, this function shall regenerate the ssl context.]
-    @Test (expected = IOException.class)
-    public void getSSLContextWrapsExceptions() throws IOException
-    {
-        //arrange
-        IotHubAuthenticationProvider sasAuth = new IotHubAuthenticationProviderMock(expectedHostname, expectedGatewayHostname, expectedDeviceId, expectedModuleId);
+    @Test
+    public void getSSLContextWrapsExceptions() throws IOException {
+        assertThrows(IOException.class, () -> {
+            //arrange
+            IotHubAuthenticationProvider sasAuth = new IotHubAuthenticationProviderMock(expectedHostname, expectedGatewayHostname, expectedDeviceId, expectedModuleId);
 
-        new NonStrictExpectations()
-        {
+            new NonStrictExpectations()
             {
-                Deencapsulation.newInstance(IotHubSSLContext.class);
-                result = new CertificateException();
-            }
-        };
+                {
+                    Deencapsulation.newInstance(IotHubSSLContext.class);
+                    result = new CertificateException();
+                }
+            };
 
-        //act
-        sasAuth.getSSLContext();
+            //act
+            sasAuth.getSSLContext();
+        });
     }
 
     //Codes_SRS_AUTHENTICATIONPROVIDER_34_011: [This function shall return the generated IotHubSSLContext.]

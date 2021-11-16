@@ -6,7 +6,6 @@
 package com.microsoft.azure.sdk.iot.device.hsm;
 
 import com.microsoft.azure.sdk.iot.device.exceptions.TransportException;
-import com.microsoft.azure.sdk.iot.device.hsm.*;
 import com.microsoft.azure.sdk.iot.device.hsm.parser.ErrorResponse;
 import com.microsoft.azure.sdk.iot.device.hsm.parser.SignRequest;
 import com.microsoft.azure.sdk.iot.device.hsm.parser.SignResponse;
@@ -18,7 +17,7 @@ import com.microsoft.azure.sdk.iot.device.transport.https.HttpsResponse;
 import jnr.unixsocket.UnixSocketAddress;
 import jnr.unixsocket.UnixSocketChannel;
 import mockit.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.*;
@@ -29,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HttpsHsmClientTest
 {
@@ -361,24 +361,25 @@ public class HttpsHsmClientTest
     }
 
     // Tests_SRS_HSMHTTPCLIENT_34_007: [If the provided api version is null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void getTrustBundleThrowsForNullApiVersion(final @Mocked URI mockedURI) throws URISyntaxException, TransportException, IOException, HsmException
-    {
-        //arrange
-        new NonStrictExpectations()
-        {
+    @Test
+    public void getTrustBundleThrowsForNullApiVersion(final @Mocked URI mockedURI) throws URISyntaxException, TransportException, IOException, HsmException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            new NonStrictExpectations()
             {
-                new URI(expectedBaseUrl);
-                result = mockedURI;
+                {
+                    new URI(expectedBaseUrl);
+                    result = mockedURI;
 
-                mockedURI.getScheme();
-                result = expectedSchemeHttps;
-            }
-        };
-        HttpsHsmClient client = new HttpsHsmClient(expectedBaseUrl);
+                    mockedURI.getScheme();
+                    result = expectedSchemeHttps;
+                }
+            };
+            HttpsHsmClient client = new HttpsHsmClient(expectedBaseUrl);
 
-        //act
-        client.getTrustBundle(null);
+            //act
+            client.getTrustBundle(null);
+        });
     }
 
     // Tests_SRS_HSMHTTPCLIENT_34_008: [This function shall build an http request with the url in the format

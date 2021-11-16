@@ -1,21 +1,22 @@
 package com.microsoft.azure.sdk.iot.deps.serializer;
 
-import com.microsoft.azure.sdk.iot.deps.serializer.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ConfigurationParserTest
 {
     //Tests_SRS_CONFIGURATION_PARSER_28_001: [If the provided json is null or empty, an IllegalArgumentException shall be thrown.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullJson()
-    {
-        //act
-        new ConfigurationParser(null);
+    @Test
+    public void constructorThrowsForNullJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ConfigurationParser(null);
+        });
     }
 
     //Codes_SRS_CONFIGURATION_PARSER_28_002: [This constructor shall take the provided json and convert it into
@@ -74,62 +75,66 @@ public class ConfigurationParserTest
     }
 
     //Tests_SRS_CONFIGURATION_PARSER_28_005: [If the provided json cannot be parsed into a ConfigurationParser object, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForInvalidJson()
-    {
-        //arrange
-        String json = "{";
+    @Test
+    public void constructorThrowsForInvalidJson() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{";
 
-        //act
-        new ConfigurationParser(json);
+            //act
+            new ConfigurationParser(json);
+        });
     }
 
     //Codes_SRS_CONFIGURATION_PARSER_28_003: [If the provided json is missing the id field or its value is empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorFromJsonEmptyId()
-    {
-        //arrange
-        String json = "{\"id\":\"\",\"schemaVersion\":\"1.0\",\"etag\":\"MQ==\",\"" +
-                "labels\":{\"App\":\"label2\"},\"content\":{\"modulesContent\":{}, \"deviceContent\":{\"properties.desired.settings1\": {\"c\":3,\"d\":4}}}," +
-                "\"targetCondition\":\"*\", \"createdTimeUtc\":\"0001-01-01T00:00:00\", \"lastUpdatedTimeUtc\":\"0001-01-01T00:00:00\"," +
-                "\"priority\":10, \"systemMetrics\":{\"results\":{\"targetedCount\":3, \"appliedCount\":3}, " +
-                "\"queries\":{}}, \"metrics\":{\"results\":{\"customMetric\":3}," +
-                "\"queries\":{}}}";
+    @Test
+    public void constructorFromJsonEmptyId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{\"id\":\"\",\"schemaVersion\":\"1.0\",\"etag\":\"MQ==\",\"" +
+                    "labels\":{\"App\":\"label2\"},\"content\":{\"modulesContent\":{}, \"deviceContent\":{\"properties.desired.settings1\": {\"c\":3,\"d\":4}}}," +
+                    "\"targetCondition\":\"*\", \"createdTimeUtc\":\"0001-01-01T00:00:00\", \"lastUpdatedTimeUtc\":\"0001-01-01T00:00:00\"," +
+                    "\"priority\":10, \"systemMetrics\":{\"results\":{\"targetedCount\":3, \"appliedCount\":3}, " +
+                    "\"queries\":{}}, \"metrics\":{\"results\":{\"customMetric\":3}," +
+                    "\"queries\":{}}}";
 
-        //act
-        new ConfigurationParser(json);
+            //act
+            new ConfigurationParser(json);
+        });
     }
 
     //Codes_SRS_CONFIGURATION_PARSER_28_003: [If the provided json is missing the id field or its value is empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorFromJsonNullId()
-    {
-        //arrange
-        String json = "{\"schemaVersion\":\"1.0\",\"etag\":\"MQ==\",\"" +
-                "labels\":{\"App\":\"label2\"},\"content\":{\"modulesContent\":{}, \"deviceContent\":{\"properties.desired.settings1\": {\"c\":3,\"d\":4}}}," +
-                "\"targetCondition\":\"*\", \"createdTimeUtc\":\"0001-01-01T00:00:00\", \"lastUpdatedTimeUtc\":\"0001-01-01T00:00:00\"," +
-                "\"priority\":10, \"systemMetrics\":{\"results\":{\"targetedCount\":3, \"appliedCount\":3}, " +
-                "\"queries\":{}}, \"metrics\":{\"results\":{\"customMetric\":3}," +
-                "\"queries\":{}}}";
+    @Test
+    public void constructorFromJsonNullId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{\"schemaVersion\":\"1.0\",\"etag\":\"MQ==\",\"" +
+                    "labels\":{\"App\":\"label2\"},\"content\":{\"modulesContent\":{}, \"deviceContent\":{\"properties.desired.settings1\": {\"c\":3,\"d\":4}}}," +
+                    "\"targetCondition\":\"*\", \"createdTimeUtc\":\"0001-01-01T00:00:00\", \"lastUpdatedTimeUtc\":\"0001-01-01T00:00:00\"," +
+                    "\"priority\":10, \"systemMetrics\":{\"results\":{\"targetedCount\":3, \"appliedCount\":3}, " +
+                    "\"queries\":{}}, \"metrics\":{\"results\":{\"customMetric\":3}," +
+                    "\"queries\":{}}}";
 
-        //act
-        new ConfigurationParser(json);
+            //act
+            new ConfigurationParser(json);
+        });
     }
 
     //Codes_SRS_CONFIGURATION_PARSER_28_003: [If the provided json is missing the schemaVersion or its value is empty, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorFromJsonEmptySchemaVersion()
-    {
-        //arrange
-        String json = "{\"id\":\"\",\"schemaVersion\":\"\",\"etag\":\"MQ==\",\"" +
-                "labels\":{\"App\":\"label2\"},\"content\":{\"modulesContent\":{}, \"deviceContent\":{\"properties.desired.settings1\": {\"c\":3,\"d\":4}}}," +
-                "\"targetCondition\":\"*\", \"createdTimeUtc\":\"0001-01-01T00:00:00\", \"lastUpdatedTimeUtc\":\"0001-01-01T00:00:00\"," +
-                "\"priority\":10, \"systemMetrics\":{\"results\":{\"targetedCount\":3, \"appliedCount\":3}, " +
-                "\"queries\":{}}, \"metrics\":{\"results\":{\"customMetric\":3}," +
-                "\"queries\":{}}}";
+    @Test
+    public void constructorFromJsonEmptySchemaVersion() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            String json = "{\"id\":\"\",\"schemaVersion\":\"\",\"etag\":\"MQ==\",\"" +
+                    "labels\":{\"App\":\"label2\"},\"content\":{\"modulesContent\":{}, \"deviceContent\":{\"properties.desired.settings1\": {\"c\":3,\"d\":4}}}," +
+                    "\"targetCondition\":\"*\", \"createdTimeUtc\":\"0001-01-01T00:00:00\", \"lastUpdatedTimeUtc\":\"0001-01-01T00:00:00\"," +
+                    "\"priority\":10, \"systemMetrics\":{\"results\":{\"targetedCount\":3, \"appliedCount\":3}, " +
+                    "\"queries\":{}}, \"metrics\":{\"results\":{\"customMetric\":3}," +
+                    "\"queries\":{}}}";
 
-        //act
-        new ConfigurationParser(json);
+            //act
+            new ConfigurationParser(json);
+        });
     }
 
     //Tests_SRS_CONFIGURATION_PARSER_28_009: [This method shall set the value of id to the provided value.]
@@ -192,10 +197,11 @@ public class ConfigurationParserTest
     }
 
     //Tests_SRS_CONFIGURATION_PARSER_28_008: [If the provided id value is null, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void cantSetIdNull()
-    {
-        //act
-        new ConfigurationParser().setId(null);
+    @Test
+    public void cantSetIdNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            new ConfigurationParser().setId(null);
+        });
     }
 }

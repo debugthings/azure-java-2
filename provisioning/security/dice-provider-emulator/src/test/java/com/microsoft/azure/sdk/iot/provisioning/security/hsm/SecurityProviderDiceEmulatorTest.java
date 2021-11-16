@@ -8,17 +8,17 @@
 package com.microsoft.azure.sdk.iot.provisioning.security.hsm;
 
 import com.microsoft.azure.sdk.iot.provisioning.security.exceptions.SecurityProviderException;
-import com.microsoft.azure.sdk.iot.provisioning.security.hsm.SecurityProviderDiceEmulator;
 import com.microsoft.msr.RiotEmulator.RIoT;
 import mockit.Deencapsulation;
 import mockit.Mocked;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.security.Key;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
 import static junit.framework.TestCase.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * Unit tests for SecurityProviderDiceEmulator
@@ -60,93 +60,102 @@ public class SecurityProviderDiceEmulatorTest
     }
 
     //SRS_SecurityClientDiceEmulator_25_004: [ Constructor shall throw SecurityProviderException if Alias Certificate, Signer Certificate and Root certificate names are not unique ]
-    @Test (expected = SecurityProviderException.class)
-    public void constructorWithSameRootAndSignerNamesThrows() throws Exception
-    {
-        //act
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
-                                                                                                       TEST_ROOT,
-                                                                                                       TEST_ROOT);
+    @Test
+    public void constructorWithSameRootAndSignerNamesThrows() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
+            //act
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
+                                                                                                           TEST_ROOT,
+                                                                                                           TEST_ROOT);
+        });
     }
 
-    @Test (expected = SecurityProviderException.class)
-    public void constructorWithSameAliasAndSignerNamesThrows() throws Exception
-    {
-        //act
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
-                                                                                                       TEST_ALIAS,
-                                                                                                       TEST_ROOT);
+    @Test
+    public void constructorWithSameAliasAndSignerNamesThrows() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
+            //act
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
+                                                                                                           TEST_ALIAS,
+                                                                                                           TEST_ROOT);
+        });
     }
 
-    @Test (expected = SecurityProviderException.class)
-    public void constructorWithSameRootAndAliasNamesThrows() throws Exception
-    {
+    @Test
+    public void constructorWithSameRootAndAliasNamesThrows() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
 
-        //act
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
-                                                                                                       TEST_SIGNER,
-                                                                                                       TEST_ALIAS);
+            //act
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
+                                                                                                           TEST_SIGNER,
+                                                                                                           TEST_ALIAS);
+        });
     }
 
     //SRS_SecurityClientDiceEmulator_25_003: [ Constructor shall throw SecurityProviderException if Alias Certificate, Signer Certificate and Root certificate names are null or empty ]
-    @Test (expected = SecurityProviderException.class)
-    public void constructorWithNullAliasNamesThrows() throws Exception
-    {
+    @Test
+    public void constructorWithNullAliasNamesThrows() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
 
-        //act
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(null,
-                                                                                                       TEST_SIGNER,
-                                                                                                       TEST_ROOT);
+            //act
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(null,
+                                                                                                           TEST_SIGNER,
+                                                                                                           TEST_ROOT);
+        });
     }
 
-    @Test (expected = SecurityProviderException.class)
-    public void constructorWithEmptyAliasNamesThrows() throws Exception
-    {
+    @Test
+    public void constructorWithEmptyAliasNamesThrows() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
 
-        //act
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator("",
-                                                                                                       TEST_SIGNER,
-                                                                                                       TEST_ROOT);
+            //act
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator("",
+                                                                                                           TEST_SIGNER,
+                                                                                                           TEST_ROOT);
+        });
     }
 
-    @Test (expected = SecurityProviderException.class)
-    public void constructorWithNullSignerNamesThrows() throws Exception
-    {
+    @Test
+    public void constructorWithNullSignerNamesThrows() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
 
-        //act
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
-                                                                                                       null,
-                                                                                                       TEST_ROOT);
+            //act
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
+                                                                                                           null,
+                                                                                                           TEST_ROOT);
+        });
     }
 
-    @Test (expected = SecurityProviderException.class)
-    public void constructorWithEmptySignerNamesThrows() throws Exception
-    {
+    @Test
+    public void constructorWithEmptySignerNamesThrows() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
 
-        //act
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
-                                                                                                       "",
-                                                                                                       TEST_ROOT);
+            //act
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
+                                                                                                           "",
+                                                                                                           TEST_ROOT);
+        });
     }
 
-    @Test (expected = SecurityProviderException.class)
-    public void constructorWithNullRootNamesThrows() throws Exception
-    {
+    @Test
+    public void constructorWithNullRootNamesThrows() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
 
-        //act
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
-                                                                                                       TEST_SIGNER,
-                                                                                                       null);
+            //act
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
+                                                                                                           TEST_SIGNER,
+                                                                                                           null);
+        });
     }
 
-    @Test (expected = SecurityProviderException.class)
-    public void constructorWithEmptyRootNamesThrows() throws Exception
-    {
+    @Test
+    public void constructorWithEmptyRootNamesThrows() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
 
-        //act
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
-                                                                                                       TEST_SIGNER,
-                                                                                                       "");
+            //act
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
+                                                                                                           TEST_SIGNER,
+                                                                                                           "");
+        });
     }
 
     //SRS_SecurityClientDiceEmulator_25_005: [ This method shall return Root certificate name as common name ]
@@ -258,26 +267,28 @@ public class SecurityProviderDiceEmulatorTest
     }
 
     //SRS_SecurityClientDiceEmulator_25_012: [ This method shall return Leaf certificate generated by DICE with unique ID as common Name in PEM Format ]
-    @Test (expected =  SecurityProviderException.class)
-    public void generateLeafCertThrowsOnNullID() throws Exception
-    {
-        //arrange
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
-                                                                                                       TEST_SIGNER,
-                                                                                                       TEST_ROOT);
-        //act
-        testSecurityClientDiceEmulator.generateLeafCert(null);
+    @Test
+    public void generateLeafCertThrowsOnNullID() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
+            //arrange
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
+                                                                                                           TEST_SIGNER,
+                                                                                                           TEST_ROOT);
+            //act
+            testSecurityClientDiceEmulator.generateLeafCert(null);
+        });
     }
 
-    @Test (expected =  SecurityProviderException.class)
-    public void generateLeafCertThrowsOnEmptyID() throws Exception
-    {
-        //arrange
-        SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
-                                                                                                       TEST_SIGNER,
-                                                                                                       TEST_ROOT);
-        //act
-        testSecurityClientDiceEmulator.generateLeafCert("");
+    @Test
+    public void generateLeafCertThrowsOnEmptyID() throws Exception {
+        assertThrows(SecurityProviderException.class, () -> {
+            //arrange
+            SecurityProviderDiceEmulator testSecurityClientDiceEmulator = new SecurityProviderDiceEmulator(TEST_ALIAS,
+                                                                                                           TEST_SIGNER,
+                                                                                                           TEST_ROOT);
+            //act
+            testSecurityClientDiceEmulator.generateLeafCert("");
+        });
     }
 
 }

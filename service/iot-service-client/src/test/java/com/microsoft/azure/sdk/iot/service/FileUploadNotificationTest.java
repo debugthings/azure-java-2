@@ -5,13 +5,13 @@
 
 package com.microsoft.azure.sdk.iot.service;
 
-import com.microsoft.azure.sdk.iot.service.FileUploadNotification;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FileUploadNotificationTest
 {
@@ -48,219 +48,228 @@ public class FileUploadNotificationTest
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_002: [** If any of the parameters are null or empty then this method shall throw IllegalArgumentException.**]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullDevID() throws IOException
-    {
-        //arrange
-        final String actualDeviceId = null;
-        final String actualBlobUri = "TestblobUri";
-        final String actualBlobName = "TestBlobName";
-        final Date actualLastUpdatedTimeDate = new Date();
-        final Long actualBlobSizeInBytes = 10000L;
-        final Date actualEnqueuedTimeUtcDate = new Date();
+    @Test
+    public void constructorThrowsOnNullDevID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String actualDeviceId = null;
+            final String actualBlobUri = "TestblobUri";
+            final String actualBlobName = "TestBlobName";
+            final Date actualLastUpdatedTimeDate = new Date();
+            final Long actualBlobSizeInBytes = 10000L;
+            final Date actualEnqueuedTimeUtcDate = new Date();
 
-        //act
-        FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
+            //act
+            FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
 
-        //assert
-        assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
-        assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
-        assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
-        assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
-        assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
-        assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+            //assert
+            assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
+            assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
+            assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
+            assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
+            assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
+            assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_002: [** If any of the parameters are null or empty then this method shall throw IllegalArgumentException.**]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyDevID() throws IOException
-    {
-        //arrange
-        final String actualDeviceId = "";
-        final String actualBlobUri = "TestblobUri";
-        final String actualBlobName = "TestBlobName";
-        final Date actualLastUpdatedTimeDate = new Date();
-        final Long actualBlobSizeInBytes = 10000L;
-        final Date actualEnqueuedTimeUtcDate = new Date();
+    @Test
+    public void constructorThrowsOnEmptyDevID() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String actualDeviceId = "";
+            final String actualBlobUri = "TestblobUri";
+            final String actualBlobName = "TestBlobName";
+            final Date actualLastUpdatedTimeDate = new Date();
+            final Long actualBlobSizeInBytes = 10000L;
+            final Date actualEnqueuedTimeUtcDate = new Date();
 
-        //act
-        FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
+            //act
+            FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
 
-        //assert
-        assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
-        assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
-        assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
-        assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
-        assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
-        assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+            //assert
+            assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
+            assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
+            assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
+            assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
+            assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
+            assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_002: [** If any of the parameters are null or empty then this method shall throw IllegalArgumentException.**]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullBlobUri() throws IOException
-    {
-        //arrange
-        final String actualDeviceId = "TestDeviceId";
-        final String actualBlobUri = null;
-        final String actualBlobName = "TestBlobName";
-        final Date actualLastUpdatedTimeDate = new Date();
-        final Long actualBlobSizeInBytes = 10000L;
-        final Date actualEnqueuedTimeUtcDate = new Date();
+    @Test
+    public void constructorThrowsOnNullBlobUri() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String actualDeviceId = "TestDeviceId";
+            final String actualBlobUri = null;
+            final String actualBlobName = "TestBlobName";
+            final Date actualLastUpdatedTimeDate = new Date();
+            final Long actualBlobSizeInBytes = 10000L;
+            final Date actualEnqueuedTimeUtcDate = new Date();
 
-        //act
-        FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
+            //act
+            FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
 
-        //assert
-        assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
-        assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
-        assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
-        assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
-        assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
-        assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+            //assert
+            assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
+            assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
+            assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
+            assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
+            assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
+            assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_002: [** If any of the parameters are null or empty then this method shall throw IllegalArgumentException.**]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyBlobUri() throws IOException
-    {
-        //arrange
-        final String actualDeviceId = "TestDeviceId";
-        final String actualBlobUri = "";
-        final String actualBlobName = "TestBlobName";
-        final Date actualLastUpdatedTimeDate = new Date();
-        final Long actualBlobSizeInBytes = 10000L;
-        final Date actualEnqueuedTimeUtcDate = new Date();
+    @Test
+    public void constructorThrowsOnEmptyBlobUri() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String actualDeviceId = "TestDeviceId";
+            final String actualBlobUri = "";
+            final String actualBlobName = "TestBlobName";
+            final Date actualLastUpdatedTimeDate = new Date();
+            final Long actualBlobSizeInBytes = 10000L;
+            final Date actualEnqueuedTimeUtcDate = new Date();
 
-        //act
-        FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
+            //act
+            FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
 
-        //assert
-        assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
-        assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
-        assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
-        assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
-        assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
-        assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+            //assert
+            assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
+            assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
+            assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
+            assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
+            assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
+            assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_002: [** If any of the parameters are null or empty then this method shall throw IllegalArgumentException.**]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullBlobName() throws IOException
-    {
-        //arrange
-        final String actualDeviceId = "TestDeviceId";
-        final String actualBlobUri = "TestblobUri";
-        final String actualBlobName = null;
-        final Date actualLastUpdatedTimeDate = new Date();
-        final Long actualBlobSizeInBytes = 10000L;
-        final Date actualEnqueuedTimeUtcDate = new Date();
+    @Test
+    public void constructorThrowsOnNullBlobName() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String actualDeviceId = "TestDeviceId";
+            final String actualBlobUri = "TestblobUri";
+            final String actualBlobName = null;
+            final Date actualLastUpdatedTimeDate = new Date();
+            final Long actualBlobSizeInBytes = 10000L;
+            final Date actualEnqueuedTimeUtcDate = new Date();
 
-        //act
-        FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
+            //act
+            FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
 
-        //assert
-        assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
-        assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
-        assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
-        assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
-        assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
-        assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+            //assert
+            assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
+            assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
+            assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
+            assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
+            assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
+            assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_002: [** If any of the parameters are null or empty then this method shall throw IllegalArgumentException.**]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnEmptyBlobName() throws IOException
-    {
-        //arrange
-        final String actualDeviceId = "TestDeviceId";
-        final String actualBlobUri = "TestblobUri";
-        final String actualBlobName = "";
-        final Date actualLastUpdatedTimeDate = new Date();
-        final Long actualBlobSizeInBytes = 10000L;
-        final Date actualEnqueuedTimeUtcDate = new Date();
+    @Test
+    public void constructorThrowsOnEmptyBlobName() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String actualDeviceId = "TestDeviceId";
+            final String actualBlobUri = "TestblobUri";
+            final String actualBlobName = "";
+            final Date actualLastUpdatedTimeDate = new Date();
+            final Long actualBlobSizeInBytes = 10000L;
+            final Date actualEnqueuedTimeUtcDate = new Date();
 
-        //act
-        FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
+            //act
+            FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
 
-        //assert
-        assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
-        assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
-        assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
-        assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
-        assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
-        assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+            //assert
+            assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
+            assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
+            assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
+            assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
+            assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
+            assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_002: [** If any of the parameters are null or empty then this method shall throw IllegalArgumentException.**]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullDate() throws IOException
-    {
-        //arrange
-        final String actualDeviceId = "TestDeviceId";
-        final String actualBlobUri = "TestblobUri";
-        final String actualBlobName = "TestBlobName";
-        final Date actualLastUpdatedTimeDate = null;
-        final Long actualBlobSizeInBytes = 10000L;
-        final Date actualEnqueuedTimeUtcDate = new Date();
+    @Test
+    public void constructorThrowsOnNullDate() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String actualDeviceId = "TestDeviceId";
+            final String actualBlobUri = "TestblobUri";
+            final String actualBlobName = "TestBlobName";
+            final Date actualLastUpdatedTimeDate = null;
+            final Long actualBlobSizeInBytes = 10000L;
+            final Date actualEnqueuedTimeUtcDate = new Date();
 
-        //act
-        FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
+            //act
+            FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
 
-        //assert
-        assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
-        assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
-        assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
-        assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
-        assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
-        assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+            //assert
+            assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
+            assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
+            assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
+            assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
+            assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
+            assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_002: [** If any of the parameters are null or empty then this method shall throw IllegalArgumentException.**]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullSize() throws IOException
-    {
-        //arrange
-        final String actualDeviceId = "TestDeviceId";
-        final String actualBlobUri = "TestblobUri";
-        final String actualBlobName = "TestBlobName";
-        final Date actualLastUpdatedTimeDate = new Date();
-        final Long actualBlobSizeInBytes = null;
-        final Date actualEnqueuedTimeUtcDate = new Date();
+    @Test
+    public void constructorThrowsOnNullSize() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String actualDeviceId = "TestDeviceId";
+            final String actualBlobUri = "TestblobUri";
+            final String actualBlobName = "TestBlobName";
+            final Date actualLastUpdatedTimeDate = new Date();
+            final Long actualBlobSizeInBytes = null;
+            final Date actualEnqueuedTimeUtcDate = new Date();
 
-        //act
-        FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
+            //act
+            FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
 
-        //assert
-        assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
-        assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
-        assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
-        assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
-        assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
-        assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+            //assert
+            assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
+            assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
+            assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
+            assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
+            assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
+            assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_002: [** If any of the parameters are null or empty then this method shall throw IllegalArgumentException.**]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsOnNullEnqueuedTime() throws IOException
-    {
-        //arrange
-        final String actualDeviceId = null;
-        final String actualBlobUri = "TestblobUri";
-        final String actualBlobName = "TestBlobName";
-        final Date actualLastUpdatedTimeDate = new Date();
-        final Long actualBlobSizeInBytes = 10000L;
-        final Date actualEnqueuedTimeUtcDate = null;
+    @Test
+    public void constructorThrowsOnNullEnqueuedTime() throws IOException {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //arrange
+            final String actualDeviceId = null;
+            final String actualBlobUri = "TestblobUri";
+            final String actualBlobName = "TestBlobName";
+            final Date actualLastUpdatedTimeDate = new Date();
+            final Long actualBlobSizeInBytes = 10000L;
+            final Date actualEnqueuedTimeUtcDate = null;
 
-        //act
-        FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
+            //act
+            FileUploadNotification testFileUploadNotification = new FileUploadNotification(actualDeviceId, actualBlobUri, actualBlobName, actualLastUpdatedTimeDate, actualBlobSizeInBytes, actualEnqueuedTimeUtcDate);
 
-        //assert
-        assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
-        assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
-        assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
-        assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
-        assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
-        assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+            //assert
+            assertEquals(testFileUploadNotification.getDeviceId(), actualDeviceId);
+            assertEquals(testFileUploadNotification.getBlobName(), actualBlobName);
+            assertEquals(testFileUploadNotification.getBlobUri(), actualBlobUri);
+            assertEquals(testFileUploadNotification.getLastUpdatedTimeDate(), actualLastUpdatedTimeDate);
+            assertEquals(testFileUploadNotification.getBlobSizeInBytes(), actualBlobSizeInBytes);
+            assertEquals(testFileUploadNotification.getEnqueuedTimeUtcDate(), actualEnqueuedTimeUtcDate);
+        });
     }
 
     // Tests_SRS_SERVICE_SDK_JAVA_FILEUPLOADNOTIFICATION_25_003: [** The getter for device ID **]

@@ -6,15 +6,15 @@
 package com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.amqp;
 
 import com.microsoft.azure.sdk.iot.deps.transport.amqp.SaslHandler;
-import com.microsoft.azure.sdk.iot.provisioning.device.internal.contract.amqp.AmqpsProvisioningSymmetricKeySaslHandler;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.ProvisioningDeviceClientException;
 import com.microsoft.azure.sdk.iot.provisioning.device.internal.exceptions.ProvisioningDeviceSecurityException;
 import mockit.Deencapsulation;
 import mockit.integration.junit4.JMockit;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for AmqpsProvisioningSymmetricKeySaslHandler.java
@@ -46,62 +46,69 @@ public class AmqpsProvisioningSymmetricKeySaslHandlerTest
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullIdScope()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, null, registrationId, sasToken);
+    @Test
+    public void constructorThrowsForNullIdScope() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, null, registrationId, sasToken);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyIdScope()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, "", registrationId, sasToken);
+    @Test
+    public void constructorThrowsForEmptyIdScope() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, "", registrationId, sasToken);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullRegistrationId()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, null, sasToken);
+    @Test
+    public void constructorThrowsForNullRegistrationId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, null, sasToken);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptyRegistrationId()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, "", sasToken);
+    @Test
+    public void constructorThrowsForEmptyRegistrationId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, "", sasToken);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForNullSasToken()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, null);
+    @Test
+    public void constructorThrowsForNullSasToken() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, null);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_002: [If any of the arguments are null or empty, this function shall throw an IllegalArgumentException.]
-    @Test (expected = IllegalArgumentException.class)
-    public void constructorThrowsForEmptySasToken()
-    {
-        //act
-        Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, "");
+    @Test
+    public void constructorThrowsForEmptySasToken() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            //act
+            Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, "");
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSYMMETRICKEYSASLHANDLER_34_004: [If the provided mechanisms array does not contain "PLAIN" then this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void choseSaslMechanismThrowsIfPlainNotPresent() throws ProvisioningDeviceSecurityException
-    {
-        //arrange
-        AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
+    @Test
+    public void choseSaslMechanismThrowsIfPlainNotPresent() throws ProvisioningDeviceSecurityException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
 
-        //act
-        handler.chooseSaslMechanism(new String[]{"NotPLAIN"});
+            //act
+            handler.chooseSaslMechanism(new String[]{"NotPLAIN"});
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSASLHANDLER_34_005: [This function shall return "PLAIN".]
@@ -150,47 +157,51 @@ public class AmqpsProvisioningSymmetricKeySaslHandlerTest
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSYMMETRICKEYSASLHANDLER_34_022: [If the sasl outcome is not OK, this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void handleOutcomeAuthThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
+    @Test
+    public void handleOutcomeAuthThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
 
-        //act
-        handler.handleOutcome(SaslHandler.SaslOutcome.AUTH);
+            //act
+            handler.handleOutcome(SaslHandler.SaslOutcome.AUTH);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSYMMETRICKEYSASLHANDLER_34_022: [If the sasl outcome is not OK, this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void handleOutcomeSysTempThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
+    @Test
+    public void handleOutcomeSysTempThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
 
-        //act
-        handler.handleOutcome(SaslHandler.SaslOutcome.SYS_TEMP);
+            //act
+            handler.handleOutcome(SaslHandler.SaslOutcome.SYS_TEMP);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSYMMETRICKEYSASLHANDLER_34_022: [If the sasl outcome is not OK, this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void handleOutcomeSysThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
+    @Test
+    public void handleOutcomeSysThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
 
-        //act
-        handler.handleOutcome(SaslHandler.SaslOutcome.SYS);
+            //act
+            handler.handleOutcome(SaslHandler.SaslOutcome.SYS);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSYMMETRICKEYSASLHANDLER_34_022: [If the sasl outcome is not OK, this function shall throw a ProvisioningDeviceSecurityException.]
-    @Test (expected = ProvisioningDeviceSecurityException.class)
-    public void handleOutcomeSysPermThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException
-    {
-        //arrange
-        AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
+    @Test
+    public void handleOutcomeSysPermThrowsProvisioningDeviceSecurityException() throws ProvisioningDeviceClientException {
+        assertThrows(ProvisioningDeviceSecurityException.class, () -> {
+            //arrange
+            AmqpsProvisioningSymmetricKeySaslHandler handler = Deencapsulation.newInstance(AmqpsProvisioningSymmetricKeySaslHandler.class, new Class[]{String.class, String.class, String.class}, idScope, registrationId, sasToken);
 
-        //act
-        handler.handleOutcome(SaslHandler.SaslOutcome.SYS_PERM);
+            //act
+            handler.handleOutcome(SaslHandler.SaslOutcome.SYS_PERM);
+        });
     }
 
     // Tests_SRS_AMQPSPROVISIONINGSYMMETRICKEYSASLHANDLER_34_008: [This function shall save the provided sas token.]

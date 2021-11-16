@@ -3,15 +3,11 @@
 
 package com.microsoft.azure.sdk.iot.device;
 
-import com.microsoft.azure.sdk.iot.device.IotHubConnectionString;
-import com.microsoft.azure.sdk.iot.device.Message;
-import com.microsoft.azure.sdk.iot.device.MessageProperty;
-import com.microsoft.azure.sdk.iot.device.MessageType;
 import mockit.Deencapsulation;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -22,6 +18,7 @@ import java.util.TimeZone;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for Message class.
@@ -46,12 +43,13 @@ public class MessageTest
     }
 
     // Tests_SRS_MESSAGE_11_025: [If the message body is null, the constructor shall throw an IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorRejectsNullBody()
-    {
-        final byte[] body = null;
+    @Test
+    public void constructorRejectsNullBody() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final byte[] body = null;
 
-        new Message(body);
+            new Message(body);
+        });
     }
 
     // Tests_SRS_MESSAGE_11_022: [The function shall return the message body, encoded using charset UTF-8.]
@@ -117,65 +115,69 @@ public class MessageTest
     }
 
     // Tests_SRS_MESSAGE_11_028: [If name is null, the function shall throw an IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
-    public void setPropertyRejectsNullName()
-    {
-        final byte[] body = { 0x61, 0x62, 0x63 };
-        final String value = "test-value";
+    @Test
+    public void setPropertyRejectsNullName() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final byte[] body = { 0x61, 0x62, 0x63 };
+            final String value = "test-value";
 
-        Message msg = new Message(body);
-        msg.setProperty(null, value);
+            Message msg = new Message(body);
+            msg.setProperty(null, value);
+        });
     }
 
     // Tests_SRS_MESSAGE_11_029: [If value is null, the function shall throw an IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
-    public void setPropertyRejectsNullValue()
-    {
-        final byte[] body = { 0x61, 0x62, 0x63 };
-        final String name = "test-name";
+    @Test
+    public void setPropertyRejectsNullValue() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final byte[] body = { 0x61, 0x62, 0x63 };
+            final String name = "test-name";
 
-        Message msg = new Message(body);
-        msg.setProperty(name, null);
+            Message msg = new Message(body);
+            msg.setProperty(name, null);
+        });
     }
 
     // Tests_SRS_MESSAGE_11_030: [If name contains a character not specified in RFC 2047, the function shall throw an IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void setPropertyRejectsIllegalName(
-            @Mocked final MessageProperty mockProperty)
-    {
-        final byte[] body = { 0x61, 0x62, 0x63 };
-        final String invalidName = "  ";
-        final String value = "test-value";
-        new NonStrictExpectations()
-        {
+            @Mocked final MessageProperty mockProperty) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final byte[] body = { 0x61, 0x62, 0x63 };
+            final String invalidName = "  ";
+            final String value = "test-value";
+            new NonStrictExpectations()
             {
-                new MessageProperty(invalidName, value);
-                result = new IllegalArgumentException();
-            }
-        };
+                {
+                    new MessageProperty(invalidName, value);
+                    result = new IllegalArgumentException();
+                }
+            };
 
-        Message msg = new Message(body);
-        msg.setProperty(invalidName, value);
+            Message msg = new Message(body);
+            msg.setProperty(invalidName, value);
+        });
     }
 
     // Tests_SRS_MESSAGE_11_031: [If value name contains a character not specified in RFC 2047, the function shall throw an IllegalArgumentException.]
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void setPropertyRejectsIllegalValue(
-            @Mocked final MessageProperty mockProperty)
-    {
-        final byte[] body = { 0x61, 0x62, 0x63 };
-        final String name = "test-name";
-        final String invalidValue = "test-value@";
-        new NonStrictExpectations()
-        {
+            @Mocked final MessageProperty mockProperty) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final byte[] body = { 0x61, 0x62, 0x63 };
+            final String name = "test-name";
+            final String invalidValue = "test-value@";
+            new NonStrictExpectations()
             {
-                new MessageProperty(name, invalidValue);
-                result = new IllegalArgumentException();
-            }
-        };
+                {
+                    new MessageProperty(name, invalidValue);
+                    result = new IllegalArgumentException();
+                }
+            };
 
-        Message msg = new Message(body);
-        msg.setProperty(name, invalidValue);
+            Message msg = new Message(body);
+            msg.setProperty(name, invalidValue);
+        });
     }
 
     // Tests_SRS_MESSAGE_11_034: [If no value associated with the property name is found, the function shall return null.]
@@ -286,11 +288,12 @@ public class MessageTest
     }
 
     // Tests_SRS_MESSAGE_34_038: [If the provided absolute expiry time is negative, an IllegalArgumentException shall be thrown.]
-    @Test (expected = IllegalArgumentException.class)
-    public void setAbsoluteTimeWithNegativeTimeThrowsIllegalArgumentException()
-    {
-        Message msg = new Message("body");
-        msg.setAbsoluteExpiryTime(-1L);
+    @Test
+    public void setAbsoluteTimeWithNegativeTimeThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Message msg = new Message("body");
+            msg.setAbsoluteExpiryTime(-1L);
+        });
     }
 
     // Tests_SRS_MESSAGE_34_051: [The function shall set the message's connection device id to the provided value.]
@@ -384,7 +387,7 @@ public class MessageTest
     //	at MessageTest.creationTimeUTCFormatWorks(MessageTest.java:389)
     //
     // This is due to an issue with the JDK used in that linux environment. Disabling this test until that issue is fixed
-    @Ignore
+    @Disabled
     @Test
     public void creationTimeUTCFormatWorks()
     {
